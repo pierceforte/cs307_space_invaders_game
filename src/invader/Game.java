@@ -12,8 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -47,7 +45,8 @@ public class Game extends Application {
     private double gameTimer = 0;
 
     private Level level1;
-    private Spaceship spaceship;
+
+    private Group root;
     /**
      * Initialize what will be displayed and how it will be updated.
      */
@@ -70,7 +69,7 @@ public class Game extends Application {
     // Create the game's "scene": what shapes will be in the game and their starting properties
     Scene setupScene (int width, int height, Paint background) {
         // create one top level collection to organize the things in the scene
-        Group root = new Group();
+        root = new Group();
         // make some shapes, set their properties, and add them to the scene
 
         /*
@@ -83,10 +82,7 @@ public class Game extends Application {
         myScene = new Scene(root, width, height, background);
 
         level1 = new Level("resources/level_files/level_01.txt", 1);
-        level1.addEnemiesToScene(root);
-
-        spaceship = new Spaceship(GAME_WIDTH/2 - Spaceship.WIDTH/2, GAME_HEIGHT - 30);
-        root.getChildren().add(spaceship);
+        level1.addEnemiesToSceneAndSpaceship(root);
 
         for (Node node : root.getChildren()) {
             if (node.getClass() == Enemy.class) {
@@ -104,8 +100,9 @@ public class Game extends Application {
     void step (double elapsedTime) {
 
         gameTimer += elapsedTime;
+        System.out.println(gameTimer);
 
-        level1.handleEnemyFire(gameTimer);
+        level1.handleEnemyFire(root, gameTimer, elapsedTime);
         // get internal values of other classes
 
         // update attributes
@@ -121,20 +118,18 @@ public class Game extends Application {
 
         if (code == KeyCode.RIGHT) {
             //moverShape.setX(moverShape.getX() + MOVER_SPEED);
-            spaceship.setX(spaceship.getX() + Spaceship.SPACESHIP_SPEED);
+            level1.moveSpaceshipRight();
+
         }
         else if (code == KeyCode.LEFT) {
             //moverShape.setX(moverShape.getX() - MOVER_SPEED);
-            spaceship.setX(spaceship.getX() - Spaceship.SPACESHIP_SPEED);
+            level1.moveSpaceshipLeft();
         }
-        else if (code == KeyCode.UP) {
-            //moverShape.setY(moverShape.getY() - MOVER_SPEED);
-        }
-        else if (code == KeyCode.DOWN) {
-            //moverShape.setY(moverShape.getY() + MOVER_SPEED);
+        else if (code == KeyCode.SPACE) {
+            
         }
         // pause/restart animation
-        if (code == KeyCode.SPACE) {
+        if (code == KeyCode.P) {
             if (myAnimation.getStatus() == Animation.Status.RUNNING) {
                 myAnimation.pause();
             }

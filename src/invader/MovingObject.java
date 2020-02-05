@@ -40,4 +40,9 @@ public class MovingObject extends ImageView {
     public void setYSpeed(double ySpeed) {
         this.ySpeed = ySpeed;
     }
+
+    public void updatePositionOnStep(double elapsedTime) {
+        this.setX(this.getX() + this.getXSpeed() * elapsedTime);
+        this.setY(this.getY() - this.getYSpeed() * elapsedTime);
+    }
 }
