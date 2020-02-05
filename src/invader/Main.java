@@ -1,10 +1,13 @@
 package invader;
 
+import invader.entity.Enemy;
+import invader.entity.Spaceship;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -29,7 +32,7 @@ public class Main extends Application {
     public static final int SCENE_HEIGHT = 800;
     public static final int FRAMES_PER_SECOND = 60;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-    public static final Paint BACKGROUND = Color.AZURE;
+    public static final Paint BACKGROUND = Color.BLACK;
     public static final int MOVER_SPEED = 5;
     public static final int BLOCK_SIZE = 30;
     public static final int BLOCK_MIN_SPEED = 10;
@@ -42,6 +45,7 @@ public class Main extends Application {
     private Timeline myAnimation;
 
     private Level level1;
+    private Spaceship spaceship;
     /**
      * Initialize what will be displayed and how it will be updated.
      */
@@ -76,8 +80,17 @@ public class Main extends Application {
         // create a place to see the shapes
         myScene = new Scene(root, width, height, background);
 
-        level1 = new Level(this.getClass().getClassLoader().getResource("level_files/level_01.txt").toExternalForm(), 1);
+        level1 = new Level("resources/level_files/level_01.txt", 1);
         level1.addEnemiesToScene(root);
+
+        spaceship = new Spaceship(GAME_WIDTH/2 - Spaceship.WIDTH/2, GAME_HEIGHT - 30);
+        root.getChildren().add(spaceship);
+
+        for (Node node : root.getChildren()) {
+            if (node.getClass() == Enemy.class) {
+                //System.out.println(((Enemy) node).getX() + ", " + ((Enemy) node).getY());
+            }
+        }
 
 
         // respond to input
@@ -102,9 +115,11 @@ public class Main extends Application {
 
         if (code == KeyCode.RIGHT) {
             //moverShape.setX(moverShape.getX() + MOVER_SPEED);
+            spaceship.setX(spaceship.getX() + Spaceship.SPACESHIP_SPEED);
         }
         else if (code == KeyCode.LEFT) {
             //moverShape.setX(moverShape.getX() - MOVER_SPEED);
+            spaceship.setX(spaceship.getX() - Spaceship.SPACESHIP_SPEED);
         }
         else if (code == KeyCode.UP) {
             //moverShape.setY(moverShape.getY() - MOVER_SPEED);

@@ -8,8 +8,6 @@ import javafx.scene.image.ImageView;
  * started 2/4/20
  */
 public class MovingObject extends ImageView {
-    private double xPos;
-    private double yPos;
     private double xSpeed;
     private double ySpeed;
     private Image image;
@@ -17,46 +15,29 @@ public class MovingObject extends ImageView {
 //    public MovingObject(){}
 
     public MovingObject(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height, String imgName) {
-        this.xPos = xPos;
-        this.yPos = yPos;
+        this.setX(xPos);
+        this.setY(yPos);
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.image = new Image(this.getClass().getClassLoader().getResource(imgName).toExternalForm());
         this.setImage(image);
         this.setFitWidth(width);
-        this.setFitWidth(height);
+        this.setFitHeight(height);
     }
 
-
-    public double getxPos() {
-        return xPos;
-    }
-
-    public void setxPos(int xPos) {
-        this.xPos = xPos;
-    }
-
-    public double getyPos() {
-        return yPos;
-    }
-
-    public void setyPos(int yPos) {
-        this.yPos = yPos;
-    }
-
-    public double getxSpeed() {
+    public double getXSpeed() {
         return xSpeed;
     }
 
-    public void setxSpeed(int xSpeed) {
+    public void setXSpeed(double xSpeed) {
         this.xSpeed = xSpeed;
     }
 
-    public double getySpeed() {
+    public double getYSpeed() {
         return ySpeed;
     }
 
-    public void setySpeed(int ySpeed) {
+    public void setYSpeed(double ySpeed) {
         this.ySpeed = ySpeed;
     }
 }

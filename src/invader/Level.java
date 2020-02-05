@@ -11,6 +11,8 @@ import java.util.Scanner;
 
 public class Level {
 
+    public static final double ENEMY_SPACING = 10;
+
     private int levelNumber;
     private int lives;
     private int rows;
@@ -36,7 +38,7 @@ public class Level {
         double yPos = Main.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
         for (int i = 0; i < enemyIdentifiers.size(); i++) {
             List<Enemy> tempRow = new ArrayList<>();
-            double xPos = 0;
+            double xPos = (Main.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
             for (int j = 0; j < enemyIdentifiers.get(0).size(); j++) {
                 Enemy curEnemy = new Enemy(xPos, yPos, enemyIdentifiers.get(i).get(j));
                 /*
@@ -45,7 +47,7 @@ public class Level {
                 }
                 */
                 tempRow.add(curEnemy);
-                xPos += Enemy.WIDTH;
+                xPos += Enemy.WIDTH + ENEMY_SPACING;
             }
             yPos += Enemy.HEIGHT;
             enemies.add(tempRow);
