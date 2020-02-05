@@ -62,7 +62,7 @@ public class LevelStatsDisplay {
     }
 
     private static void createMenu(Group root, double xPos, double yPos, String text) {
-        menuBackground = new Rectangle(0, 0, Main.SCENE_WIDTH, Main.SCENE_HEIGHT);
+        menuBackground = new Rectangle(0, 0, Game.SCENE_WIDTH, Game.SCENE_HEIGHT);
         menuBackground.setFill(MENU_BACKGROUND);
         root.getChildren().add(menuBackground);
         menuText = createTextDisplayAndAddToRoot(root, text, xPos, yPos, Color.MAROON);

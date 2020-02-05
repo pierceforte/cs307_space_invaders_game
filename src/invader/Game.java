@@ -22,7 +22,7 @@ import javafx.util.Duration;
  *
  * @author Robert C. Duvall
  */
-public class Main extends Application {
+public class Game extends Application {
     public static final String TITLE = "Space Invaders";
     public static final String WINNING_MESSAGE = "WINNER!";
     //public static final int SIZE = 400;
@@ -43,6 +43,8 @@ public class Main extends Application {
     // some things we need to remember during our game
     private Scene myScene;
     private Timeline myAnimation;
+
+    private double gameTimer = 0;
 
     private Level level1;
     private Spaceship spaceship;
@@ -100,6 +102,10 @@ public class Main extends Application {
 
     // Change properties of shapes to animate them
     void step (double elapsedTime) {
+
+        gameTimer += elapsedTime;
+
+        level1.handleEnemyFire(gameTimer);
         // get internal values of other classes
 
         // update attributes

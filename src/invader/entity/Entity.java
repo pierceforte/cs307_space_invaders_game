@@ -23,7 +23,11 @@ public class Entity extends MovingObject {
         this.lives = lives;
     }
 
-    public int getStartingShootTime() {
+    public int getStartShootingTime() {
         return startingShootTime;
+    }
+
+    public void addToStartShootingTime(int timeToAdd) {
+        startingShootTime += timeToAdd;
     }
 }

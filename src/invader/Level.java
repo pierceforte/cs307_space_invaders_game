@@ -27,6 +27,16 @@ public class Level {
     }
 
 
+    public void handleEnemyFire(double gameTimer) {
+        for (List<Enemy> enemyRow : enemies) {
+            for (Enemy enemy : enemyRow) {
+                if (gameTimer == enemy.getStartShootingTime()) {
+
+                }
+            }
+        }
+    }
+
     public void addEnemiesToScene(Group root) {
         for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
     }
@@ -35,10 +45,10 @@ public class Level {
     private void createEnemies() {
         // get height of first brick row to ensure they are centered
         //double yPos = Main.GAME_HEIGHT/2.0 - Enemy.ADJUSTED_HEIGHT*rows/2.0;
-        double yPos = Main.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
+        double yPos = Game.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
         for (int i = 0; i < enemyIdentifiers.size(); i++) {
             List<Enemy> tempRow = new ArrayList<>();
-            double xPos = (Main.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
+            double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
             for (int j = 0; j < enemyIdentifiers.get(0).size(); j++) {
                 Enemy curEnemy = new Enemy(xPos, yPos, enemyIdentifiers.get(i).get(j));
                 /*
