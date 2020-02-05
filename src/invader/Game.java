@@ -1,7 +1,6 @@
 package invader;
 
 import invader.entity.Enemy;
-import invader.entity.Spaceship;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -102,7 +101,7 @@ public class Game extends Application {
         gameTimer += elapsedTime;
         System.out.println(gameTimer);
 
-        level1.handleEnemyFire(root, gameTimer, elapsedTime);
+        level1.handleEnemyLasers(root, gameTimer, elapsedTime);
         // get internal values of other classes
 
         // update attributes
@@ -126,7 +125,7 @@ public class Game extends Application {
             level1.moveSpaceshipLeft();
         }
         else if (code == KeyCode.SPACE) {
-            
+            level1.
         }
         // pause/restart animation
         if (code == KeyCode.P) {

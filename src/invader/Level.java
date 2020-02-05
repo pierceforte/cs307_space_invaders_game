@@ -19,6 +19,7 @@ public class Level {
     private int lives;
     private int rows;
     private Spaceship spaceship;
+    private List<Laser> spaceshipLasers = new ArrayList<>();
     private List<List<Integer>> enemyIdentifiers = new ArrayList<>();
     private List<List<Enemy>> enemies = new ArrayList<>();
     private List<Laser> enemyLasers = new ArrayList<>();
@@ -31,7 +32,7 @@ public class Level {
     }
 
 
-    public void handleEnemyFire(Group root, double gameTimer, double elapsedTime) {
+    public void handleEnemyLasers(Group root, double gameTimer, double elapsedTime) {
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
                 if (gameTimer >= enemy.getStartShootingTime()) {
@@ -48,6 +49,11 @@ public class Level {
         }
     }
 
+    public void handleSpaceshipLasers(Group root, double gameTimer, double elapsedTime) {
+        for (Laser laser : enemyLasers) {
+            laser.updatePositionOnStep(elapsedTime);
+        }
+    }
     public void handleSpaceshipFire(Group root, double gameTimer, double elapsedTime) {
 
     }
