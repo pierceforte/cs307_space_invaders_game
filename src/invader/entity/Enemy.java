@@ -17,8 +17,8 @@ public class Enemy extends Entity {
     public Enemy(double xPos, double yPos, int lives) {
         super(xPos, yPos, 0, 0, WIDTH, HEIGHT, ENEMY_IMG_NAME);
         setLives(lives);
-        addToStartShootingTime(ThreadLocalRandom.current().nextInt(0, 5*Game.FRAMES_PER_SECOND));
         this.setId("enemy");
+        addToStartShootingTime(ThreadLocalRandom.current().nextInt(0, 50));
     }
 
 

@@ -1,6 +1,8 @@
 package invader;
 
 import invader.entity.Enemy;
+import invader.entity.Spaceship;
+import invader.projectile.Laser;
 import javafx.scene.Group;
 
 import java.io.File;
@@ -16,8 +18,10 @@ public class Level {
     private int levelNumber;
     private int lives;
     private int rows;
+    private Spaceship spaceship;
     private List<List<Integer>> enemyIdentifiers = new ArrayList<>();
     private List<List<Enemy>> enemies = new ArrayList<>();
+    private List<Laser> enemyLasers = new ArrayList<>();
 
     public Level(String levelFile, int levelNumber) {
         readFile(levelFile);
@@ -27,18 +31,31 @@ public class Level {
     }
 
 
-    public void handleEnemyFire(double gameTimer) {
+    public void handleEnemyFire(Group root, double gameTimer, double elapsedTime) {
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                if (gameTimer == enemy.getStartShootingTime()) {
-
+                if (gameTimer >= enemy.getStartShootingTime()) {
+                    Laser curLaser = new Laser(enemy.getX() + Enemy.WIDTH/2, enemy.getY(), true);
+                    enemy.addToStartShootingTime(5*Game.FRAMES_PER_SECOND);
+                    enemyLasers.add(curLaser);
+                    root.getChildren().add(curLaser);
                 }
             }
         }
+
+        for (Laser laser : enemyLasers) {
+            laser.updatePositionOnStep(elapsedTime);
+        }
     }
 
-    public void addEnemiesToScene(Group root) {
+    public void handleSpaceshipFire(Group root, double gameTimer, double elapsedTime) {
+
+    }
+
+    public void addEnemiesToSceneAndSpaceship(Group root) {
         for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
+        spaceship = new Spaceship(Game.GAME_WIDTH/2 - Spaceship.WIDTH/2, Game.GAME_HEIGHT - 30);
+        root.getChildren().add(spaceship);
     }
 
 
@@ -62,6 +79,14 @@ public class Level {
             yPos += Enemy.HEIGHT;
             enemies.add(tempRow);
         }
+    }
+
+    public void moveSpaceshipRight() {
+        spaceship.setX(spaceship.getX() + Spaceship.SPACESHIP_SPEED);
+    }
+
+    public void moveSpaceshipLeft() {
+        spaceship.setX(spaceship.getX() - Spaceship.SPACESHIP_SPEED);
     }
 
     private void readFile(String levelFile) {
