@@ -16,12 +16,15 @@ public class MovingObject extends ImageView {
 
 //    public MovingObject(){}
 
-    public MovingObject(double xPos, double yPos, double xSpeed, double ySpeed, String imgName) {
+    public MovingObject(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height, String imgName) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.image = new Image(this.getClass().getClassLoader().getResource(imgName).toExternalForm());
+        this.setImage(image);
+        this.setFitWidth(width);
+        this.setFitWidth(height);
     }
 
 

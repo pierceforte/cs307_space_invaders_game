@@ -8,11 +8,11 @@ import invader.MovingObject;
  */
 public class Enemy extends Entity {
     public static final int HEIGHT = 30;
-    public static final int WIDTH = 30;
+    public static final int WIDTH = 3000;
     public static final String ENEMY_IMG_NAME= "enemy.png";
 
     public Enemy(double xPos, double yPos, int lives) {
-        super(xPos, yPos, 0, 0, ENEMY_IMG_NAME);
+        super(xPos, yPos, 0, 0, WIDTH, HEIGHT, ENEMY_IMG_NAME);
         setLives(lives);
     }
 

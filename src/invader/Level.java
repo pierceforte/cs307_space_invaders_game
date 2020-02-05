@@ -44,7 +44,7 @@ public class Level {
             List<Enemy> tempRow = new ArrayList<>();
             double xPos = 0;
             for (int j = 0; j < enemyIdentifiers.get(0).size(); j++) {
-                Enemy curEnemy = new Enemy(xPos, yPos, 1);
+                Enemy curEnemy = new Enemy(xPos, yPos, enemyIdentifiers.get(i).get(j));
                 /*
                 if (!powerUpGrid.get(i*BRICKS_PER_ROW + j).equals("none")) {
                     curBrick.setPowerUp(powerUpGrid.get(i*BRICKS_PER_ROW + j));
@@ -54,6 +54,7 @@ public class Level {
                 xPos += Enemy.WIDTH;
             }
             yPos += Enemy.HEIGHT;
+            enemies.add(tempRow);
         }
     }
 

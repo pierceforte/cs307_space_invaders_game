@@ -15,8 +15,8 @@ public class Entity extends MovingObject {
 
     private int lives;
 
-    public Entity(double xPos, double yPos, double xSpeed, double ySpeed, String imgName) {
-        super(xPos, yPos, 0, 0, imgName);
+    public Entity(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height, String imgName) {
+        super(xPos, yPos, xSpeed, ySpeed, width, height, imgName);
     }
 
     public void setLives(int lives) {
