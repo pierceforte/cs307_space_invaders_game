@@ -68,7 +68,7 @@ public class Game extends Application {
 
 
     // Create the game's "scene": what shapes will be in the game and their starting properties
-    Scene setupScene (int width, int height, Paint background) {
+    public Scene setupScene(int width, int height, Paint background) {
         // create one top level collection to organize the things in the scene
         Group root = new Group();
         // make some shapes, set their properties, and add them to the scene
