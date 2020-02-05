@@ -6,14 +6,17 @@ import invader.entity.Enemy;
 import invader.entity.Spaceship;
 import invader.projectile.Laser;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GameTest extends DukeApplicationTest {
     private final Game myGame = new Game();
@@ -41,6 +44,39 @@ public class GameTest extends DukeApplicationTest {
         assertEquals(Game.GAME_HEIGHT - 30, mySpaceship.getY());
         assertEquals(Spaceship.WIDTH, mySpaceship.getFitWidth());
         assertEquals(Spaceship.HEIGHT, mySpaceship.getFitHeight());
+    }
+
+    /*@Test
+    public void testSpaceshipMove () {
+        // given the game has just started, take one step
+        //myGame.step(Game.SECOND_DELAY);
+        //365
+        mySpaceship.setX(Game.GAME_WIDTH - Spaceship.WIDTH/2);
+        // then check block has moved forward some (its speed is random)
+        assertTrue(mySpaceship.getX() > 0);
+        assertEquals(200 - 15, mySpaceship.getY());
+    }*/
+
+    @Test
+    public void testSpaceshipWrap () {
+        // given the game has just started, take one step
+        //myGame.step(Game.SECOND_DELAY);
+        //365
+        mySpaceship.setX(Game.GAME_WIDTH - Spaceship.WIDTH);
+        // move it up one step by "pressing" the up arrow
+        sleep(1, TimeUnit.SECONDS);    // PAUSE: not typically recommended in tests
+        press(myScene, KeyCode.RIGHT);
+        sleep(1, TimeUnit.SECONDS);    // PAUSE: but useful when debugging to verify what is happening
+        // then check its position has changed properly
+        assertEquals(0, mySpaceship.getX());
+
+        mySpaceship.setX(0);
+        // move it up one step by "pressing" the up arrow
+        sleep(1, TimeUnit.SECONDS);    // PAUSE: not typically recommended in tests
+        press(myScene, KeyCode.LEFT);
+        sleep(1, TimeUnit.SECONDS);    // PAUSE: but useful when debugging to verify what is happening
+        // then check its position has changed properly
+        assertEquals(Game.GAME_WIDTH - mySpaceship.getFitWidth(), mySpaceship.getX());
     }
 
     @Test

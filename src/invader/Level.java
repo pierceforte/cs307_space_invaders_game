@@ -40,6 +40,16 @@ public class Level {
         spaceshipLasers.clear();
     }
 
+    public void addEnemiesAndSpaceshipToScene(Group root) {
+        for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
+        spaceship = new Spaceship(Game.GAME_WIDTH/2 - Spaceship.WIDTH/2, Game.GAME_HEIGHT - 30);
+        root.getChildren().add(spaceship);
+    }
+
+    public List<List<Enemy>> getEnemies() {
+        return enemies;
+    }
+
     public int getNumberOfRows() {
         return rows;
     }
@@ -47,7 +57,6 @@ public class Level {
     public void handleEntitiesAndLasers(Group root, double gameTimer, double elapsedTime) {
         handleEnemyLasers(root, gameTimer, elapsedTime);
         handleSpaceshipLasers(root, elapsedTime);
-        spaceship.wrap();
     }
 
     public void attemptSpaceshipFire(Group root, double gameTimer) {
@@ -116,16 +125,6 @@ public class Level {
         entityShooting.addToStartShootingTime(timeBeforeNextShot);
     }
 
-    public List<List<Enemy>> getEnemies() {
-        return enemies;
-    }
-
-    public void addEnemiesAndSpaceshipToScene(Group root) {
-        for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
-        spaceship = new Spaceship(Game.GAME_WIDTH/2 - Spaceship.WIDTH/2, Game.GAME_HEIGHT - 30);
-        root.getChildren().add(spaceship);
-    }
-
     private void createEnemies() {
         // get height of first brick row to ensure they are centered
         double yPos = Game.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
@@ -149,6 +148,7 @@ public class Level {
 
     public void moveSpaceship(boolean toRight) {
         spaceship.setX(spaceship.getX() + Spaceship.SPACESHIP_SPEED * (toRight ? 1 : -1));
+        spaceship.wrap();
     }
 
     private void readFile(String levelFile) {
