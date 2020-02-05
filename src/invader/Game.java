@@ -82,6 +82,10 @@ public class Game extends Application {
         return myScene;
     }
 
+    public Group getRoot() {
+        return root;
+    }
+
     // Change properties of shapes to animate them
     public void step (double elapsedTime) {
 

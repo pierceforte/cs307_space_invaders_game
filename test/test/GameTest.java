@@ -3,6 +3,7 @@ package test;
 import invader.Game;
 import invader.Level;
 import invader.entity.Enemy;
+import invader.entity.Entity;
 import invader.entity.Spaceship;
 import invader.projectile.Laser;
 import javafx.scene.Scene;
@@ -38,6 +39,7 @@ public class GameTest extends DukeApplicationTest {
         //myEnemy = lookup("#enemy").query();
     }
 
+    /*
     @Test
     public void testSpaceshipInitialPosition () {
         assertEquals(Spaceship.DEFAULT_X_POS, mySpaceship.getX());
@@ -88,8 +90,7 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testEnemiesInitialPosition() {
-        Level testLevel = new Level("resources/level_files/level_01.txt", 1);
-        int rows = testLevel.getNumberOfRows();
+        int rows = 4;
         int enemyNumber = 0;
         double yPos = Game.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
         for (int i = 0; i < rows; i++) {
@@ -104,8 +105,22 @@ public class GameTest extends DukeApplicationTest {
             }
             yPos += Enemy.HEIGHT;
         }
-    }
+    }*/
 
+
+    @Test
+    public void testLaserCollisionWithEnemy() {
+        Enemy myEnemy = lookup("#enemy33").query();
+        //mySpaceshipLaser.updatePositionOnStep(Game.SECOND_DELAY);
+        press(myScene, KeyCode.SPACE);
+        Laser mySpaceshipLaser = lookup("#laser0").query();
+        mySpaceshipLaser.setY(myEnemy.getY() + Laser.Y_SPEED);
+        sleep(1, TimeUnit.SECONDS);
+        myGame.step(Game.SECOND_DELAY);
+        assertEquals(null, myEnemy);
+        assertEquals(null, mySpaceshipLaser);
+
+    }
 /*
     @Test
     public void testLaserCollisionWithEnemy() {
