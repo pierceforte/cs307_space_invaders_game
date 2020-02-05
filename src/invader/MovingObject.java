@@ -8,13 +8,13 @@ import javafx.scene.image.ImageView;
  * started 2/4/20
  */
 public class MovingObject extends ImageView {
-    private int xPos;
-    private int yPos;
-    private int xSpeed;
-    private int ySpeed;
+    private double xPos;
+    private double yPos;
+    private double xSpeed;
+    private double ySpeed;
     private Image image;
 
-    public MovingObject(int xPos, int yPos, int xSpeed, int ySpeed, Image image) {
+    public MovingObject(double xPos, double yPos, double xSpeed, double ySpeed, Image image) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.xSpeed = xSpeed;
@@ -22,7 +22,7 @@ public class MovingObject extends ImageView {
         this.image = image;
     }
 
-    public int getxPos() {
+    public double getxPos() {
         return xPos;
     }
 
@@ -30,7 +30,7 @@ public class MovingObject extends ImageView {
         this.xPos = xPos;
     }
 
-    public int getyPos() {
+    public double getyPos() {
         return yPos;
     }
 
@@ -38,7 +38,7 @@ public class MovingObject extends ImageView {
         this.yPos = yPos;
     }
 
-    public int getxSpeed() {
+    public double getxSpeed() {
         return xSpeed;
     }
 
@@ -46,7 +46,7 @@ public class MovingObject extends ImageView {
         this.xSpeed = xSpeed;
     }
 
-    public int getySpeed() {
+    public double getySpeed() {
         return ySpeed;
     }
 

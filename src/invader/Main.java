@@ -20,7 +20,7 @@ import javafx.util.Duration;
  * @author Robert C. Duvall
  */
 public class Main extends Application {
-    public static final String TITLE = "Frogger JavaFX";
+    public static final String TITLE = "Space Invaders";
     public static final String WINNING_MESSAGE = "WINNER!";
     //public static final int SIZE = 400;
     public static final int GAME_WIDTH = 400;

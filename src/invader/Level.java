@@ -1,5 +1,8 @@
 package invader;
 
+import invader.entity.Enemy;
+import javafx.scene.Group;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -21,6 +24,12 @@ public class Level {
         createEnemies();
     }
 
+    /*
+    public void addEnemiesToScene(Group root) {
+        root.getChildren().addAll(enemies);
+    }
+     */
+
     private void createEnemies() {
         enemies = new ArrayList<>();
         // get height of first brick row to ensure they are centered
@@ -30,7 +39,7 @@ public class Level {
             List<Enemy> tempRow = new ArrayList<>();
             double xPos = 0;
             for (int j = 0; j < enemyIdentifiers.get(0).size(); j++) {
-                Enemy curEnemy = new Enemy(xPos, yPos);
+                Enemy curEnemy = new Enemy(xPos, yPos, 1);
                 /*
                 if (!powerUpGrid.get(i*BRICKS_PER_ROW + j).equals("none")) {
                     curBrick.setPowerUp(powerUpGrid.get(i*BRICKS_PER_ROW + j));
