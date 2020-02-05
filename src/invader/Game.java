@@ -83,12 +83,6 @@ public class Game extends Application {
         level1 = new Level("resources/level_files/level_01.txt", 1);
         level1.addEnemiesToSceneAndSpaceship(root);
 
-        for (Node node : root.getChildren()) {
-            if (node.getClass() == Enemy.class) {
-                //System.out.println(((Enemy) node).getX() + ", " + ((Enemy) node).getY());
-            }
-        }
-
 
         // respond to input
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
@@ -99,9 +93,9 @@ public class Game extends Application {
     void step (double elapsedTime) {
 
         gameTimer += elapsedTime;
-        System.out.println(gameTimer);
 
         level1.handleEnemyLasers(root, gameTimer, elapsedTime);
+        level1.handleSpaceshipLasers(root, elapsedTime);
         // get internal values of other classes
 
         // update attributes
@@ -125,7 +119,7 @@ public class Game extends Application {
             level1.moveSpaceshipLeft();
         }
         else if (code == KeyCode.SPACE) {
-            level1.
+            level1.handleSpaceshipFire(root, gameTimer);
         }
         // pause/restart animation
         if (code == KeyCode.P) {
@@ -135,6 +129,11 @@ public class Game extends Application {
             else {
                 myAnimation.play();
             }
+        }
+        else if (code == KeyCode.R) {
+            root.getChildren().clear();
+            level1 = new Level("resources/level_files/level_01.txt", 1);
+            level1.addEnemiesToSceneAndSpaceship(root);
         }
     }
 

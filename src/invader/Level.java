@@ -37,31 +37,73 @@ public class Level {
             for (Enemy enemy : enemyRow) {
                 if (gameTimer >= enemy.getStartShootingTime()) {
                     Laser curLaser = new Laser(enemy.getX() + Enemy.WIDTH/2, enemy.getY(), true);
-                    enemy.addToStartShootingTime(5*Game.FRAMES_PER_SECOND);
+                    enemy.addToStartShootingTime(50);
                     enemyLasers.add(curLaser);
                     root.getChildren().add(curLaser);
                 }
             }
         }
 
+        List<Laser> lasersToRemove = new ArrayList<>();
         for (Laser laser : enemyLasers) {
             laser.updatePositionOnStep(elapsedTime);
+            if (didCollide(root, laser, spaceship)) {
+                lasersToRemove.add(laser);
+            }
         }
+        enemyLasers.removeAll(lasersToRemove);
+        root.getChildren().removeAll(lasersToRemove);
     }
 
-    public void handleSpaceshipLasers(Group root, double gameTimer, double elapsedTime) {
-        for (Laser laser : enemyLasers) {
+    public void handleSpaceshipLasers(Group root, double elapsedTime) {
+        List<Laser> spaceshipLasersToRemove = new ArrayList<>();
+        for (Laser laser : spaceshipLasers) {
             laser.updatePositionOnStep(elapsedTime);
+            if (didCollide(root, laser, enemies)) {
+                spaceshipLasersToRemove.add(laser);
+            }
         }
+        root.getChildren().removeAll(spaceshipLasersToRemove);
+        spaceshipLasers.removeAll(spaceshipLasersToRemove);
     }
-    public void handleSpaceshipFire(Group root, double gameTimer, double elapsedTime) {
-
+    public void handleSpaceshipFire(Group root, double gameTimer) {
+        System.out.println(gameTimer + ", " + spaceship.getStartShootingTime());
+        if (gameTimer >= spaceship.getStartShootingTime()) {
+            spaceship.addToStartShootingTime(1);
+            Laser spaceshipLaser = new Laser(spaceship.getX() + Spaceship.WIDTH/2, spaceship.getY(), false);
+            spaceshipLasers.add(spaceshipLaser);
+            root.getChildren().add(spaceshipLaser);
+        }
     }
 
     public void addEnemiesToSceneAndSpaceship(Group root) {
         for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
         spaceship = new Spaceship(Game.GAME_WIDTH/2 - Spaceship.WIDTH/2, Game.GAME_HEIGHT - 30);
         root.getChildren().add(spaceship);
+    }
+
+    private boolean didCollide(Group root, Laser laser, List<List<Enemy>> enemies) {
+        List<Enemy> enemiesToRemove = new ArrayList<>();
+        boolean didCollide = false;
+        for (List<Enemy> enemyRow : enemies) {
+            for (Enemy enemy : enemyRow) {
+                if (enemy.getBoundsInParent().intersects(laser.getBoundsInLocal())) {
+                    enemiesToRemove.add(enemy);
+                    didCollide = true;
+                }
+            }
+        }
+        root.getChildren().removeAll(enemiesToRemove);
+        enemies.removeAll(enemiesToRemove);
+        return didCollide;
+    }
+
+    private boolean didCollide(Group root, Laser laser, Spaceship spaceship) {
+        boolean didCollide = false;
+        if (spaceship.getBoundsInParent().intersects(laser.getBoundsInLocal())) {
+            didCollide = true;
+        }
+        return didCollide;
     }
 
 
