@@ -5,7 +5,7 @@ import invader.entity.Enemy;
 
 public class Laser extends MovingObject {
     public static final double X_SPEED = 0;
-    public static final double Y_SPEED = 60;
+    public static final double Y_SPEED = 150;
     public static final double WIDTH = 10;
     public static final double HEIGHT = 20;
     public static final String IMG_NAME = "enemylaser.png";

@@ -94,7 +94,9 @@ public class Level {
             }
         }
         root.getChildren().removeAll(enemiesToRemove);
-        enemies.removeAll(enemiesToRemove);
+        for(List<Enemy> e : enemies) {
+            e.removeAll(enemiesToRemove);
+        }
         return didCollide;
     }
 
@@ -105,7 +107,6 @@ public class Level {
         }
         return didCollide;
     }
-
 
     private void createEnemies() {
         // get height of first brick row to ensure they are centered
