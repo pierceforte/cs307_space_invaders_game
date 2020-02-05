@@ -11,7 +11,8 @@ import javax.swing.text.html.ImageView;
  * started 2/4/20
  */
 public class Entity extends MovingObject {
-    private int startingShootTime;
+    public static final int NON_BOSS_WIDTH = 30;
+    private double startingShootTime;
 
     private int lives;
 
@@ -23,11 +24,11 @@ public class Entity extends MovingObject {
         this.lives = lives;
     }
 
-    public int getStartShootingTime() {
+    public double getStartShootingTime() {
         return startingShootTime;
     }
 
-    public void addToStartShootingTime(int timeToAdd) {
+    public void addToStartShootingTime(double timeToAdd) {
         startingShootTime += timeToAdd;
     }
 }

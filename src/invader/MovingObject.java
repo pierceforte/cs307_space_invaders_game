@@ -45,4 +45,8 @@ public class MovingObject extends ImageView {
         this.setX(this.getX() + this.getXSpeed() * elapsedTime);
         this.setY(this.getY() - this.getYSpeed() * elapsedTime);
     }
+
+    public boolean isOutOfBounds() {
+        return (this.getY() > Game.GAME_HEIGHT - 20 || this.getY() < 20);
+    }
 }

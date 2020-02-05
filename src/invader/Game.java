@@ -1,12 +1,10 @@
 package invader;
 
-import invader.entity.Enemy;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -71,17 +69,12 @@ public class Game extends Application {
         root = new Group();
         // make some shapes, set their properties, and add them to the scene
 
-        /*
-        root.getChildren().add(myBlock.getShape());
-        myMover = new Mover(width / 2 - BLOCK_SIZE / 4, height - BLOCK_SIZE / 2, BLOCK_SIZE / 2, BLOCK_SIZE / 2);
-        root.getChildren().add(myMover.getShape());
-         */
 
         // create a place to see the shapes
         myScene = new Scene(root, width, height, background);
 
         level1 = new Level("resources/level_files/level_01.txt", 1);
-        level1.addEnemiesToSceneAndSpaceship(root);
+        level1.addEnemiesAndSpaceshipToScene(root);
 
 
         // respond to input
@@ -94,8 +87,7 @@ public class Game extends Application {
 
         gameTimer += elapsedTime;
 
-        level1.handleEnemyLasers(root, gameTimer, elapsedTime);
-        level1.handleSpaceshipLasers(root, elapsedTime);
+        level1.handleLasers(root, gameTimer, elapsedTime);
         // get internal values of other classes
 
         // update attributes
@@ -111,15 +103,15 @@ public class Game extends Application {
 
         if (code == KeyCode.RIGHT) {
             //moverShape.setX(moverShape.getX() + MOVER_SPEED);
-            level1.moveSpaceshipRight();
+            level1.moveSpaceship(true);
 
         }
         else if (code == KeyCode.LEFT) {
             //moverShape.setX(moverShape.getX() - MOVER_SPEED);
-            level1.moveSpaceshipLeft();
+            level1.moveSpaceship(false);
         }
         else if (code == KeyCode.SPACE) {
-            level1.handleSpaceshipFire(root, gameTimer);
+            level1.attemptSpaceshipFire(root, gameTimer);
         }
         // pause/restart animation
         if (code == KeyCode.P) {
@@ -132,8 +124,9 @@ public class Game extends Application {
         }
         else if (code == KeyCode.R) {
             root.getChildren().clear();
+            level1.clearLevel();
             level1 = new Level("resources/level_files/level_01.txt", 1);
-            level1.addEnemiesToSceneAndSpaceship(root);
+            level1.addEnemiesAndSpaceshipToScene(root);
         }
     }
 
