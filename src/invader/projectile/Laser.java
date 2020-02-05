@@ -8,7 +8,8 @@ public class Laser extends MovingObject {
     public static final double Y_SPEED = 150;
     public static final double WIDTH = 10;
     public static final double HEIGHT = 20;
-    public static final String IMG_NAME = "enemylaser.png";
+    public static final String ENEMY_LASER_IMG_NAME = "enemylaser.png";
+    public static final String SPACESHIP_LASER_IMG_NAME = "spaceshiplaser.png";
 
     public static int count = 0;
 
@@ -16,7 +17,7 @@ public class Laser extends MovingObject {
     boolean isEnemy;
 
     public Laser(double xPos, double yPos, boolean isEnemy) {
-        super(xPos,yPos,X_SPEED,Y_SPEED * (isEnemy ? -1 : 1), WIDTH, HEIGHT, IMG_NAME);
+        super(xPos,yPos,X_SPEED,Y_SPEED * (isEnemy ? -1 : 1), WIDTH, HEIGHT, isEnemy ? ENEMY_LASER_IMG_NAME : SPACESHIP_LASER_IMG_NAME);
         this.isEnemy = isEnemy;
         this.setId("laser" + count++);
 

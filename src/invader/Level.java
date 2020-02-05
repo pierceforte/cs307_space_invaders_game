@@ -44,9 +44,10 @@ public class Level {
         return rows;
     }
 
-    public void handleLasers(Group root, double gameTimer, double elapsedTime) {
+    public void handleEntitiesAndLasers(Group root, double gameTimer, double elapsedTime) {
         handleEnemyLasers(root, gameTimer, elapsedTime);
         handleSpaceshipLasers(root, elapsedTime);
+        spaceship.wrap();
     }
 
     public void attemptSpaceshipFire(Group root, double gameTimer) {

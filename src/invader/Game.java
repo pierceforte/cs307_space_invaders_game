@@ -87,7 +87,7 @@ public class Game extends Application {
 
         gameTimer += elapsedTime;
 
-        level1.handleLasers(root, gameTimer, elapsedTime);
+        level1.handleEntitiesAndLasers(root, gameTimer, elapsedTime);
         // get internal values of other classes
 
         // update attributes
