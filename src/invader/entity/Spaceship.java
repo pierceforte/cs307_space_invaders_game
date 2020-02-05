@@ -6,7 +6,9 @@ import javafx.scene.image.Image;
 public class Spaceship extends Entity {
     public static final int HEIGHT = 30;
     public static final int WIDTH = 30;
-    public static final int SPACESHIP_SPEED = 10;
+    public static final int DEFAULT_X_POS = Game.GAME_WIDTH/2 - Spaceship.WIDTH/2;
+    public static final int DEFAULT_Y_POS = Game.GAME_HEIGHT - 30;
+    public static final int X_SPEED_ON_KEY_PRESS = 10;
     public static final String SPACESHIP_IMG_NAME = "spaceship.png";
 
     public Spaceship(double xPos, double yPos) {

@@ -42,7 +42,7 @@ public class Level {
 
     public void addEnemiesAndSpaceshipToScene(Group root) {
         for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
-        spaceship = new Spaceship(Game.GAME_WIDTH/2 - Spaceship.WIDTH/2, Game.GAME_HEIGHT - 30);
+        spaceship = new Spaceship(Spaceship.DEFAULT_X_POS, Spaceship.DEFAULT_Y_POS);
         root.getChildren().add(spaceship);
     }
 
@@ -147,7 +147,7 @@ public class Level {
     }
 
     public void moveSpaceship(boolean toRight) {
-        spaceship.setX(spaceship.getX() + Spaceship.SPACESHIP_SPEED * (toRight ? 1 : -1));
+        spaceship.setX(spaceship.getX() + Spaceship.X_SPEED_ON_KEY_PRESS * (toRight ? 1 : -1));
         spaceship.wrap();
     }
 

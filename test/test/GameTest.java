@@ -40,38 +40,45 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testSpaceshipInitialPosition () {
-        assertEquals(Game.GAME_WIDTH/2 - Spaceship.WIDTH/2, mySpaceship.getX());
-        assertEquals(Game.GAME_HEIGHT - 30, mySpaceship.getY());
+        assertEquals(Spaceship.DEFAULT_X_POS, mySpaceship.getX());
+        assertEquals(Spaceship.DEFAULT_Y_POS, mySpaceship.getY());
         assertEquals(Spaceship.WIDTH, mySpaceship.getFitWidth());
         assertEquals(Spaceship.HEIGHT, mySpaceship.getFitHeight());
     }
 
-    /*@Test
+    @Test
     public void testSpaceshipMove () {
-        // given the game has just started, take one step
-        //myGame.step(Game.SECOND_DELAY);
-        //365
-        mySpaceship.setX(Game.GAME_WIDTH - Spaceship.WIDTH/2);
-        // then check block has moved forward some (its speed is random)
-        assertTrue(mySpaceship.getX() > 0);
-        assertEquals(200 - 15, mySpaceship.getY());
-    }*/
+        // move it right one step by "pressing" the left arrow
+        sleep(1, TimeUnit.SECONDS);    // PAUSE: not typically recommended in tests
+        press(myScene, KeyCode.RIGHT);
+        sleep(1, TimeUnit.SECONDS);    // PAUSE: but useful when debugging to verify what is happening
+        // then check its position has changed properly
+        assertEquals(Spaceship.DEFAULT_X_POS + mySpaceship.X_SPEED_ON_KEY_PRESS, mySpaceship.getX());
+
+        // reset spaceship position
+        mySpaceship.setX(Spaceship.DEFAULT_X_POS);
+        // move it left one step by "pressing" the left arrow
+        sleep(1, TimeUnit.SECONDS);    // PAUSE: not typically recommended in tests
+        press(myScene, KeyCode.LEFT);
+        sleep(1, TimeUnit.SECONDS);    // PAUSE: but useful when debugging to verify what is happening
+        // then check its position has changed properly
+        assertEquals(Spaceship.DEFAULT_X_POS - mySpaceship.X_SPEED_ON_KEY_PRESS, mySpaceship.getX());
+    }
 
     @Test
     public void testSpaceshipWrap () {
-        // given the game has just started, take one step
-        //myGame.step(Game.SECOND_DELAY);
-        //365
+        // set position to far right of screen
         mySpaceship.setX(Game.GAME_WIDTH - Spaceship.WIDTH);
-        // move it up one step by "pressing" the up arrow
+        // move it right one step by "pressing" the right arrow
         sleep(1, TimeUnit.SECONDS);    // PAUSE: not typically recommended in tests
         press(myScene, KeyCode.RIGHT);
         sleep(1, TimeUnit.SECONDS);    // PAUSE: but useful when debugging to verify what is happening
         // then check its position has changed properly
         assertEquals(0, mySpaceship.getX());
 
+        // set position to far left of screen
         mySpaceship.setX(0);
-        // move it up one step by "pressing" the up arrow
+        // move it left one step by "pressing" the left arrow
         sleep(1, TimeUnit.SECONDS);    // PAUSE: not typically recommended in tests
         press(myScene, KeyCode.LEFT);
         sleep(1, TimeUnit.SECONDS);    // PAUSE: but useful when debugging to verify what is happening
