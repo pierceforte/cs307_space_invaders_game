@@ -27,12 +27,6 @@ public class Level {
 
     public void addEnemiesToScene(Group root) {
         for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
-
-        for (List<Enemy> enemyRow : enemies) {
-            for (Enemy enemy : enemyRow) {
-                System.out.println("adfkj");
-            }
-        }
     }
 
 

@@ -76,7 +76,7 @@ public class Main extends Application {
         // create a place to see the shapes
         myScene = new Scene(root, width, height, background);
 
-        level1 = new Level("level_files/level_01.txt", 1);
+        level1 = new Level(this.getClass().getClassLoader().getResource("level_files/level_01.txt").toExternalForm(), 1);
         level1.addEnemiesToScene(root);
 
 
