@@ -14,8 +14,8 @@ public class Level {
     private int levelNumber;
     private int lives;
     private int rows;
-    private List<List<Integer>> enemyIdentifiers;
-    private List<List<Enemy>> enemies;
+    private List<List<Integer>> enemyIdentifiers = new ArrayList<>();
+    private List<List<Enemy>> enemies = new ArrayList<>();
 
     public Level(String levelFile, int levelNumber) {
         readFile(levelFile);
@@ -24,14 +24,19 @@ public class Level {
         createEnemies();
     }
 
-    /*
+
     public void addEnemiesToScene(Group root) {
-        root.getChildren().addAll(enemies);
+        for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
+
+        for (List<Enemy> enemyRow : enemies) {
+            for (Enemy enemy : enemyRow) {
+                System.out.println("adfkj");
+            }
+        }
     }
-     */
+
 
     private void createEnemies() {
-        enemies = new ArrayList<>();
         // get height of first brick row to ensure they are centered
         //double yPos = Main.GAME_HEIGHT/2.0 - Enemy.ADJUSTED_HEIGHT*rows/2.0;
         double yPos = Main.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;

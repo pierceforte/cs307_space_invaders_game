@@ -9,15 +9,13 @@ import invader.MovingObject;
 public class Enemy extends Entity {
     public static final int HEIGHT = 30;
     public static final int WIDTH = 30;
-
-    private double xPos;
-    private double yPos;
-    private int lives;
+    public static final String ENEMY_IMG_NAME= "enemy.png";
 
     public Enemy(double xPos, double yPos, int lives) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.lives = lives;
+        super(xPos, yPos, 0, 0, ENEMY_IMG_NAME);
+        setLives(lives);
     }
+
+
 
 }

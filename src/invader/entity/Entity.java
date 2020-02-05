@@ -13,8 +13,17 @@ import javax.swing.text.html.ImageView;
 public class Entity extends MovingObject {
     private int startingShootTime;
 
+    private int lives;
+
+    public Entity(double xPos, double yPos, double xSpeed, double ySpeed, String imgName) {
+        super(xPos, yPos, 0, 0, imgName);
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
     public int getStartingShootTime() {
         return startingShootTime;
     }
-
 }

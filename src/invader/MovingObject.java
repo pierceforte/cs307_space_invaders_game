@@ -14,14 +14,14 @@ public class MovingObject extends ImageView {
     private double ySpeed;
     private Image image;
 
-    public MovingObject(){}
+//    public MovingObject(){}
 
-    public MovingObject(double xPos, double yPos, double xSpeed, double ySpeed, Image image) {
+    public MovingObject(double xPos, double yPos, double xSpeed, double ySpeed, String imgName) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
-        this.image = image;
+        this.image = new Image(this.getClass().getClassLoader().getResource(imgName).toExternalForm());
     }
 
 

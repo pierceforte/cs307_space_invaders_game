@@ -41,6 +41,7 @@ public class Main extends Application {
     private Scene myScene;
     private Timeline myAnimation;
 
+    private Level level1;
     /**
      * Initialize what will be displayed and how it will be updated.
      */
@@ -71,6 +72,9 @@ public class Main extends Application {
         myMover = new Mover(width / 2 - BLOCK_SIZE / 4, height - BLOCK_SIZE / 2, BLOCK_SIZE / 2, BLOCK_SIZE / 2);
         root.getChildren().add(myMover.getShape());
          */
+
+        level1 = new Level("level_files/level_01.txt", 1);
+        level1.addEnemiesToScene(root);
 
         // create a place to see the shapes
         myScene = new Scene(root, width, height, background);
