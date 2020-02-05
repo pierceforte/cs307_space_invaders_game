@@ -1,4 +1,4 @@
-package invader;
+package invader.setup;
 
 public class SetUp {
 }
