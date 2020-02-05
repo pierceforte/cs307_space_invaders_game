@@ -5,4 +5,5 @@ package invader;
  * started 2/4/20
  */
 public class Enemy {
+
 }
