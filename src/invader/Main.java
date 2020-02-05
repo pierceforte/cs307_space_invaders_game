@@ -1,4 +1,4 @@
-package breakout;
+package invader;
 
 /**
  * Feel free to completely change this code or delete it entirely. 
