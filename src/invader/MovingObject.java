@@ -14,6 +14,8 @@ public class MovingObject extends ImageView {
     private double ySpeed;
     private Image image;
 
+    public MovingObject(){}
+
     public MovingObject(double xPos, double yPos, double xSpeed, double ySpeed, Image image) {
         this.xPos = xPos;
         this.yPos = yPos;
@@ -21,6 +23,7 @@ public class MovingObject extends ImageView {
         this.ySpeed = ySpeed;
         this.image = image;
     }
+
 
     public double getxPos() {
         return xPos;
@@ -53,8 +56,4 @@ public class MovingObject extends ImageView {
     public void setySpeed(int ySpeed) {
         this.ySpeed = ySpeed;
     }
-
-
-
-
 }

@@ -5,7 +5,5 @@ package invader.projectile;
  * started 2/4/20
  */
 public class Bomb {
-    int damage;
-    boolean isEnemy;
 
 }
