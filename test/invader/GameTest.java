@@ -11,6 +11,10 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,8 +25,9 @@ public class GameTest extends DukeApplicationTest {
     private Scene myScene;
 
     private Spaceship mySpaceship;
-    //private Enemy myEnemy;
-
+    private List<List<Enemy>> myEnemies = new ArrayList<>();
+    private Enemy myEnemy31;
+    Laser mySpaceshipLaser;
 
     @Override
     public void start (Stage stage) {
@@ -34,32 +39,40 @@ public class GameTest extends DukeApplicationTest {
         // find individual items within game by ID (must have been set in your code using setID())
         mySpaceship = lookup("#spaceship").query();
         //myEnemy = lookup("#enemy").query();
+        for (int i = 0; i < 4; i++) {
+            myEnemies.add(new ArrayList<>());
+            for (int j = 0; j < Level.ENEMIES_PER_ROW; j++) {
+                myEnemies.get(i).add(lookup("#enemy" + (j + i*Level.ENEMIES_PER_ROW)).query());
+            }
+        }
+        myEnemy31 = lookup("#enemy31").query();
+        //press(myScene, KeyCode.SPACE);
+        myGame.fire();
+        sleep(1, TimeUnit.SECONDS);
+        //for (Node node : myGame.getRoot().getChildren()) System.out.println(node.getId());
+        mySpaceshipLaser = lookup("#laser0").query();
     }
 
     @Test
     public void testLaserCollisionWithEnemy() {
-        // enemy31 is the enemy directly above the spaceship (such that if the spaceship fires a laser from its
-        // starting position, the laser will hit enemy31)
-        Enemy myEnemy = lookup("#enemy31").query();
-        press(myScene, KeyCode.SPACE);
-        myEnemy.setImage(new Image(this.getClass().getClassLoader().getResource(Spaceship.SPACESHIP_IMG_NAME).toExternalForm()));
-        sleep(1, TimeUnit.SECONDS);
-        //myGame.step(Game.SECOND_DELAY);
-        Laser mySpaceshipLaser = lookup("#laser0").query();
-        // position the laser one step prior to hitting enemy31
-        mySpaceshipLaser.setY(myEnemy.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
-        //sleep(5, TimeUnit.SECONDS);
-        sleep(1, TimeUnit.SECONDS);
-        myGame.step(Game.SECOND_DELAY);
-        sleep(1, TimeUnit.SECONDS);
-        // check if both enemy31 and the laser have been removed from scene upon collision
-        //assertEquals(null, myEnemy);
-        //assertEquals(null, mySpaceshipLaser);
-        assertEquals(true, true);
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                // check if laser and enemy are on scene before collision
+                assertEquals(true, myGame.getRoot().getChildren().contains(myEnemy31));
+                assertEquals(true, myGame.getRoot().getChildren().contains(mySpaceshipLaser));
+                // position the laser one step prior to hitting enemy31
+                mySpaceshipLaser.setX(myEnemy31.getX());
+                mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
+                myGame.step(Game.SECOND_DELAY);
+                // check if both enemy31 and the laser have been removed from scene upon collision
+                assertEquals(false, myGame.getRoot().getChildren().contains(myEnemy31));
+                assertEquals(false, myGame.getRoot().getChildren().contains(mySpaceshipLaser));
+            }
+        });
 
     }
 
-    /*
+
     @Test
     public void testSpaceshipInitialPosition () {
         assertEquals(Spaceship.DEFAULT_X_POS, mySpaceship.getX());
@@ -111,12 +124,11 @@ public class GameTest extends DukeApplicationTest {
     @Test
     public void testEnemiesInitialPosition() {
         int rows = 4;
-        int enemyNumber = 0;
         double yPos = Game.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
         for (int i = 0; i < rows; i++) {
             double xPos = (Game.GAME_WIDTH - Level.ENEMIES_PER_ROW * (Level.ENEMY_SPACING + Enemy.WIDTH) - Level.ENEMY_SPACING)/2;
             for (int j = 0; j < Level.ENEMIES_PER_ROW; j++) {
-                Enemy curEnemy = lookup("#enemy" + enemyNumber++).query();
+                Enemy curEnemy = myEnemies.get(i).get(j);
 
                 assertEquals(curEnemy.getX(), xPos);
                 assertEquals(curEnemy.getY(), yPos);
@@ -125,8 +137,6 @@ public class GameTest extends DukeApplicationTest {
             }
             yPos += Enemy.HEIGHT;
         }
-    }*/
-
-
+    }
 
 }

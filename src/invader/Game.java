@@ -62,6 +62,10 @@ public class Game extends Application {
         myAnimation.play();
     }
 
+    public void fire() {
+        level1.attemptSpaceshipFire(root, gameTimer);
+    }
+
 
     // Create the game's "scene": what shapes will be in the game and their starting properties
     public Scene setupScene(int width, int height, Paint background) {
