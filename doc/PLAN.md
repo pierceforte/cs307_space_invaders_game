@@ -16,10 +16,10 @@ Gameplay: https://www.youtube.com/watch?v=Ha3gYz-3xcM
 ### General Level Descriptions
 1. Level 1 
 
-    1,1,1,1,1,1,1,1,1,1  
-    1,1,1,1,1,1,1,1,1,1  
-    1,1,1,1,1,1,1,1,1,1  
-    1,1,1,1,1,1,1,1,1,1
+    1,1,1,1,1,1,1,1,1  
+    1,1,1,1,1,1,1,1,1   
+    1,1,1,1,1,1,1,1,1    
+    1,1,1,1,1,1,1,1,1  
     
     - Enemy Specification
         - Will be placed in the orientation shown above
@@ -32,11 +32,11 @@ Gameplay: https://www.youtube.com/watch?v=Ha3gYz-3xcM
 
 2. Level 2
 
-    3,3,3,3,3,3,3,3,3
+    3,3,3,3,3,3,3,3,3  
+    2,2,2,2,2,2,2,2,2    
+    1,1,1,1,1,1,1,1,1    
+    2,2,2,2,2,2,2,2,2    
     2,2,2,2,2,2,2,2,2  
-    1,1,1,1,1,1,1,1,1  
-    2,2,2,2,2,2,2,2,2  
-    2,2,2,2,2,2,2,2,2
     
     - Enemy Specification
         - Will be placed in the orientation shown above
@@ -49,12 +49,12 @@ Gameplay: https://www.youtube.com/watch?v=Ha3gYz-3xcM
         
 3. Level 3
 
-    3,3,3,3,3,3,3,3,3
     3,3,3,3,3,3,3,3,3  
-    1,3,2,1,3,2,1,3,2
-    3,2,1,3,2,1,3,2,1  
+    3,3,3,3,3,3,3,3,3    
+    1,3,2,1,3,2,1,3,2  
+    3,2,1,3,2,1,3,2,1    
+    2,2,2,2,2,2,2,2,2    
     2,2,2,2,2,2,2,2,2  
-    2,2,2,2,2,2,2,2,2
     
     - Enemy Specification
         - Will be placed in the orientation shown above
