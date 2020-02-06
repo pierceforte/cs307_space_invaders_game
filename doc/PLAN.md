@@ -14,22 +14,71 @@ Description: https://www.mobygames.com/game/chicken-invaders-revenge-of-the-yolk
 Gameplay: ttps://www.youtube.com/watch?v=Ha3gYz-3xcM
 
 ### General Level Descriptions
-1. Basic 
+1. Level 1 
 
-1,1,1,1,1,1,1,1,1,1  
-1,1,1,1,1,1,1,1,1,1  
-1,1,1,1,1,1,1,1,1,1  
-1,1,1,1,1,1,1,1,1,1
+    1,1,1,1,1,1,1,1,1,1  
+    1,1,1,1,1,1,1,1,1,1  
+    1,1,1,1,1,1,1,1,1,1  
+    1,1,1,1,1,1,1,1,1,1
+    
+    - Enemy Specification
+        - Will be placed in the orientation shown above
+        - 1 health
+        - Only able to shoot vertical lasers
+        - Not able to move
+        
+    - Spaceship Specification
+        - Will start in the center of the bottom
 
+2. Level 2
 
+    3,3,3,3,3,3,3,3,3,3  
+    1,1,1,1,1,1,1,1,1,1  
+    2,2,2,2,2,2,2,2,2,2  
+    2,2,2,2,2,2,2,2,2,2
+    
+    - Enemy Specification
+        - Will be placed in the orientation shown above
+        - **Varying health for each enemy**
+        - **Shoot both vertical and diagonal lasers**
+        - Not able to move
+        
+    - Spaceship Specification
+        - Will start in the center of the bottom
+        
+3. Level 3
+
+    3,3,3,3,3,3,3,3,3,3  
+    1,3,2,1,3,2,1,3,2,1  
+    2,2,2,2,2,2,2,2,2,2  
+    2,2,2,2,2,2,2,2,2,2
+    
+    - Enemy Specification
+        - Will be placed in the orientation shown above
+        - Varying health for each enemy
+        - Shoot both vertical and diagonal lasers
+        - **Able** to move
+        
+    - Spaceship Specification
+        - Will start in the center of the bottom
+
+4. Boss round
+
+    - One big boss in the center
+    - Very high health count
+    - Shoot in all direction
+    - Able to move 
 
 ### Enemy Ideas  
 - Life count
+    - More life counts for upper levels
 - Missile type
 	- Regular missile (shot downward in regular interval)
     - Diagonal missile (bounce off walls)
 - Looks
-- Speed
+    - Different images for each row
+- Speed 
+    - Higher speed for upper levels
 - Contains random power up
 - Movement
 	- left, right, down
@@ -41,18 +90,23 @@ Gameplay: ttps://www.youtube.com/watch?v=Ha3gYz-3xcM
 	- left, right
 
 ### Power Up Ideas  
-- Laser Missile 
-	- Goes through enemies
+- Bomb Missile 
+	- Reduces 2 health counts instead of 1
+- Increase life counts
+- Speed up the spaceship
 - Double spaceships
 	- Control two spaceships at once 
 
 ### Cheat Key Ideas    
-
+- Pause the game and shoot enemies
+- Unlimited life counts
+- Kill all enemy in the same row at once
+- Skip the level
 
 ### Something Extra  
 - Adding music
 - Final boss between levels (or at end)
-	- Will have a variety of missiles, like a larger missle, one that shoots in multiple directions, etc.
+	- Will have a variety of missiles, like a larger missile, one that shoots in multiple directions, etc.
     - If there is a boss between levels, it will become progressively harder with more lives
 
 ### Possible Classes  
