@@ -11,7 +11,7 @@ One interesting variant of Space Invaders that we found is called Chicken Invade
 
 Description: https://www.mobygames.com/game/chicken-invaders-revenge-of-the-yolk
 
-Gameplay: ttps://www.youtube.com/watch?v=Ha3gYz-3xcM
+Gameplay: https://www.youtube.com/watch?v=Ha3gYz-3xcM
 
 ### General Level Descriptions
 1. Level 1 
@@ -40,8 +40,8 @@ Gameplay: ttps://www.youtube.com/watch?v=Ha3gYz-3xcM
     - Enemy Specification
         - Will be placed in the orientation shown above
         - **Varying health for each enemy**
-        - **Shoot both vertical and diagonal lasers**
-        - Not able to move
+        - **Able to move**
+        - Shoot vertical lasers
         
     - Spaceship Specification
         - Will start in the center of the bottom
@@ -56,8 +56,8 @@ Gameplay: ttps://www.youtube.com/watch?v=Ha3gYz-3xcM
     - Enemy Specification
         - Will be placed in the orientation shown above
         - Varying health for each enemy
-        - Shoot both vertical and diagonal lasers
-        - **Able** to move
+        - Able to move
+        - **Shoot both vertical and diagonal lasers**
         
     - Spaceship Specification
         - Will start in the center of the bottom
@@ -67,7 +67,10 @@ Gameplay: ttps://www.youtube.com/watch?v=Ha3gYz-3xcM
     - One big boss in the center
     - Very high health count
     - Shoot in all direction
-    - Able to move 
+    - Able to move
+    - If time allows:
+    	- Boss changes size
+        - Has intervals when it is invincible and when it can be damaged
 
 ### Enemy Ideas  
 - Life count
@@ -94,29 +97,49 @@ Gameplay: ttps://www.youtube.com/watch?v=Ha3gYz-3xcM
 	- Reduces 2 health counts instead of 1
 - Increase life counts
 - Speed up the spaceship
-- Double spaceships
-	- Control two spaceships at once 
+
+  **If time allows**
+  - Laser beam
+	- Beam from spaceship that instantly hits enemies in path (could last around 1-2 seconds or deactivate after a certain number of enemies are destroyed)
+  - Double spaceships
+      - Control two spaceships at once 
 
 ### Cheat Key Ideas    
-- Pause the game and shoot enemies
-- Unlimited life counts
-- Kill all enemy in the same row at once
-- Skip the level
+- P: pause game
+- S: skip level
+- D: delete lowest enemy row
+- R: reset level
+- I: unlimited life counts 
+- L: add life
+- 1-4+: change to selected level
 
 ### Something Extra  
 - Adding music
-- Final boss between levels (or at end)
+- Final boss between levels (or at the end)
 	- Will have a variety of missiles, like a larger missile, one that shoots in multiple directions, etc.
     - If there is a boss between levels, it will become progressively harder with more lives
 
 ### Possible Classes  
 - Main
+	- Begin game
+- Game
+	- Handle basic game mechanics like step and animation
+- Moving Object
+	- Abstract
+    - Subclass of ImageView
+    - Will be used for any object that is 1) added to the scene and 2) has the potential to move/interact with other nodes on scene
 - Entity
-	- Enemy
-    - Spaceship
-    - Final Boss
-- Laser
-- Level
+	- Abstract
+    - Will extend MovingObject
+- Projectile
+	- Abstract
+	- Will extend MovingObject
+- Enemy (subclass of Entity)
+- Spaceship (subclass of Entity)
+- Final Boss (subclass of Entity)
+- Laser (subclass of projectile)
+- Bomb (subclass of projectile)
+- Level 
 - SceneUtility
 - Setup
 - ReadFile
