@@ -134,7 +134,6 @@ public class Game extends Application {
             root.getChildren().clear();
             gameTimer = 0;
             level1 = new Level("resources/level_files/level_01.txt", 1);
-            gameTimer = 0;
             level1.addEnemiesAndSpaceshipToScene(root);
         }
     }

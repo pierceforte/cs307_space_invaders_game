@@ -96,7 +96,9 @@ public class Level {
         for (Laser laser : lasers) {
             if (didCollide(laser, entity) || laser.isOutOfBounds()) {
                 lasersToRemove.add(laser);
-                removeEntity = true;
+                if (didCollide(laser, entity)) {
+                    removeEntity = true;
+                }
             }
         }
         lasers.removeAll(lasersToRemove);
