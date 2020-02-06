@@ -25,22 +25,23 @@ Gameplay: https://www.youtube.com/watch?v=Ha3gYz-3xcM
         - Will be placed in the orientation shown above
         - 1 health
         - Only able to shoot vertical lasers
-        - Not able to move
+        - Either moves very slowly or not at all
         
     - Spaceship Specification
         - Will start in the center of the bottom
 
 2. Level 2
 
-    3,3,3,3,3,3,3,3,3,3  
-    1,1,1,1,1,1,1,1,1,1  
-    2,2,2,2,2,2,2,2,2,2  
-    2,2,2,2,2,2,2,2,2,2
+    3,3,3,3,3,3,3,3,3
+    2,2,2,2,2,2,2,2,2  
+    1,1,1,1,1,1,1,1,1  
+    2,2,2,2,2,2,2,2,2  
+    2,2,2,2,2,2,2,2,2
     
     - Enemy Specification
         - Will be placed in the orientation shown above
         - **Varying health for each enemy**
-        - **Able to move**
+        - **Able to move** (slightly faster than previous level)
         - Shoot vertical lasers
         
     - Spaceship Specification
@@ -48,15 +49,17 @@ Gameplay: https://www.youtube.com/watch?v=Ha3gYz-3xcM
         
 3. Level 3
 
-    3,3,3,3,3,3,3,3,3,3  
-    1,3,2,1,3,2,1,3,2,1  
-    2,2,2,2,2,2,2,2,2,2  
-    2,2,2,2,2,2,2,2,2,2
+    3,3,3,3,3,3,3,3,3
+    3,3,3,3,3,3,3,3,3  
+    1,3,2,1,3,2,1,3,2
+    3,2,1,3,2,1,3,2,1  
+    2,2,2,2,2,2,2,2,2  
+    2,2,2,2,2,2,2,2,2
     
     - Enemy Specification
         - Will be placed in the orientation shown above
         - Varying health for each enemy
-        - Able to move
+        - Able to move (slightly faster than previous level)
         - **Shoot both vertical and diagonal lasers**
         
     - Spaceship Specification
@@ -71,6 +74,7 @@ Gameplay: https://www.youtube.com/watch?v=Ha3gYz-3xcM
     - If time allows:
     	- Boss changes size
         - Has intervals when it is invincible and when it can be damaged
+        - Add a boss between each level with increasing level of difficulty
 
 ### Enemy Ideas  
 - Life count
@@ -79,7 +83,7 @@ Gameplay: https://www.youtube.com/watch?v=Ha3gYz-3xcM
 	- Regular missile (shot downward in regular interval)
     - Diagonal missile (bounce off walls)
 - Looks
-    - Different images for each row
+    - Different images for enemies based on initial health
 - Speed 
     - Higher speed for upper levels
 - Contains random power up
@@ -135,15 +139,29 @@ Gameplay: https://www.youtube.com/watch?v=Ha3gYz-3xcM
 	- Abstract
 	- Will extend MovingObject
 - Enemy (subclass of Entity)
+    - The enemies are the entities that shoot lasers periodically (in a set interval, but beginning at different times to avoid all shooting at once)
+    - These will have different amounts of lives and different abilities
+    - These will move left to right and bounce of the sides (exact implementation depends on level)
 - Spaceship (subclass of Entity)
-- Final Boss (subclass of Entity)
+    - This is the user controlled object that shoots lasers at the enemies
+    - Will have a given number of lives to determine game overs
+- Boss (subclass of Entity)
+    - This entity will appear at the end of all the levels (or in between levels if time allows)
+    - Will have more advanced capabilities than enemies and free range of movement 
 - Laser (subclass of projectile)
+    - Simple projectile that reduces 1 health
+    - Can be fired by any entity
 - Bomb (subclass of projectile)
-- Level 
-- SceneUtility
+    - More advanced projectile that reduces 2 health
+- Level
+    - The class that "builds" the level: adds in all scene elements in their proper orientation based on a txt file
+    - Keeps track of state of game (eg. lives, points, etc.) and the objects on screen 
 - Setup
+    - Not exactly sure how to implement yet, but may take on some of the work from Level in actually building the scene
 - ReadFile
-	- Reads input 
-- LevelInfo
-	- It will have the information for the current level the 
+	- Reads input
+- UserInput
+    - Handles user input for cheat keys and object movement
+- LevelStatsDisplay
+	- Updates the level, lives, etc. on the screen
     
