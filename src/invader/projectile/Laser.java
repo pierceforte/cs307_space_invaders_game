@@ -17,7 +17,8 @@ public class Laser extends MovingObject {
     public Laser(double xPos, double yPos, boolean isEnemy, int idNumber) {
         super(xPos,yPos,X_SPEED,Y_SPEED * (isEnemy ? -1 : 1), WIDTH, HEIGHT, isEnemy ? ENEMY_LASER_IMG_NAME : SPACESHIP_LASER_IMG_NAME);
         this.isEnemy = isEnemy;
-        this.setId("laser" + idNumber);
+        String idString = isEnemy ? "enemy" : "spaceship";
+        this.setId(idString + "Laser" + idNumber);
 
     }
 

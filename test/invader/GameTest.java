@@ -52,7 +52,7 @@ public class GameTest extends DukeApplicationTest {
         //press(myScene, KeyCode.SPACE);
         myGame.fire();
         sleep(1, TimeUnit.SECONDS);
-        mySpaceshipLaser = lookup("#laser0").query();
+        mySpaceshipLaser = lookup("#spaceshipLaser0").query();
         //mySpaceshipLaser = new Laser(0,0,false);
         myEnemy = lookup("#enemy0").query();
     }

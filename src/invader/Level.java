@@ -18,7 +18,9 @@ public class Level {
     public static final double ENEMY_SPACING = 10;
     public static final int ENEMIES_PER_ROW = 9;
 
-    private int curLaserIdNumber = 0;
+    private int curSpaceshipLaserIdNumber = 0;
+    private int curEnemyLaserIdNumber = 0;
+
     private int levelNumber;
     private int lives;
     private int rows;
@@ -119,8 +121,9 @@ public class Level {
     }
 
     private void shootLaser(Group root, Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot) {
+        boolean isEnemy = entityShooting.getClass() == Enemy.class;
         Laser laser = new Laser(entityShooting.getX() + Entity.NON_BOSS_WIDTH/2,
-                entityShooting.getY(), entityShooting.getClass() == Enemy.class, curLaserIdNumber++);
+                entityShooting.getY(), isEnemy, isEnemy ? curEnemyLaserIdNumber++ : curSpaceshipLaserIdNumber++);
         lasers.add(laser);
         root.getChildren().add(laser);
         entityShooting.addToStartShootingTime(timeBeforeNextShot);
