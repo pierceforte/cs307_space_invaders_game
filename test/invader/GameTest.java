@@ -3,6 +3,7 @@ package invader;
 import invader.entity.Enemy;
 import invader.entity.Spaceship;
 import invader.projectile.Laser;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -40,16 +41,13 @@ public class GameTest extends DukeApplicationTest {
         // enemy31 is the enemy directly above the spaceship (such that if the spaceship fires a laser from its
         // starting position, the laser will hit enemy31)
         Enemy myEnemy = lookup("#enemy31").query();
-        press(myScene, KeyCode.UP);
+        press(myScene, KeyCode.SPACE);
         myEnemy.setImage(new Image(this.getClass().getClassLoader().getResource(Spaceship.SPACESHIP_IMG_NAME).toExternalForm()));
         sleep(1, TimeUnit.SECONDS);
         //myGame.step(Game.SECOND_DELAY);
-        for (Node node : myGame.getRoot().getChildren()) {
-            System.out.println(node.getId());
-        }
         Laser mySpaceshipLaser = lookup("#laser0").query();
         // position the laser one step prior to hitting enemy31
-        mySpaceshipLaser.setY(myEnemy.getY() + 32);
+        mySpaceshipLaser.setY(myEnemy.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
         //sleep(5, TimeUnit.SECONDS);
         sleep(1, TimeUnit.SECONDS);
         myGame.step(Game.SECOND_DELAY);
@@ -61,7 +59,7 @@ public class GameTest extends DukeApplicationTest {
 
     }
 
-
+    /*
     @Test
     public void testSpaceshipInitialPosition () {
         assertEquals(Spaceship.DEFAULT_X_POS, mySpaceship.getX());
@@ -127,5 +125,8 @@ public class GameTest extends DukeApplicationTest {
             }
             yPos += Enemy.HEIGHT;
         }
-    }
+    }*/
+
+
+
 }
