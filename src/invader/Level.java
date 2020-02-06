@@ -37,12 +37,6 @@ public class Level {
         createEnemies();
     }
 
-    public void clearLevel() {
-        enemyLasers.clear();
-        enemies.clear();
-        spaceshipLasers.clear();
-    }
-
     public void addEnemiesAndSpaceshipToScene(Group root) {
         for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
         spaceship = new Spaceship(Spaceship.DEFAULT_X_POS, Spaceship.DEFAULT_Y_POS);

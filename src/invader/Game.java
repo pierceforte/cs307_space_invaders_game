@@ -132,7 +132,7 @@ public class Game extends Application {
         }
         else if (code == KeyCode.R) {
             root.getChildren().clear();
-            level1.clearLevel();
+            gameTimer = 0;
             level1 = new Level("resources/level_files/level_01.txt", 1);
             level1.addEnemiesAndSpaceshipToScene(root);
         }
