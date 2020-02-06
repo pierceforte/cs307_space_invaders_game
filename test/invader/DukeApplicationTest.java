@@ -1,4 +1,4 @@
-package test;
+package invader;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

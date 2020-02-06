@@ -87,7 +87,7 @@ public class Game extends Application {
     }
 
     // Change properties of shapes to animate them
-    public void step (double elapsedTime) {
+    void step (double elapsedTime) {
 
         gameTimer += elapsedTime;
 

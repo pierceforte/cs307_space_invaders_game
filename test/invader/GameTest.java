@@ -1,19 +1,15 @@
-package test;
+package invader;
 
-import invader.Game;
-import invader.Level;
 import invader.entity.Enemy;
-import invader.entity.Entity;
 import invader.entity.Spaceship;
 import invader.projectile.Laser;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +35,33 @@ public class GameTest extends DukeApplicationTest {
         //myEnemy = lookup("#enemy").query();
     }
 
-    /*
+    @Test
+    public void testLaserCollisionWithEnemy() {
+        // enemy31 is the enemy directly above the spaceship (such that if the spaceship fires a laser from its
+        // starting position, the laser will hit enemy31)
+        Enemy myEnemy = lookup("#enemy31").query();
+        press(myScene, KeyCode.UP);
+        myEnemy.setImage(new Image(this.getClass().getClassLoader().getResource(Spaceship.SPACESHIP_IMG_NAME).toExternalForm()));
+        sleep(1, TimeUnit.SECONDS);
+        //myGame.step(Game.SECOND_DELAY);
+        for (Node node : myGame.getRoot().getChildren()) {
+            System.out.println(node.getId());
+        }
+        Laser mySpaceshipLaser = lookup("#laser0").query();
+        // position the laser one step prior to hitting enemy31
+        mySpaceshipLaser.setY(myEnemy.getY() + 32);
+        //sleep(5, TimeUnit.SECONDS);
+        sleep(1, TimeUnit.SECONDS);
+        myGame.step(Game.SECOND_DELAY);
+        sleep(1, TimeUnit.SECONDS);
+        // check if both enemy31 and the laser have been removed from scene upon collision
+        //assertEquals(null, myEnemy);
+        //assertEquals(null, mySpaceshipLaser);
+        assertEquals(true, true);
+
+    }
+
+
     @Test
     public void testSpaceshipInitialPosition () {
         assertEquals(Spaceship.DEFAULT_X_POS, mySpaceship.getX());
@@ -105,52 +127,5 @@ public class GameTest extends DukeApplicationTest {
             }
             yPos += Enemy.HEIGHT;
         }
-    }*/
-
-
-    @Test
-    public void testLaserCollisionWithEnemy() {
-        Enemy myEnemy = lookup("#enemy33").query();
-        //mySpaceshipLaser.updatePositionOnStep(Game.SECOND_DELAY);
-        press(myScene, KeyCode.SPACE);
-        Laser mySpaceshipLaser = lookup("#laser0").query();
-        mySpaceshipLaser.setY(myEnemy.getY() + Laser.Y_SPEED);
-        sleep(1, TimeUnit.SECONDS);
-        myGame.step(Game.SECOND_DELAY);
-        assertEquals(null, myEnemy);
-        assertEquals(null, mySpaceshipLaser);
-
     }
-/*
-    @Test
-    public void testLaserCollisionWithEnemy() {
-        Level testLevel = new Level("resources/level_files/test_level_01.txt", 1);
-        Laser mySpaceshipLaser = testLevel.shootSpaceshipLaser(mySpaceship);
-        Enemy myEnemy = lookup("#enemy0").query();
-        //Laser mySpaceshipLaser = lookup("#laser0").query();
-        //assertEquals(true,true);
-        boolean isEnemyActive = false;
-        List<List<Enemy>> enemies = testLevel.getEnemies();
-        while (myEnemy != null && mySpaceshipLaser != null &&
-                !myEnemy.getBoundsInParent().intersects(mySpaceshipLaser.getBoundsInParent())) {
-            for (List<Enemy> enemyRow : enemies) {
-                if (enemyRow.contains(myEnemy)) {
-                    isEnemyActive = true;
-                    break;
-                }
-                else isEnemyActive = false;
-            }
-            assertEquals(true, isEnemyActive);
-        }
-        for (List<Enemy> enemyRow : enemies) {
-            if (enemyRow.contains(myEnemy)) {
-                isEnemyActive = true;
-                break;
-            }
-        }
-        assertEquals(false, isEnemyActive);
-
-
-    }
-*/
 }
