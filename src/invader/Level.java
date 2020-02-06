@@ -18,6 +18,7 @@ public class Level {
     public static final double ENEMY_SPACING = 10;
     public static final int ENEMIES_PER_ROW = 9;
 
+    private int curLaserIdNumber = 0;
     private int levelNumber;
     private int lives;
     private int rows;
@@ -119,7 +120,7 @@ public class Level {
 
     private void shootLaser(Group root, Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot) {
         Laser laser = new Laser(entityShooting.getX() + Entity.NON_BOSS_WIDTH/2,
-                entityShooting.getY(), entityShooting.getClass() == Enemy.class);
+                entityShooting.getY(), entityShooting.getClass() == Enemy.class, curLaserIdNumber++);
         lasers.add(laser);
         root.getChildren().add(laser);
         entityShooting.addToStartShootingTime(timeBeforeNextShot);
@@ -132,7 +133,7 @@ public class Level {
             List<Enemy> tempRow = new ArrayList<>();
             double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
             for (int j = 0; j < enemyIdentifiers.get(0).size(); j++) {
-                Enemy curEnemy = new Enemy(xPos, yPos, enemyIdentifiers.get(i).get(j));
+                Enemy curEnemy = new Enemy(xPos, yPos, enemyIdentifiers.get(i).get(j), j + i*Level.ENEMIES_PER_ROW);
                 /*
                 if (!powerUpGrid.get(i*BRICKS_PER_ROW + j).equals("none")) {
                     curBrick.setPowerUp(powerUpGrid.get(i*BRICKS_PER_ROW + j));

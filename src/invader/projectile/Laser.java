@@ -11,15 +11,13 @@ public class Laser extends MovingObject {
     public static final String ENEMY_LASER_IMG_NAME = "enemylaser.png";
     public static final String SPACESHIP_LASER_IMG_NAME = "spaceshiplaser.png";
 
-    public static int count = 0;
-
     private final int DAMAGE = 1;
     boolean isEnemy;
 
-    public Laser(double xPos, double yPos, boolean isEnemy) {
+    public Laser(double xPos, double yPos, boolean isEnemy, int idNumber) {
         super(xPos,yPos,X_SPEED,Y_SPEED * (isEnemy ? -1 : 1), WIDTH, HEIGHT, isEnemy ? ENEMY_LASER_IMG_NAME : SPACESHIP_LASER_IMG_NAME);
         this.isEnemy = isEnemy;
-        this.setId("laser" + count++);
+        this.setId("laser" + idNumber);
 
     }
 

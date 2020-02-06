@@ -10,15 +10,14 @@ import java.util.concurrent.ThreadLocalRandom;
  * started 2/4/20
  */
 public class Enemy extends Entity {
-    public static int count = 0;
     public static final int HEIGHT = 30;
     public static final int WIDTH = 30;
     public static final String ENEMY_IMG_NAME= "enemy.png";
 
-    public Enemy(double xPos, double yPos, int lives) {
+    public Enemy(double xPos, double yPos, int lives, int idNumber) {
         super(xPos, yPos, 0, 0, WIDTH, HEIGHT, ENEMY_IMG_NAME);
         setLives(lives);
-        this.setId("enemy" + count++);
+        this.setId("enemy" + idNumber);
         addToStartShootingTime(ThreadLocalRandom.current().nextInt(10, 40));
     }
 
