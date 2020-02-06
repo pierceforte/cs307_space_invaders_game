@@ -59,19 +59,17 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testLaserCollisionWithEnemy() {
-        Platform.runLater(new Runnable() {
-            @Override public void run() {
-                // check if laser and enemy are on scene before collision
-                assertEquals(true, myGame.getRoot().getChildren().contains(myEnemy31));
-                assertEquals(true, myGame.getRoot().getChildren().contains(mySpaceshipLaser));
-                // position the laser one step prior to hitting enemy31
-                mySpaceshipLaser.setX(myEnemy31.getX());
-                mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
-                myGame.step(Game.SECOND_DELAY);
-                // check if both enemy31 and the laser have been removed from scene upon collision
-                assertEquals(false, myGame.getRoot().getChildren().contains(myEnemy31));
-                assertEquals(false, myGame.getRoot().getChildren().contains(mySpaceshipLaser));
-            }
+        Platform.runLater(() -> {
+            // check if laser and enemy are on scene before collision
+            assertEquals(true, myGame.getRoot().getChildren().contains(myEnemy31));
+            assertEquals(true, myGame.getRoot().getChildren().contains(mySpaceshipLaser));
+            // position the laser one step prior to hitting enemy31
+            mySpaceshipLaser.setX(myEnemy31.getX());
+            mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
+            myGame.step(Game.SECOND_DELAY);
+            // check if both enemy31 and the laser have been removed from scene upon collision
+            assertEquals(false, myGame.getRoot().getChildren().contains(myEnemy31));
+            assertEquals(false, myGame.getRoot().getChildren().contains(mySpaceshipLaser));
         });
     }
 
