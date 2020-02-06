@@ -21,7 +21,8 @@ public class GameTest extends DukeApplicationTest {
     private Scene myScene;
 
     private Spaceship mySpaceship;
-    //private Enemy myEnemy;
+    private Enemy myEnemy;
+    private Laser mySpaceshipLaser;
 
 
     @Override
@@ -32,20 +33,23 @@ public class GameTest extends DukeApplicationTest {
         stage.show();
 
         // find individual items within game by ID (must have been set in your code using setID())
+//        press(myScene, KeyCode.SPACE);
         mySpaceship = lookup("#spaceship").query();
-        //myEnemy = lookup("#enemy").query();
+//        mySpaceshipLaser = lookup("#laser0").query();
+        mySpaceshipLaser = new Laser(0,0,false);
+//        mySpaceshipLaser = l;
+        myEnemy = lookup("#enemy0").query();
     }
 
     @Test
     public void testLaserCollisionWithEnemy() {
         // enemy31 is the enemy directly above the spaceship (such that if the spaceship fires a laser from its
         // starting position, the laser will hit enemy31)
-        Enemy myEnemy = lookup("#enemy31").query();
-        press(myScene, KeyCode.SPACE);
+//        Enemy myEnemy = lookup("#enemy31").query();
+//        press(myScene, KeyCode.SPACE);
         myEnemy.setImage(new Image(this.getClass().getClassLoader().getResource(Spaceship.SPACESHIP_IMG_NAME).toExternalForm()));
         sleep(1, TimeUnit.SECONDS);
         //myGame.step(Game.SECOND_DELAY);
-        Laser mySpaceshipLaser = lookup("#laser0").query();
         // position the laser one step prior to hitting enemy31
         mySpaceshipLaser.setY(myEnemy.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
         //sleep(5, TimeUnit.SECONDS);
