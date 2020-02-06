@@ -27,7 +27,9 @@ public class GameTest extends DukeApplicationTest {
     private Spaceship mySpaceship;
     private List<List<Enemy>> myEnemies = new ArrayList<>();
     private Enemy myEnemy31;
-    Laser mySpaceshipLaser;
+    private Enemy myEnemy;
+    private Laser mySpaceshipLaser;
+
 
     @Override
     public void start (Stage stage) {
@@ -37,6 +39,7 @@ public class GameTest extends DukeApplicationTest {
         stage.show();
 
         // find individual items within game by ID (must have been set in your code using setID())
+//        press(myScene, KeyCode.SPACE);
         mySpaceship = lookup("#spaceship").query();
         //myEnemy = lookup("#enemy").query();
         for (int i = 0; i < 4; i++) {
@@ -50,7 +53,11 @@ public class GameTest extends DukeApplicationTest {
         myGame.fire();
         sleep(1, TimeUnit.SECONDS);
         //for (Node node : myGame.getRoot().getChildren()) System.out.println(node.getId());
-        mySpaceshipLaser = lookup("#laser0").query();
+//        mySpaceshipLaser = lookup("#laser0").query();
+//        mySpaceshipLaser = lookup("#laser0").query();
+        mySpaceshipLaser = new Laser(0,0,false);
+//        mySpaceshipLaser = l;
+        myEnemy = lookup("#enemy0").query();
     }
 
     @Test
@@ -69,7 +76,6 @@ public class GameTest extends DukeApplicationTest {
                 assertEquals(false, myGame.getRoot().getChildren().contains(mySpaceshipLaser));
             }
         });
-
     }
 
 
