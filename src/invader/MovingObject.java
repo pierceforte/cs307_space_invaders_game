@@ -47,6 +47,6 @@ public class MovingObject extends ImageView {
     }
 
     public boolean isOutOfBounds() {
-        return (this.getY() > Game.GAME_HEIGHT - 20 || this.getY() < 20);
+        return (this.getY() >= Game.GAME_HEIGHT - 20 || this.getY() <= 20);
     }
 }

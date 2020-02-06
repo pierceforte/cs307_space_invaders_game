@@ -58,6 +58,19 @@ public class GameTest extends DukeApplicationTest {
     }
 
     @Test
+    public void testSpaceshipLaserDisappearsWhenOutOfBounds() {
+        Platform.runLater(() -> {
+            // check if laser and enemy are on scene before collision
+            assertEquals(true, myGame.getRoot().getChildren().contains(mySpaceshipLaser));
+            // position the laser one step prior to being out of bounds
+            mySpaceshipLaser.setY(Game.GAME_HEIGHT - 20 + Laser.Y_SPEED*Game.SECOND_DELAY);
+            myGame.step(Game.SECOND_DELAY);
+            // check if both enemy31 and the laser have been removed from scene upon collision
+            assertEquals(false, myGame.getRoot().getChildren().contains(mySpaceshipLaser));
+        });
+    }
+
+    @Test
     public void testLaserCollisionWithEnemy() {
         Platform.runLater(() -> {
             // check if laser and enemy are on scene before collision
