@@ -48,7 +48,7 @@ public class GameTest extends DukeApplicationTest {
     }
 
     @Test
-    public void testSpaceshipLaserDisappearsWhenOutOfBounds() {
+    public void testLaserDisappearsIfOutOfBounds() {
         // need to include a run later to modify application thread from here
         Platform.runLater(() -> {
             // check if laser is on scene before being out of bounds
