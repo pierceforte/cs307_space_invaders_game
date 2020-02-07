@@ -1,8 +1,5 @@
 package invader.entity;
 
-import invader.Game;
-import invader.MovingObject;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 /**

@@ -12,11 +12,6 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
-/**
- *
- * @author Robert C. Duvall
- */
 public class Game extends Application {
     public static final String TITLE = "Space Invaders";
     public static final String WINNING_MESSAGE = "WINNER!";
