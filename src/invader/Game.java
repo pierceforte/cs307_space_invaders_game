@@ -28,14 +28,13 @@ public class Game extends Application {
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final Paint BACKGROUND = Color.BLACK;
 
-
     // some things we need to remember during our game
     private Scene myScene;
     private Timeline myAnimation;
-
     private double gameTimer = 0;
     private Level level1;
     private Group root;
+
     /**
      * Initialize what will be displayed and how it will be updated.
      */
@@ -47,7 +46,7 @@ public class Game extends Application {
         stage.setTitle(TITLE);
         stage.show();
         // attach "game loop" to timeline to play it
-        KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step(SECOND_DELAY));
+        KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step());
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(frame);
@@ -76,9 +75,9 @@ public class Game extends Application {
     }
 
     // Change properties of shapes to animate them
-    void step (double elapsedTime) {
-        gameTimer += elapsedTime;
-        level1.handleEntitiesAndLasers(root, gameTimer, elapsedTime);
+    void step() {
+        gameTimer += Game.SECOND_DELAY;
+        level1.handleEntitiesAndLasers(root, gameTimer, Game.SECOND_DELAY);
     }
 
     // What to do each time a key is pressed

@@ -22,7 +22,6 @@ public class Level {
     private int curEnemyLaserIdNumber = 0;
 
     private int levelNumber;
-    private int lives;
     private int rows;
     private Spaceship spaceship;
     private List<Laser> spaceshipLasers = new ArrayList<>();
@@ -33,7 +32,6 @@ public class Level {
     public Level(String levelFile, int levelNumber) {
         readFile(levelFile);
         this.levelNumber = levelNumber;
-        this.lives = 3;
         createEnemies();
     }
 

@@ -56,7 +56,7 @@ public class GameTest extends DukeApplicationTest {
             // position the laser one step prior to being out of bounds
             mySpaceshipLaser.setY(Game.GAME_HEIGHT - 20 + Laser.Y_SPEED*Game.SECOND_DELAY);
             // step so laser is out of bounds
-            myGame.step(Game.SECOND_DELAY);
+            myGame.step();
             // check if the laser has been removed from scene upon being out of bounds
             assertFalse(isNodeInMyScene(mySpaceshipLaser));
         });
@@ -73,7 +73,7 @@ public class GameTest extends DukeApplicationTest {
             mySpaceshipLaser.setX(myEnemy31.getX());
             mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
             // step to initiate collision
-            myGame.step(Game.SECOND_DELAY);
+            myGame.step();
             // check if both enemy31 and the laser have been removed from scene upon collision
             assertFalse(isNodeInMyScene(myEnemy31));
             assertFalse(isNodeInMyScene(mySpaceshipLaser));
