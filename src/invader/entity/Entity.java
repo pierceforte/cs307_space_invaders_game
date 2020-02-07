@@ -24,6 +24,10 @@ public class Entity extends MovingObject {
         this.lives = lives;
     }
 
+    public void lowerLives() { this.lives--; }
+
+    public int getLives() { return this.lives; }
+
     public double getStartShootingTime() {
         return startingShootTime;
     }
