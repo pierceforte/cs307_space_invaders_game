@@ -83,7 +83,10 @@ public class Level {
                 attemptLaserFire(gameTimer, enemy, enemyLasers, 50);
             }
         }
-        handleLaserCollisions(elapsedTime, enemyLasers, spaceship);
+        if (handleLaserCollisions(elapsedTime, enemyLasers, spaceship) != null) {
+            spaceship.lowerLives();
+            LevelStatsDisplay.updateLifeCountDisplay(spaceship.getLives());
+        }
     }
 
     private void handleSpaceshipLasers(double elapsedTime) {
