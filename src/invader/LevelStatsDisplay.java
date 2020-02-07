@@ -8,65 +8,43 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
-
-import java.io.InputStream;
 
 public class LevelStatsDisplay {
 
     public static final Paint MENU_BACKGROUND = Color.GRAY;
     public static final Paint INTERFACE_BACKGROUND = Color.GRAY;
     public static final String HEART_IMAGE = "heart.png";
+    public static final int HEART_IMAGE_X_POS = 15;
+    public static final int HEART_IMAGE_Y_DIST_FROM_GAME_HEIGHT = 20;
+    public static final int HEART_IMAGE_SCALE_DOWN_FACTOR = 75;
+    public static final int LIFE_COUNT_X_DIST_FROM_HEART = 35;
+    public static final int LIFE_COUNT_Y_DIST_FROM_GAME_HEIGHT = 45;
+    public static final int LEVEL_NUM_X_DIST_FROM_SCENE_WIDTH = -90;
+    public static final int LEVEL_NUM_Y_DIST_FROM_GAME_HEIGHT = 45;
+    public static final int POINTS_X_DIST_FROM_SCENE_CENTER = -35;
+    public static final int POINTS_Y_DIST_FROM_GAME_HEIGHT = 35;
+
 
     private static Rectangle menuBackground;
     private static Rectangle userInterfaceArea;
-    private static ImageView heart;
+    private static ImageView heartImageDisplay;
     private static Text menuText;
     private static Text lifeCountText;
     private static Text levelNumberDisplay;
     private static Text pointsDisplay;
     private static int points;
 
-    /*
-    public static void createStartMenu(Group root) {
-        createMenu(root, 50, 30, "BREAKOUT BY PIERCE FORTE\n\n\nDIRECTIONS\n\nBREAK BRICKS TO EARN POINTS\n\nBE CAREFUL!\n" +
-                "YOU START WITH 3 LIVES\n\nRELEASE THE BALL WITH THE SPACE BAR\n\nMOVE THE PADDLES WITH\nTHE LEFT AND RIGHT KEYS\n\n" +
-                "COLLECT POWER UPS TO HELP\n(OR HURT!) YOU\n\nBEAT ALL 4 LEVELS TO WIN!\n\n\nCHEAT CODES\n\n1-9   SKIP TO LEVEL\n\nJ   SKIP " +
-                "TO NEXT LEVEL\n\nR   RESET LEVEL\n\nL   ADD 1 LIFE\n\nC   RESET BALL AND PADDLE\n(HELPFUL WHEN ENCOUNTERING BUGS)\n\n\nPRESS SPACE TO BEGIN");
-    }
-
-    public static void removeMenu(Group root) {
-        root.getChildren().removeAll(menuBackground, menuText);
-    }
-
-    public static void createGameOverMenu(Group root) {
-        createMenu(root, 50, 275, "GAME OVER!\n\n\nPRESS C TO RETRY WITH ANOTHER LIFE\n\nPRESS R TO RESTART LEVEL \n\nPRESS 1-9 TO CHANGE LEVEL");
-    }
-
-    public static void createLevelIntermissionMenu(Group root) {
-        createMenu(root, 100, 300, "LEVEL COMPLETE!\n\n\nPRESS SPACE TO ADVANCE");
-    }
-    public static void createVictoryMenu(Group root) {
-        createMenu(root, 100, 300, "YOU WIN!\n\n\nUSE CHEAT CODES TO CONTINUE");
-    }*/
-
-    public static void createInterfaceAndAddToRoot(Group root, int game_height, int scene_width, int scene_height, Level currentLevel, InputStream heartInputStream) {
+    public static void createInterfaceAndAddToRoot(Group root, int game_height, int scene_width, int scene_height) {
         createInterfaceBackground(root, game_height, scene_width, scene_height);
-        createHeartImageDisplay(root, game_height, heartInputStream);
-        //lifeCountText = createTextDisplayAndAddToRoot(root, " * " + currentLevel.getLives(), heart.getX() + 35, game_height + 45, Color.MAROON);
-        //levelNumberDisplay = createTextDisplayAndAddToRoot(root, "LEVEL " + currentLevel.getLevelNumber(), scene_width - 90, game_height + 45, Color.MAROON);
-        lifeCountText = createTextDisplayAndAddToRoot(root, " * 3", heart.getX() + 35, game_height + 45, Color.MAROON);
-        levelNumberDisplay = createTextDisplayAndAddToRoot(root, "LEVEL 1", scene_width - 90, game_height + 45, Color.MAROON);
-        pointsDisplay = createTextDisplayAndAddToRoot(root, "POINTS\n" + formatPoints(points), scene_width/2 - 35, game_height + 35, Color.MAROON);
+        heartImageDisplay = createImageDisplay(root, HEART_IMAGE_X_POS, game_height +
+                HEART_IMAGE_Y_DIST_FROM_GAME_HEIGHT, HEART_IMAGE, HEART_IMAGE_SCALE_DOWN_FACTOR);
+        lifeCountText = createTextDisplayAndAddToRoot(root, " * 3", heartImageDisplay.getX() +
+                LIFE_COUNT_X_DIST_FROM_HEART, game_height + LIFE_COUNT_Y_DIST_FROM_GAME_HEIGHT, Color.MAROON);
+        levelNumberDisplay = createTextDisplayAndAddToRoot(root, "LEVEL 1", scene_width +
+                LEVEL_NUM_X_DIST_FROM_SCENE_WIDTH, game_height + LEVEL_NUM_Y_DIST_FROM_GAME_HEIGHT, Color.MAROON);
+        pointsDisplay = createTextDisplayAndAddToRoot(root, "POINTS\n" + formatPoints(points), scene_width/2 +
+                POINTS_X_DIST_FROM_SCENE_CENTER, game_height + POINTS_Y_DIST_FROM_GAME_HEIGHT, Color.MAROON);
         points = 0;
-    }
-
-    private static void createMenu(Group root, double xPos, double yPos, String text) {
-        menuBackground = new Rectangle(0, 0, Game.SCENE_WIDTH, Game.SCENE_HEIGHT);
-        menuBackground.setFill(MENU_BACKGROUND);
-        root.getChildren().add(menuBackground);
-        menuText = createTextDisplayAndAddToRoot(root, text, xPos, yPos, Color.MAROON);
-        menuText.setTextAlignment(TextAlignment.CENTER);
     }
 
     public static void updateLifeCountDisplay(int lives) {
@@ -89,15 +67,15 @@ public class LevelStatsDisplay {
         root.getChildren().add(userInterfaceArea);
     }
 
-    private static void createHeartImageDisplay(Group root, int game_height, InputStream heartInputStream) {
-        Image heartImage = new Image(heartInputStream);
-        heart = new ImageView(heartImage);
-        heart.setX(15);
-        heart.setY(game_height + 20);
-        // not sure what is the most "flexible" way to do this while preserving aspect ratio
-        heart.setFitHeight(heartImage.getHeight()/75);
-        heart.setFitWidth(heartImage.getWidth()/75);
-        root.getChildren().add(heart);
+    private static ImageView createImageDisplay(Group root, double xPos, double yPos, String imgName, double imgScaleDownFactor) {
+        Image img = new Image(LevelStatsDisplay.class.getClassLoader().getResource(imgName).toExternalForm());
+        ImageView display = new ImageView(img);
+        display.setX(xPos);
+        display.setY(yPos);
+        display.setFitHeight(img.getHeight()/imgScaleDownFactor);
+        display.setFitWidth(img.getWidth()/imgScaleDownFactor);
+        root.getChildren().add(display);
+        return display;
     }
 
     private static Text createTextDisplayAndAddToRoot(Group root, String text, double xPos, double yPos, Paint color) {
@@ -118,4 +96,35 @@ public class LevelStatsDisplay {
     private static String formatPoints(int points) {
         return String.format("%06d", points);
     }
+
+    /*
+    private static void createMenu(Group root, double xPos, double yPos, String text) {
+        menuBackground = new Rectangle(0, 0, Game.SCENE_WIDTH, Game.SCENE_HEIGHT);
+        menuBackground.setFill(MENU_BACKGROUND);
+        root.getChildren().add(menuBackground);
+        menuText = createTextDisplayAndAddToRoot(root, text, xPos, yPos, Color.MAROON);
+        menuText.setTextAlignment(TextAlignment.CENTER);
+    }
+
+    public static void createStartMenu(Group root) {
+        createMenu(root, 50, 30, "BREAKOUT BY PIERCE FORTE\n\n\nDIRECTIONS\n\nBREAK BRICKS TO EARN POINTS\n\nBE CAREFUL!\n" +
+                "YOU START WITH 3 LIVES\n\nRELEASE THE BALL WITH THE SPACE BAR\n\nMOVE THE PADDLES WITH\nTHE LEFT AND RIGHT KEYS\n\n" +
+                "COLLECT POWER UPS TO HELP\n(OR HURT!) YOU\n\nBEAT ALL 4 LEVELS TO WIN!\n\n\nCHEAT CODES\n\n1-9   SKIP TO LEVEL\n\nJ   SKIP " +
+                "TO NEXT LEVEL\n\nR   RESET LEVEL\n\nL   ADD 1 LIFE\n\nC   RESET BALL AND PADDLE\n(HELPFUL WHEN ENCOUNTERING BUGS)\n\n\nPRESS SPACE TO BEGIN");
+    }
+
+    public static void removeMenu(Group root) {
+        root.getChildren().removeAll(menuBackground, menuText);
+    }
+
+    public static void createGameOverMenu(Group root) {
+        createMenu(root, 50, 275, "GAME OVER!\n\n\nPRESS C TO RETRY WITH ANOTHER LIFE\n\nPRESS R TO RESTART LEVEL \n\nPRESS 1-9 TO CHANGE LEVEL");
+    }
+
+    public static void createLevelIntermissionMenu(Group root) {
+        createMenu(root, 100, 300, "LEVEL COMPLETE!\n\n\nPRESS SPACE TO ADVANCE");
+    }
+    public static void createVictoryMenu(Group root) {
+        createMenu(root, 100, 300, "YOU WIN!\n\n\nUSE CHEAT CODES TO CONTINUE");
+    }*/
 }

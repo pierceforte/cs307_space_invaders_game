@@ -18,7 +18,7 @@ public class Game extends Application {
     public static final int GAME_WIDTH = 400;
     public static final int GAME_HEIGHT = 600;
     public static final int SCENE_WIDTH = 400;
-    public static final int SCENE_HEIGHT = 800;
+    public static final int SCENE_HEIGHT = 700;
     public static final int FRAMES_PER_SECOND = 60;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final Paint BACKGROUND = Color.BLACK;
@@ -36,7 +36,7 @@ public class Game extends Application {
     @Override
     public void start (Stage stage) {
         // attach scene to the stage and display it
-        myScene = setupScene(GAME_WIDTH, GAME_HEIGHT, BACKGROUND);
+        myScene = setupScene(SCENE_WIDTH, SCENE_HEIGHT, BACKGROUND);
         stage.setScene(myScene);
         stage.setTitle(TITLE);
         stage.show();
@@ -57,8 +57,9 @@ public class Game extends Application {
         myScene = new Scene(root, width, height, background);
 
         // create a level
-        currLevel = new Level(1);
-        currLevel.addEnemiesAndSpaceshipToScene(root);
+        currLevel = new Level(root,1);
+        currLevel.addEnemiesAndSpaceshipToScene();
+        LevelStatsDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
 
         // respond to input
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
@@ -72,7 +73,7 @@ public class Game extends Application {
     // Change properties of shapes to animate them
     void step() {
         gameTimer += Game.SECOND_DELAY;
-        currLevel.handleEntitiesAndLasers(root, gameTimer, Game.SECOND_DELAY);
+        currLevel.handleEntitiesAndLasers(gameTimer, Game.SECOND_DELAY);
     }
 
     // What to do each time a key is pressed
@@ -86,7 +87,7 @@ public class Game extends Application {
             currLevel.moveSpaceship(false);
         }
         else if (code == KeyCode.SPACE) {
-            currLevel.attemptSpaceshipFire(root, gameTimer);
+            currLevel.attemptSpaceshipFire(gameTimer);
         }
         // pause/restart animation
         if (code == KeyCode.P) {
@@ -98,10 +99,11 @@ public class Game extends Application {
             }
         }
         else if (code == KeyCode.R) {
-            root.getChildren().clear();
+            //root.getChildren().clear();
+            currLevel.clearLevel();
             gameTimer = 0;
-            currLevel = new Level( 1);
-            currLevel.addEnemiesAndSpaceshipToScene(root);
+            currLevel = new Level( root, 1);
+            currLevel.addEnemiesAndSpaceshipToScene();
         }
 //        else if (code == KeyCode.S) {
 //            root.getChildren().clear();
