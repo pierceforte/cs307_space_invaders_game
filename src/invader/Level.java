@@ -4,9 +4,9 @@ import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
 import invader.projectile.Laser;
+
 import javafx.scene.Group;
 import javafx.scene.Node;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

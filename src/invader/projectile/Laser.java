@@ -1,7 +1,6 @@
 package invader.projectile;
 
 import invader.MovingObject;
-import invader.entity.Enemy;
 
 public class Laser extends MovingObject {
     public static final double X_SPEED = 0;
