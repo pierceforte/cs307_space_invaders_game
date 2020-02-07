@@ -187,4 +187,8 @@ public class Level {
         }
     }
 
+    public int getLevelNumber() {
+        return levelNumber;
+    }
+
 }
