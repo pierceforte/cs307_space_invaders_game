@@ -21,6 +21,7 @@ public class Level {
     private int curSpaceshipLaserIdNumber = 0;
     private int curEnemyLaserIdNumber = 0;
 
+    private Group root;
     private int levelNumber;
     private int rows;
     private Spaceship spaceship;
@@ -29,13 +30,23 @@ public class Level {
     private List<List<Enemy>> enemies = new ArrayList<>();
     private List<Laser> enemyLasers = new ArrayList<>();
 
-    public Level(String levelFile, int levelNumber) {
+    public Level(Group root, String levelFile, int levelNumber) {
+        this.root = root;
         readFile(levelFile);
         this.levelNumber = levelNumber;
         createEnemies();
     }
 
-    public void addEnemiesAndSpaceshipToScene(Group root) {
+    public void clearLevel() {
+        root.getChildren().remove(spaceship);
+        root.getChildren().removeAll(enemyLasers);
+        root.getChildren().removeAll(spaceshipLasers);
+        for (List<Enemy> enemyRow : enemies) {
+            root.getChildren().removeAll(enemyRow);
+        }
+    }
+
+    public void addEnemiesAndSpaceshipToScene() {
         for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
         spaceship = new Spaceship(Spaceship.DEFAULT_X_POS, Spaceship.DEFAULT_Y_POS);
         root.getChildren().add(spaceship);
@@ -49,37 +60,37 @@ public class Level {
         return rows;
     }
 
-    public void handleEntitiesAndLasers(Group root, double gameTimer, double elapsedTime) {
-        handleEnemyLasers(root, gameTimer, elapsedTime);
-        handleSpaceshipLasers(root, elapsedTime);
+    public void handleEntitiesAndLasers(double gameTimer, double elapsedTime) {
+        handleEnemyLasers(gameTimer, elapsedTime);
+        handleSpaceshipLasers(elapsedTime);
     }
 
-    public void attemptSpaceshipFire(Group root, double gameTimer) {
-        attemptLaserFire(root, gameTimer, spaceship, spaceshipLasers, 1);
+    public void attemptSpaceshipFire(double gameTimer) {
+        attemptLaserFire(gameTimer, spaceship, spaceshipLasers, 1);
     }
 
-    private void attemptLaserFire(Group root, double gameTimer, Entity entity, List<Laser> lasers, double timeBeforeNextShot) {
+    private void attemptLaserFire(double gameTimer, Entity entity, List<Laser> lasers, double timeBeforeNextShot) {
         if (gameTimer >= entity.getStartShootingTime()) {
-            shootLaser(root, entity, lasers, timeBeforeNextShot);
+            shootLaser(entity, lasers, timeBeforeNextShot);
         }
     }
 
-    private void handleEnemyLasers(Group root, double gameTimer, double elapsedTime) {
+    private void handleEnemyLasers(double gameTimer, double elapsedTime) {
         updateLaserPositionsOnStep(elapsedTime, enemyLasers);
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                attemptLaserFire(root, gameTimer, enemy, enemyLasers, 50);
+                attemptLaserFire(gameTimer, enemy, enemyLasers, 50);
             }
         }
-        handleLaserCollisions(root, elapsedTime, enemyLasers, spaceship);
+        handleLaserCollisions(elapsedTime, enemyLasers, spaceship);
     }
 
-    private void handleSpaceshipLasers(Group root, double elapsedTime) {
+    private void handleSpaceshipLasers(double elapsedTime) {
         updateLaserPositionsOnStep(elapsedTime, spaceshipLasers);
         List<Enemy> enemiesToRemove = new ArrayList<>();
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                enemiesToRemove.add((Enemy) handleLaserCollisions(root, elapsedTime, spaceshipLasers, enemy));
+                enemiesToRemove.add((Enemy) handleLaserCollisions(elapsedTime, spaceshipLasers, enemy));
             }
         }
         root.getChildren().removeAll(enemiesToRemove);
@@ -88,7 +99,7 @@ public class Level {
         }
     }
 
-    private Entity handleLaserCollisions(Group root, double elapsedTime, List<Laser> lasers, Entity entity) {
+    private Entity handleLaserCollisions(double elapsedTime, List<Laser> lasers, Entity entity) {
         List<Laser> lasersToRemove = new ArrayList<>();
         boolean removeEntity = false;
         for (Laser laser : lasers) {
@@ -114,7 +125,7 @@ public class Level {
         }
     }
 
-    private void shootLaser(Group root, Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot) {
+    private void shootLaser(Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot) {
         boolean isEnemy = entityShooting.getClass() == Enemy.class;
         Laser laser = new Laser(entityShooting.getX() + Entity.NON_BOSS_WIDTH/2,
                 entityShooting.getY(), isEnemy, isEnemy ? curEnemyLaserIdNumber++ : curSpaceshipLaserIdNumber++);
