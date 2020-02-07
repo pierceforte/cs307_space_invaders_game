@@ -105,10 +105,12 @@ public class Game extends Application {
             currLevel = new Level( root, 1);
             currLevel.addEnemiesAndSpaceshipToScene();
         }
-//        else if (code == KeyCode.S) {
-//            root.getChildren().clear();
-//            gameTimer = 0;
-//        }
+        else if (code == KeyCode.S) {
+            currLevel.clearLevel();
+            gameTimer = 0;
+            currLevel = new Level( root, 2);
+            currLevel.addEnemiesAndSpaceshipToScene();
+        }
     }
 
     /**
