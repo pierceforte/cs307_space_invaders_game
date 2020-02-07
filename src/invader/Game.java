@@ -105,11 +105,20 @@ public class Game extends Application {
             currLevel = new Level( root, 1);
             currLevel.addEnemiesAndSpaceshipToScene();
         }
-//        else if (code == KeyCode.S) {
-//            root.getChildren().clear();
-//            gameTimer = 0;
-//        }
+        else if (code == KeyCode.S) {
+            goToNextLevel();
+        }
     }
+
+    private void goToNextLevel() {
+        currLevel.clearLevel();
+        gameTimer = 0;
+        int currLevelNumber = currLevel.getLevelNumber();
+        currLevel = new Level( root,  ++currLevelNumber);
+        LevelStatsDisplay.updateLevelNumberDisplay(currLevelNumber);
+        currLevel.addEnemiesAndSpaceshipToScene();
+    }
+
 
     /**
      * Start the program.
