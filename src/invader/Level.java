@@ -17,6 +17,7 @@ public class Level {
 
     public static final double ENEMY_SPACING = 10;
     public static final int ENEMIES_PER_ROW = 9;
+    public static final int POINTS_PER_ENEMY_HIT = 25;
 
     private int curSpaceshipLaserIdNumber = 0;
     private int curEnemyLaserIdNumber = 0;
@@ -111,6 +112,7 @@ public class Level {
                 lasersToRemove.add(laser);
                 if (didCollide(laser, entity)) {
                     removeEntity = true;
+                    LevelStatsDisplay.updatePointsDisplay(POINTS_PER_ENEMY_HIT);
                 }
             }
         }
