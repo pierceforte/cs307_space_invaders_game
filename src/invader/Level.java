@@ -29,7 +29,8 @@ public class Level {
     private List<List<Enemy>> enemies = new ArrayList<>();
     private List<Laser> enemyLasers = new ArrayList<>();
 
-    public Level(String levelFile, int levelNumber) {
+    public Level(int levelNumber) {
+        String levelFile = "resources/level_files/level_" + levelNumber + ".txt";
         readFile(levelFile);
         this.levelNumber = levelNumber;
         createEnemies();

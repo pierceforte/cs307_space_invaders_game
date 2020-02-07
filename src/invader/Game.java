@@ -27,7 +27,7 @@ public class Game extends Application {
     private Scene myScene;
     private Timeline myAnimation;
     private double gameTimer = 0;
-    private Level level1;
+    private Level currLevel;
     private Group root;
 
     /**
@@ -57,8 +57,8 @@ public class Game extends Application {
         myScene = new Scene(root, width, height, background);
 
         // create a level
-        level1 = new Level("resources/level_files/level_01.txt", 1);
-        level1.addEnemiesAndSpaceshipToScene(root);
+        currLevel = new Level(1);
+        currLevel.addEnemiesAndSpaceshipToScene(root);
 
         // respond to input
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
@@ -72,21 +72,21 @@ public class Game extends Application {
     // Change properties of shapes to animate them
     void step() {
         gameTimer += Game.SECOND_DELAY;
-        level1.handleEntitiesAndLasers(root, gameTimer, Game.SECOND_DELAY);
+        currLevel.handleEntitiesAndLasers(root, gameTimer, Game.SECOND_DELAY);
     }
 
     // What to do each time a key is pressed
     private void handleKeyInput (KeyCode code) {
         if (code == KeyCode.RIGHT) {
             //moverShape.setX(moverShape.getX() + MOVER_SPEED);
-            level1.moveSpaceship(true);
+            currLevel.moveSpaceship(true);
         }
         else if (code == KeyCode.LEFT) {
             //moverShape.setX(moverShape.getX() - MOVER_SPEED);
-            level1.moveSpaceship(false);
+            currLevel.moveSpaceship(false);
         }
         else if (code == KeyCode.SPACE) {
-            level1.attemptSpaceshipFire(root, gameTimer);
+            currLevel.attemptSpaceshipFire(root, gameTimer);
         }
         // pause/restart animation
         if (code == KeyCode.P) {
@@ -100,9 +100,13 @@ public class Game extends Application {
         else if (code == KeyCode.R) {
             root.getChildren().clear();
             gameTimer = 0;
-            level1 = new Level("resources/level_files/level_01.txt", 1);
-            level1.addEnemiesAndSpaceshipToScene(root);
+            currLevel = new Level( 1);
+            currLevel.addEnemiesAndSpaceshipToScene(root);
         }
+//        else if (code == KeyCode.S) {
+//            root.getChildren().clear();
+//            gameTimer = 0;
+//        }
     }
 
     /**
