@@ -22,6 +22,11 @@ public class Game extends Application {
     public static final int FRAMES_PER_SECOND = 60;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final Paint BACKGROUND = Color.BLACK;
+    public static final int KEY_CODE_1 = 49;
+    public static final int KEY_CODE_9 = 57;
+    public static final int KEY_CODE_TO_LEVEL_CONVERSION = 48;
+    public static final int MAX_LEVEL = 3;
+
 
     // some things we need to remember during our game
     private Scene myScene;
@@ -106,23 +111,28 @@ public class Game extends Application {
             //root.getChildren().clear();
             curLevel.clearLevel();
             gameTimer = 0;
-            curLevel = new Level( root, curLevel.getLevelNumber());
+            curLevel = new Level(root, curLevel.getLevelNumber());
             curLevel.addEnemiesAndSpaceshipToScene();
         }
         else if (code == KeyCode.S) {
-            goToNextLevel();
+            if (curLevel.getLevelNumber() < MAX_LEVEL) {
+                goToLevel(curLevel.getLevelNumber()+1);
+            }
         }
         else if (code == KeyCode.L) {
             curLevel.addLife();
         }
+        else if (code.getCode() >= KEY_CODE_1 && code.getCode() <= KEY_CODE_9) {
+            int levelNumber = code.getCode() <= KEY_CODE_9 - 7 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;
+            goToLevel(levelNumber);
+        }
     }
 
-    private void goToNextLevel() {
+    private void goToLevel(int levelNumber) {
         curLevel.clearLevel();
         gameTimer = 0;
-        int currLevelNumber = curLevel.getLevelNumber();
-        curLevel = new Level( root,  ++currLevelNumber);
-        StatusDisplay.updateLevelNumberDisplay(currLevelNumber);
+        curLevel = new Level(root, levelNumber);
+        StatusDisplay.updateLevelNumberDisplay(levelNumber);
         curLevel.addEnemiesAndSpaceshipToScene();
     }
 
