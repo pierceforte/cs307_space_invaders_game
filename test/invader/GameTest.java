@@ -27,6 +27,7 @@ public class GameTest extends DukeApplicationTest {
     private List<List<Enemy>> myEnemies = new ArrayList<>();
     private Enemy myEnemy31;
     private Laser mySpaceshipLaser;
+    private Level myLevel;
 
     @Override
     public void start (Stage stage) {
@@ -34,6 +35,7 @@ public class GameTest extends DukeApplicationTest {
         myScene = myGame.setupScene(Game.GAME_WIDTH, Game.GAME_HEIGHT, Game.BACKGROUND);
         stage.setScene(myScene);
         stage.show();
+        myLevel = myGame.getCurLevel();
 
         // find individual items within game by ID (must have been set in your code using setID())
         mySpaceship = lookup("#spaceship").query();
@@ -48,6 +50,18 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, KeyCode.SPACE);
         // need to wait for scene to update after key press in application thread
         Platform.runLater(() -> mySpaceshipLaser = lookup("#spaceshipLaser0").query());
+    }
+
+    @Test
+    public void testSkipLevelCheatKey() {
+        // assert that level is level 1 at start
+        assertEquals(1, myLevel.getLevelNumber());
+        // press cheat key to skip to next level
+        press(myScene, KeyCode.S);
+        // need to reassign our level to the new level created in game
+        myLevel = myGame.getCurLevel();
+        // assert that level is now level 2
+        Platform.runLater(() -> assertEquals(2, myLevel.getLevelNumber()));
     }
 
     @Test

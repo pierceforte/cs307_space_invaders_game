@@ -70,6 +70,10 @@ public class Game extends Application {
         return root;
     }
 
+    public Level getCurLevel() {
+        return curLevel;
+    }
+
     // Change properties of shapes to animate them
     void step() {
         gameTimer += Game.SECOND_DELAY;
