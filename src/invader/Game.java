@@ -59,7 +59,7 @@ public class Game extends Application {
         // create a level
         currLevel = new Level(root,1);
         currLevel.addEnemiesAndSpaceshipToScene();
-        LevelStatsDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
+        StatusDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
 
         // respond to input
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
@@ -102,7 +102,7 @@ public class Game extends Application {
             //root.getChildren().clear();
             currLevel.clearLevel();
             gameTimer = 0;
-            currLevel = new Level( root, 1);
+            currLevel = new Level( root, currLevel.getLevelNumber());
             currLevel.addEnemiesAndSpaceshipToScene();
         }
         else if (code == KeyCode.S) {
@@ -115,7 +115,7 @@ public class Game extends Application {
         gameTimer = 0;
         int currLevelNumber = currLevel.getLevelNumber();
         currLevel = new Level( root,  ++currLevelNumber);
-        LevelStatsDisplay.updateLevelNumberDisplay(currLevelNumber);
+        StatusDisplay.updateLevelNumberDisplay(currLevelNumber);
         currLevel.addEnemiesAndSpaceshipToScene();
     }
 

@@ -46,7 +46,19 @@ public class MovingObject extends ImageView {
         this.setY(this.getY() - this.getYSpeed() * elapsedTime);
     }
 
-    public boolean isOutOfBounds() {
+    public boolean isOutOfXBounds() {
+        return (this.getX() >= Game.GAME_WIDTH - this.getFitWidth()|| this.getX() <= 0);
+    }
+
+    public boolean isOutOfYBounds() {
         return (this.getY() >= Game.GAME_HEIGHT - 20 || this.getY() <= 20);
+    }
+
+    public void reverseXDirection() {
+        this.xSpeed *= -1;
+    }
+
+    public void reverseYDirection() {
+        this.ySpeed *= -1;
     }
 }

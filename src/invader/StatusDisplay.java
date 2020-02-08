@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 
-public class LevelStatsDisplay {
+public class StatusDisplay {
 
     public static final Paint MENU_BACKGROUND = Color.GRAY;
     public static final Paint INTERFACE_BACKGROUND = Color.GRAY;
@@ -69,7 +69,7 @@ public class LevelStatsDisplay {
     }
 
     private static ImageView createImageDisplay(Group root, double xPos, double yPos, String imgName, double imgScaleDownFactor) {
-        Image img = new Image(LevelStatsDisplay.class.getClassLoader().getResource(imgName).toExternalForm());
+        Image img = new Image(StatusDisplay.class.getClassLoader().getResource(imgName).toExternalForm());
         ImageView display = new ImageView(img);
         display.setX(xPos);
         display.setY(yPos);

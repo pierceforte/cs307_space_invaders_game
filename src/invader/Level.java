@@ -15,9 +15,12 @@ import java.util.Scanner;
 
 public class Level {
 
+    public static final String LEVEL_FILE_PATH = "resources/level_files/level_";
+    public static final String LEVEL_FILE_EXTENSION = ".txt";
     public static final double ENEMY_SPACING = 10;
     public static final int ENEMIES_PER_ROW = 9;
     public static final int POINTS_PER_ENEMY_HIT = 25;
+    public static final int ENEMY_SPEED_FACTOR_BY_LEVEL = 10;
 
     private int curSpaceshipLaserIdNumber = 0;
     private int curEnemyLaserIdNumber = 0;
@@ -32,8 +35,8 @@ public class Level {
     private List<Laser> enemyLasers = new ArrayList<>();
 
     public Level(Group root, int levelNumber){
-        String levelFile = "resources/level_files/level_" + levelNumber + ".txt";
         this.root = root;
+        String levelFile = LEVEL_FILE_PATH + levelNumber + LEVEL_FILE_EXTENSION;
         readFile(levelFile);
         this.levelNumber = levelNumber;
         createEnemies();
@@ -63,6 +66,7 @@ public class Level {
     }
 
     public void handleEntitiesAndLasers(double gameTimer, double elapsedTime) {
+        handleEnemiesMovement(elapsedTime);
         handleEnemyLasers(gameTimer, elapsedTime);
         handleSpaceshipLasers(elapsedTime);
     }
@@ -77,6 +81,28 @@ public class Level {
         }
     }
 
+    private void handleEnemiesMovement(double elapsedTime) {
+        for (List<Enemy> enemyRow : enemies) {
+            for (Enemy enemy : enemyRow) {
+                enemy.updatePositionOnStep(elapsedTime);
+            }
+        }
+        boolean reverseMovement = false;
+        for (List<Enemy> enemyRow : enemies) {
+            if (enemyRow.get(0).isOutOfXBounds() || enemyRow.get(enemyRow.size()-1).isOutOfXBounds()) {
+                reverseMovement = true;
+                break;
+            }
+        }
+        if (reverseMovement) {
+            for (List<Enemy> enemyRow : enemies) {
+                for (Enemy enemy : enemyRow) {
+                    enemy.reverseXDirection();
+                }
+            }
+        }
+    }
+
     private void handleEnemyLasers(double gameTimer, double elapsedTime) {
         updateLaserPositionsOnStep(elapsedTime, enemyLasers);
         for (List<Enemy> enemyRow : enemies) {
@@ -84,9 +110,9 @@ public class Level {
                 attemptLaserFire(gameTimer, enemy, enemyLasers, 50);
             }
         }
-        if (handleLaserCollisions(elapsedTime, enemyLasers, spaceship) != null) {
+        if (handleLaserCollisions(enemyLasers, spaceship) != null) {
             spaceship.lowerLives();
-            LevelStatsDisplay.updateLifeCountDisplay(spaceship.getLives());
+            StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
         }
     }
 
@@ -95,7 +121,7 @@ public class Level {
         List<Enemy> enemiesToRemove = new ArrayList<>();
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                enemiesToRemove.add((Enemy) handleLaserCollisions(elapsedTime, spaceshipLasers, enemy));
+                enemiesToRemove.add((Enemy) handleLaserCollisions(spaceshipLasers, enemy));
             }
         }
         root.getChildren().removeAll(enemiesToRemove);
@@ -104,15 +130,17 @@ public class Level {
         }
     }
 
-    private Entity handleLaserCollisions(double elapsedTime, List<Laser> lasers, Entity entity) {
+    private Entity handleLaserCollisions(List<Laser> lasers, Entity entity) {
         List<Laser> lasersToRemove = new ArrayList<>();
         boolean removeEntity = false;
         for (Laser laser : lasers) {
-            if (didCollide(laser, entity) || laser.isOutOfBounds()) {
+            if (didCollide(laser, entity) || laser.isOutOfYBounds()) {
                 lasersToRemove.add(laser);
                 if (didCollide(laser, entity)) {
                     removeEntity = true;
-                    LevelStatsDisplay.updatePointsDisplay(POINTS_PER_ENEMY_HIT);
+                    if (entity.getClass() == Enemy.class) {
+                        StatusDisplay.updatePointsDisplay(POINTS_PER_ENEMY_HIT);
+                    }
                 }
             }
         }
@@ -147,7 +175,8 @@ public class Level {
             List<Enemy> tempRow = new ArrayList<>();
             double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
             for (int j = 0; j < enemyIdentifiers.get(0).size(); j++) {
-                Enemy curEnemy = new Enemy(xPos, yPos, enemyIdentifiers.get(i).get(j), j + i*Level.ENEMIES_PER_ROW);
+                Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*levelNumber,
+                        0, enemyIdentifiers.get(i).get(j), j + i*Level.ENEMIES_PER_ROW);
                 /*
                 if (!powerUpGrid.get(i*BRICKS_PER_ROW + j).equals("none")) {
                     curBrick.setPowerUp(powerUpGrid.get(i*BRICKS_PER_ROW + j));
