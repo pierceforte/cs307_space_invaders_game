@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.util.WaitForAsyncUtils;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -47,6 +48,36 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, KeyCode.SPACE);
         // need to wait for scene to update after key press in application thread
         Platform.runLater(() -> mySpaceshipLaser = lookup("#spaceshipLaser0").query());
+    }
+
+    @Test
+    public void testAddLifeCheatKey() {
+        // assert that spaceship has 3 (default) lives
+        assertEquals(3, mySpaceship.getLives());
+        // press cheat key to add life
+        press(myScene, KeyCode.L);
+        // assert that spaceship has gained 1 life
+        assertEquals(4, mySpaceship.getLives());
+    }
+
+    @Test
+    public void testSpaceshipLifeLoss() {
+        // set enemy's start shooting time to 0 so it shoots immediately
+        myEnemy31.setStartShootingTime(0);
+        // step to initiate laser fire from enemy31
+        step();
+        // since all other enemies cannot fire until 1 second after game begins,
+        // we know enemy31's laser is the 0th laser and can query it as such
+        Laser myEnemy31Laser = lookup("#enemyLaser0").query();
+        // position the laser one step prior to hitting spaceship
+        myEnemy31Laser.setY(mySpaceship.getY() - 6*Laser.Y_SPEED*Game.SECOND_DELAY);
+        // assert that laser is in scene and spaceship has 3 (default) lives before collision
+        assertTrue(isNodeInMyScene(myEnemy31Laser));
+        assertEquals(3, mySpaceship.getLives());
+        step();
+        // assert that laser has been removed from scene and spaceship has 2 lives after collision
+        assertFalse(isNodeInMyScene(myEnemy31Laser));
+        assertEquals(2, mySpaceship.getLives());
     }
 
     @Test

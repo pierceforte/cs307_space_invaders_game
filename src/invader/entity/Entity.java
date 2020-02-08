@@ -37,4 +37,8 @@ public class Entity extends MovingObject {
     public void addToStartShootingTime(double timeToAdd) {
         startingShootTime += timeToAdd;
     }
+
+    public void setStartShootingTime(double startingShootTime) {
+        this.startingShootTime = startingShootTime;
+    }
 }
