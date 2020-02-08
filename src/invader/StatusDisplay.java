@@ -13,6 +13,7 @@ public class LevelStatsDisplay {
 
     public static final Paint MENU_BACKGROUND = Color.GRAY;
     public static final Paint INTERFACE_BACKGROUND = Color.GRAY;
+    public static final Paint TEXT_COLOR = Color.MAROON;
     public static final String HEART_IMAGE = "heart.png";
     public static final int HEART_IMAGE_X_POS = 15;
     public static final int HEART_IMAGE_Y_DIST_FROM_GAME_HEIGHT = 20;
@@ -39,11 +40,11 @@ public class LevelStatsDisplay {
         heartImageDisplay = createImageDisplay(root, HEART_IMAGE_X_POS, game_height +
                 HEART_IMAGE_Y_DIST_FROM_GAME_HEIGHT, HEART_IMAGE, HEART_IMAGE_SCALE_DOWN_FACTOR);
         lifeCountText = createTextDisplayAndAddToRoot(root, " * 3", heartImageDisplay.getX() +
-                LIFE_COUNT_X_DIST_FROM_HEART, game_height + LIFE_COUNT_Y_DIST_FROM_GAME_HEIGHT, Color.MAROON);
+                LIFE_COUNT_X_DIST_FROM_HEART, game_height + LIFE_COUNT_Y_DIST_FROM_GAME_HEIGHT, TEXT_COLOR);
         levelNumberDisplay = createTextDisplayAndAddToRoot(root, "LEVEL 1", scene_width +
-                LEVEL_NUM_X_DIST_FROM_SCENE_WIDTH, game_height + LEVEL_NUM_Y_DIST_FROM_GAME_HEIGHT, Color.MAROON);
+                LEVEL_NUM_X_DIST_FROM_SCENE_WIDTH, game_height + LEVEL_NUM_Y_DIST_FROM_GAME_HEIGHT, TEXT_COLOR);
         pointsDisplay = createTextDisplayAndAddToRoot(root, "POINTS\n" + formatPoints(points), scene_width/2 +
-                POINTS_X_DIST_FROM_SCENE_CENTER, game_height + POINTS_Y_DIST_FROM_GAME_HEIGHT, Color.MAROON);
+                POINTS_X_DIST_FROM_SCENE_CENTER, game_height + POINTS_Y_DIST_FROM_GAME_HEIGHT, TEXT_COLOR);
         points = 0;
     }
 
@@ -79,12 +80,12 @@ public class LevelStatsDisplay {
     }
 
     private static Text createTextDisplayAndAddToRoot(Group root, String text, double xPos, double yPos, Paint color) {
-        Text tempDisplay = createTextDisplay(root, text, xPos, yPos, color);
+        Text tempDisplay = createTextDisplay(text, xPos, yPos, color);
         root.getChildren().add(tempDisplay);
         return tempDisplay;
     }
 
-    private static Text createTextDisplay(Group root, String text, double xPos, double yPos, Paint color) {
+    private static Text createTextDisplay(String text, double xPos, double yPos, Paint color) {
         Text tempDisplay = new Text(text);
         tempDisplay.setFont(Font.font ("Verdana", 15));
         tempDisplay.setX(xPos);
