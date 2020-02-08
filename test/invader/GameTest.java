@@ -126,21 +126,6 @@ public class GameTest extends DukeApplicationTest {
                 false);
     }
 
-    private void testEnemiesReverseXDirection(int enemyColumn, double startingXPos, boolean isStartingXSpeedPositive) {
-        // get first or last enemy in first row
-        Enemy curEnemy = myEnemies.get(0).get(enemyColumn);
-        // set enemy to xPos one step before colliding with wall
-        curEnemy.setX(startingXPos);
-        // if checking left bound, set enemy's direction to left
-        if (!isStartingXSpeedPositive) curEnemy.reverseXDirection();
-        // assert that the enemy's speed is in direction of wall before collision
-        assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) > 0);
-        // step so enemy collides with wall
-        step();
-        // assert that enemy's speed is in opposite direction of wall after collision
-        assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) < 0);
-    }
-
     @Test
     public void testLaserDisappearsIfOutOfBounds() {
         // check if laser is on scene before being out of bounds
@@ -226,5 +211,20 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, code);
         // then check its position has changed properly
         assertEquals(expectedPosition, mySpaceship.getX());
+    }
+
+    private void testEnemiesReverseXDirection(int enemyColumn, double startingXPos, boolean isStartingXSpeedPositive) {
+        // get first or last enemy in first row
+        Enemy curEnemy = myEnemies.get(0).get(enemyColumn);
+        // set enemy to xPos one step before colliding with wall
+        curEnemy.setX(startingXPos);
+        // if checking left bound, set enemy's direction to left
+        if (!isStartingXSpeedPositive) curEnemy.reverseXDirection();
+        // assert that the enemy's speed is in direction of wall before collision
+        assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) > 0);
+        // step so enemy collides with wall
+        step();
+        // assert that enemy's speed is in opposite direction of wall after collision
+        assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) < 0);
     }
 }
