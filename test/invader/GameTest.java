@@ -9,9 +9,11 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,36 +50,59 @@ public class GameTest extends DukeApplicationTest {
     }
 
     @Test
+    public void testEnemiesBounceOffRightWall() {
+        // check collision off right wall
+        testEnemiesReverseXDirection(Level.ENEMIES_PER_ROW-1,
+                Game.GAME_WIDTH - Enemy.WIDTH - Game.SECOND_DELAY, true);
+    }
+
+    @Test
+    public void testEnemiesBounceOffLeftWall() {
+        // check collision off left wall
+        testEnemiesReverseXDirection(0, Game.SECOND_DELAY,
+                false);
+    }
+
+    private void testEnemiesReverseXDirection(int enemyColumn, double startingXPos, boolean isStartingXSpeedPositive) {
+        // get first or last enemy in first row
+        Enemy curEnemy = myEnemies.get(0).get(enemyColumn);
+        // set enemy to xPos one step before colliding with wall
+        curEnemy.setX(startingXPos);
+        // if checking left bound, set enemy's direction to left
+        if (!isStartingXSpeedPositive) curEnemy.reverseXDirection();
+        // assert that the enemy's speed is in direction of wall before collision
+        assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) > 0);
+        // step so enemy collides with wall
+        step();
+        // assert that enemy's speed is in opposite direction of wall after collision
+        assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) < 0);
+    }
+
+    @Test
     public void testLaserDisappearsIfOutOfBounds() {
-        // need to include a run later to modify application thread from here
-        Platform.runLater(() -> {
-            // check if laser is on scene before being out of bounds
-            assertTrue(isNodeInMyScene(mySpaceshipLaser));
-            // position the laser one step prior to being out of bounds
-            mySpaceshipLaser.setY(Game.GAME_HEIGHT - 20 + Laser.Y_SPEED*Game.SECOND_DELAY);
-            // step so laser is out of bounds
-            myGame.step();
-            // check if the laser has been removed from scene upon being out of bounds
-            assertFalse(isNodeInMyScene(mySpaceshipLaser));
-        });
+        // check if laser is on scene before being out of bounds
+        assertTrue(isNodeInMyScene(mySpaceshipLaser));
+        // position the laser one step prior to being out of bounds
+        mySpaceshipLaser.setY(Game.GAME_HEIGHT - 20 + Laser.Y_SPEED*Game.SECOND_DELAY);
+        // step so laser is out of bounds
+        step();
+        // check if the laser has been removed from scene upon being out of bounds
+        assertFalse(isNodeInMyScene(mySpaceshipLaser));
     }
 
     @Test
     public void testLaserCollisionWithEnemy() {
-        // need to include a run later to modify application thread from here
-        Platform.runLater(() -> {
-            // check if laser and enemy are on scene before collision
-            assertTrue(isNodeInMyScene(myEnemy31));
-            assertTrue(isNodeInMyScene(mySpaceshipLaser));
-            // position the laser one step prior to hitting enemy31
-            mySpaceshipLaser.setX(myEnemy31.getX());
-            mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
-            // step to initiate collision
-            myGame.step();
-            // check if both enemy31 and the laser have been removed from scene upon collision
-            assertFalse(isNodeInMyScene(myEnemy31));
-            assertFalse(isNodeInMyScene(mySpaceshipLaser));
-        });
+        // check if laser and enemy are on scene before collision
+        assertTrue(isNodeInMyScene(myEnemy31));
+        assertTrue(isNodeInMyScene(mySpaceshipLaser));
+        // position the laser one step prior to hitting enemy31
+        mySpaceshipLaser.setX(myEnemy31.getX());
+        mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
+        // step to initiate collision
+        step();
+        // check if both enemy31 and the laser have been removed from scene upon collision
+        assertFalse(isNodeInMyScene(myEnemy31));
+        assertFalse(isNodeInMyScene(mySpaceshipLaser));
     }
 
     @Test
@@ -121,6 +146,10 @@ public class GameTest extends DukeApplicationTest {
             }
             yPos += Enemy.HEIGHT;
         }
+    }
+
+    private void step() {
+        javafxRun(() -> myGame.step());
     }
 
     private boolean isNodeInMyScene(Node node) {

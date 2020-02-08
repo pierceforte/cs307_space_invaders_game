@@ -92,6 +92,12 @@ public class DukeApplicationTest extends ApplicationTest {
         simulateAction(lv, () -> lv.getSelectionModel().select(value));
     }
 
+    protected void javafxRun (Runnable action) {
+        // fire event using given action on the given node
+        Platform.runLater(action);
+        // make it "later" so the requested event has time to run
+        WaitForAsyncUtils.waitForFxEvents();
+    }
 
     // HACKs: needed to get simulating an UI action working :(
     private void simulateAction (Node n, Runnable action) {
@@ -99,12 +105,5 @@ public class DukeApplicationTest extends ApplicationTest {
         moveTo(n);
         // fire event using given action on the given node
         javafxRun(action);
-    }
-
-    private void javafxRun (Runnable action) {
-        // fire event using given action on the given node
-        Platform.runLater(action);
-        // make it "later" so the requested event has time to run
-        WaitForAsyncUtils.waitForFxEvents();
     }
 }

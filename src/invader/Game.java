@@ -27,7 +27,7 @@ public class Game extends Application {
     private Scene myScene;
     private Timeline myAnimation;
     private double gameTimer = 0;
-    private Level currLevel;
+    private Level curLevel;
     private Group root;
 
     /**
@@ -57,8 +57,8 @@ public class Game extends Application {
         myScene = new Scene(root, width, height, background);
 
         // create a level
-        currLevel = new Level(root,1);
-        currLevel.addEnemiesAndSpaceshipToScene();
+        curLevel = new Level(root,1);
+        curLevel.addEnemiesAndSpaceshipToScene();
         StatusDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
 
         // respond to input
@@ -73,21 +73,21 @@ public class Game extends Application {
     // Change properties of shapes to animate them
     void step() {
         gameTimer += Game.SECOND_DELAY;
-        currLevel.handleEntitiesAndLasers(gameTimer, Game.SECOND_DELAY);
+        curLevel.handleEntitiesAndLasers(gameTimer, Game.SECOND_DELAY);
     }
 
     // What to do each time a key is pressed
     private void handleKeyInput (KeyCode code) {
         if (code == KeyCode.RIGHT) {
             //moverShape.setX(moverShape.getX() + MOVER_SPEED);
-            currLevel.moveSpaceship(true);
+            curLevel.moveSpaceship(true);
         }
         else if (code == KeyCode.LEFT) {
             //moverShape.setX(moverShape.getX() - MOVER_SPEED);
-            currLevel.moveSpaceship(false);
+            curLevel.moveSpaceship(false);
         }
         else if (code == KeyCode.SPACE) {
-            currLevel.attemptSpaceshipFire(gameTimer);
+            curLevel.attemptSpaceshipFire(gameTimer);
         }
         // pause/restart animation
         if (code == KeyCode.P) {
@@ -100,25 +100,27 @@ public class Game extends Application {
         }
         else if (code == KeyCode.R) {
             //root.getChildren().clear();
-            currLevel.clearLevel();
+            curLevel.clearLevel();
             gameTimer = 0;
-            currLevel = new Level( root, currLevel.getLevelNumber());
-            currLevel.addEnemiesAndSpaceshipToScene();
+            curLevel = new Level( root, curLevel.getLevelNumber());
+            curLevel.addEnemiesAndSpaceshipToScene();
         }
         else if (code == KeyCode.S) {
             goToNextLevel();
         }
+        else if (code == KeyCode.L) {
+            curLevel.addLife();
+        }
     }
 
     private void goToNextLevel() {
-        currLevel.clearLevel();
+        curLevel.clearLevel();
         gameTimer = 0;
-        int currLevelNumber = currLevel.getLevelNumber();
-        currLevel = new Level( root,  ++currLevelNumber);
+        int currLevelNumber = curLevel.getLevelNumber();
+        curLevel = new Level( root,  ++currLevelNumber);
         StatusDisplay.updateLevelNumberDisplay(currLevelNumber);
-        currLevel.addEnemiesAndSpaceshipToScene();
+        curLevel.addEnemiesAndSpaceshipToScene();
     }
-
 
     /**
      * Start the program.

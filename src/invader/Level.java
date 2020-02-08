@@ -57,6 +57,11 @@ public class Level {
         root.getChildren().add(spaceship);
     }
 
+    public void addLife() {
+        spaceship.addLife();
+        StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
+    }
+
     public List<List<Enemy>> getEnemies() {
         return enemies;
     }
@@ -124,10 +129,19 @@ public class Level {
                 enemiesToRemove.add((Enemy) handleLaserCollisions(spaceshipLasers, enemy));
             }
         }
+        removeInactiveEnemies(enemiesToRemove);
+    }
+
+    private void removeInactiveEnemies(List<Enemy> enemiesToRemove) {
         root.getChildren().removeAll(enemiesToRemove);
         for(List<Enemy> enemyRow : enemies) {
             enemyRow.removeAll(enemiesToRemove);
         }
+        List<List<Enemy>> enemyRowsToRemove = new ArrayList<>();
+        for(List<Enemy> enemyRow : enemies) {
+            if (enemyRow.size() == 0) enemyRowsToRemove.add(enemyRow);
+        }
+        enemies.removeAll(enemyRowsToRemove );
     }
 
     private Entity handleLaserCollisions(List<Laser> lasers, Entity entity) {
