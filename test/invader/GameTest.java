@@ -53,6 +53,24 @@ public class GameTest extends DukeApplicationTest {
     }
 
     @Test
+    public void testJumpToLevelCheatKeys() {
+        List<KeyCode> keyCodes1Through9 = List.of(KeyCode.DIGIT1, KeyCode.DIGIT2, KeyCode.DIGIT3, KeyCode.DIGIT4,
+                KeyCode.DIGIT5, KeyCode.DIGIT6, KeyCode.DIGIT7, KeyCode.DIGIT8, KeyCode.DIGIT9);
+        // the first expected level is level 1
+        int expectedLevelNumber = 1;
+        for (KeyCode code : keyCodes1Through9) {
+            // press cheat key to jump to level
+            press(myScene, code);
+            // need to reassign our level to the new level created in game
+            myLevel = myGame.getCurLevel();
+            // assert that new level is correct
+            assertEquals(expectedLevelNumber, myLevel.getLevelNumber());
+            // if expected level is not max level, increment for next test
+            if (expectedLevelNumber < Game.MAX_LEVEL) expectedLevelNumber++;
+        }
+    }
+
+    @Test
     public void testSkipLevelCheatKey() {
         // assert that level is level 1 at start
         assertEquals(1, myLevel.getLevelNumber());
@@ -61,7 +79,7 @@ public class GameTest extends DukeApplicationTest {
         // need to reassign our level to the new level created in game
         myLevel = myGame.getCurLevel();
         // assert that level is now level 2
-        Platform.runLater(() -> assertEquals(2, myLevel.getLevelNumber()));
+        assertEquals(2, myLevel.getLevelNumber());
     }
 
     @Test
