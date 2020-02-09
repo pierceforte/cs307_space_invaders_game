@@ -97,16 +97,16 @@ public class Game extends Application {
     private void handleMenuKeyInput (KeyCode code) {
         isMenuActive = false;
         StatusDisplay.removeMenu(root);
-        RestartSkipAndDigitKeyActions(code);
+        restartSkipAndDigitKeyActions(code);
     }
 
     // What to do each time a key is pressed
     private void handleKeyInput (KeyCode code) {
         if (isMenuActive) {
-            handleMenuKeyInput(code);
+            if (isKeyCodeADigit(code) || code == KeyCode.R || code == KeyCode.S) handleMenuKeyInput(code);
             return;
         }
-        if (code == KeyCode.RIGHT) {
+        else if (code == KeyCode.RIGHT) {
             //moverShape.setX(moverShape.getX() + MOVER_SPEED);
             curLevel.moveSpaceship(true);
         }
@@ -118,7 +118,7 @@ public class Game extends Application {
             curLevel.attemptSpaceshipFire(gameTimer);
         }
         // pause/restart animation
-        if (code == KeyCode.P) {
+        else if (code == KeyCode.P) {
             if (myAnimation.getStatus() == Animation.Status.RUNNING) {
                 myAnimation.pause();
             }
@@ -132,9 +132,10 @@ public class Game extends Application {
         else if (code == KeyCode.A) {
             curLevel.addPowerUp(gameTimer);
         }
+        else restartSkipAndDigitKeyActions(code);
     }
 
-    private void RestartSkipAndDigitKeyActions(KeyCode code) {
+    private void restartSkipAndDigitKeyActions(KeyCode code) {
         if (code == KeyCode.R) {
             goToLevel(curLevel.getLevelNumber());
         }
