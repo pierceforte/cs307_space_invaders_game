@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Level {
@@ -37,6 +38,8 @@ public class Level {
     private List<List<Enemy>> enemies = new ArrayList<>();
     private List<Laser> enemyLasers = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
+    private List<List<Integer>> powerUpGrid = new ArrayList<>();
+    //private Map<Integer, PowerUp> powerUpIntegerToType = Map.of(1, SpaceshipSpeedPowerUp);
 
     public Level(Group root, int levelNumber, Game myGame){
         this.root = root;
@@ -46,6 +49,8 @@ public class Level {
         createEnemies();
         addEnemiesAndSpaceshipToScene();
         this.myGame = myGame;
+        StatusDisplay.updateLevelNumberDisplay(levelNumber);
+        StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
     }
 
     public void clearLevel() {
@@ -184,7 +189,7 @@ public class Level {
         List<PowerUp> powerUpsToRemoveFromGame = new ArrayList<>();
         for (PowerUp powerUp: powerUps) {
             if (powerUp.hasBeenActivated()) {
-                if (!powerUp.isActive(gameTimer)) {
+                if (!powerUp.isActive(gameTimer, spaceship)) {
                     powerUp.deactivate(gameTimer, spaceship);
                     powerUpsToRemoveFromGame.add(powerUp);
                 }

@@ -40,13 +40,15 @@ public abstract class PowerUp extends MovingObject {
         return hasBeenActivated;
     }
 
-    public boolean isActive(double gameTimer) {
+    public boolean isActive(double gameTimer, Spaceship spaceship) {
         if (gameTimer - timeWhenActivated >= timeActive) {
             this.setInactive();
         }
+        else activate(gameTimer, spaceship);
         return isActive;
     }
 
     public abstract void activate(double gameTimer, Spaceship spaceship);
     public abstract void deactivate(double gameTimer, Spaceship spaceship);
+    public abstract void reapplyPowerUp(double gameTimer, Spaceship spaceship);
 }

@@ -63,9 +63,8 @@ public class Game extends Application {
         myScene = new Scene(root, width, height, background);
 
         // create a level
-        curLevel = new Level(root,1, this);
         StatusDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
-
+        curLevel = new Level(root,1, this);
         // respond to input
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         return myScene;
@@ -147,7 +146,6 @@ public class Game extends Application {
         curLevel.clearLevel();
         gameTimer = 0;
         curLevel = new Level(root, levelNumber, this);
-        StatusDisplay.updateLevelNumberDisplay(levelNumber);
     }
 
     private boolean isKeyCodeADigit(KeyCode code) {
