@@ -5,8 +5,8 @@ import invader.entity.Spaceship;
 public class LaserBeamPowerup extends PowerUp {
     public static String IMG_NAME = "";
 
-    public LaserBeamPowerup(double xPos, double yPos) {
-        super(xPos, yPos, IMG_NAME);
+    public LaserBeamPowerup(double xPos, double yPos, int idNumber) {
+        super(xPos, yPos, IMG_NAME, idNumber);
     }
 
     @Override

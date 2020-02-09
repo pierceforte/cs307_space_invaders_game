@@ -14,8 +14,9 @@ public abstract class PowerUp extends MovingObject {
     private double timeWhenActivated;
     private double timeActive;
 
-    public PowerUp (double xPos, double yPos, String imgName) {
+    public PowerUp (double xPos, double yPos, String imgName, int idNumber) {
         super(xPos, yPos, X_SPEED, Y_SPEED, WIDTH, HEIGHT, imgName);
+        this.setId("powerUp" + idNumber);
     }
 
     public void setInactive() {

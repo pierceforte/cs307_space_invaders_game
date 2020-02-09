@@ -2,6 +2,7 @@ package invader;
 
 import invader.entity.Enemy;
 import invader.entity.Spaceship;
+import invader.powerup.PowerUp;
 import invader.projectile.Laser;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -50,6 +51,16 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, KeyCode.SPACE);
         // need to wait for scene to update after key press in application thread
         Platform.runLater(() -> mySpaceshipLaser = lookup("#spaceshipLaser0").query());
+    }
+
+    @Test
+    public void testPowerUpCheatKey() {
+        // assert that an exception is thrown when querying power up before it is created
+        assertThrows(org.testfx.service.query.EmptyNodeQueryException.class, () -> lookup("powerUp0").query());
+        // press cheat key to drop powerup
+        press(myScene, KeyCode.A);
+        // assert that powerup has been created
+        assertNotNull(lookup("powerUp0"));
     }
 
     @Test

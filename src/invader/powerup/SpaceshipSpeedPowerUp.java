@@ -7,8 +7,8 @@ public class SpaceshipSpeedPowerUp extends PowerUp {
     public static int INCREASED_SPEED = 25;
     public static int TIME_ACTIVE = 8;
 
-    public SpaceshipSpeedPowerUp(double xPos, double yPos) {
-        super(xPos, yPos, IMG_NAME);
+    public SpaceshipSpeedPowerUp(double xPos, double yPos, int idNumber) {
+        super(xPos, yPos, IMG_NAME, idNumber);
         setTimeActive(TIME_ACTIVE);
     }
 
