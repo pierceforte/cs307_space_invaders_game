@@ -15,6 +15,7 @@ public class StatusDisplay {
     public static final Paint MENU_BACKGROUND = Color.GRAY;
     public static final Paint INTERFACE_BACKGROUND = Color.GRAY;
     public static final Paint TEXT_COLOR = Color.MAROON;
+    public static final String RESTART_AND_CHANGE_LEVEL = "\n\nPRESS R TO RESTART LEVEL\n\nPRESS 1-9 TO CHANGE LEVEL";
     public static final String HEART_IMAGE = "heart.png";
     public static final int HEART_IMAGE_X_POS = 15;
     public static final int HEART_IMAGE_Y_DIST_FROM_GAME_HEIGHT = 20;
@@ -116,17 +117,23 @@ public class StatusDisplay {
     }
 
     public static void removeMenu(Group root) {
-        root.getChildren().removeAll(menuBackground, menuText);
+        root.getChildren().remove(menuBackground);
+        root.getChildren().remove(menuText);
     }
 
     public static void createGameOverMenu(Group root) {
-        createMenu(root, 50, 275, "GAME OVER!\n\n\nPRESS C TO RETRY WITH ANOTHER LIFE\n\nPRESS R TO RESTART LEVEL \n\nPRESS 1-9 TO CHANGE LEVEL");
+        createMenu(root, 85, 275, "GAME OVER!\n" + RESTART_AND_CHANGE_LEVEL);
     }
 
     public static void createLevelIntermissionMenu(Group root) {
-        createMenu(root, 100, 300, "LEVEL COMPLETE!\n\n\nPRESS SPACE TO ADVANCE");
+        createMenu(root, 85, 275, "LEVEL COMPLETE!\n\n\nPRESS S TO ADVANCE" + RESTART_AND_CHANGE_LEVEL);
     }
     public static void createVictoryMenu(Group root) {
-        createMenu(root, 100, 300, "YOU WIN!\n\n\nUSE CHEAT CODES TO CONTINUE");
+        createMenu(root, 85, 300, "YOU WIN!\n" + RESTART_AND_CHANGE_LEVEL);
+        //resetPointsDisplay();
+    }
+
+    private static void resetPointsDisplay() {
+        //pointsDisplay.setText("POINTS\n" + formatPoints(0));
     }
 }

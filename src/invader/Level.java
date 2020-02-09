@@ -27,6 +27,7 @@ public class Level {
     private int curSpaceshipLaserIdNumber = 0;
     private int curEnemyLaserIdNumber = 0;
 
+    private Game myGame;
     private Group root;
     private int levelNumber;
     private int rows;
@@ -37,20 +38,27 @@ public class Level {
     private List<Laser> enemyLasers = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
 
-    public Level(Group root, int levelNumber){
+    public Level(Group root, int levelNumber, Game myGame){
         this.root = root;
         String levelFile = LEVEL_FILE_PATH + levelNumber + LEVEL_FILE_EXTENSION;
         readFile(levelFile);
         this.levelNumber = levelNumber;
         createEnemies();
+        addEnemiesAndSpaceshipToScene();
+        this.myGame = myGame;
     }
 
     public void clearLevel() {
         root.getChildren().remove(spaceship);
+        spaceship = null;
         root.getChildren().removeAll(enemyLasers);
         root.getChildren().removeAll(spaceshipLasers);
+        root.getChildren().removeAll(powerUps);
         for (List<Enemy> enemyRow : enemies) {
             root.getChildren().removeAll(enemyRow);
+        }
+        for (List list : List.of(enemies, enemyLasers, spaceshipLasers, powerUps)) {
+            list.clear();
         }
     }
 
@@ -66,11 +74,25 @@ public class Level {
     }
 
     public void handleEntitiesAndLasers(double gameTimer, double elapsedTime) {
+        attemptLevelVictory();
         updateNodePositionsOnStep(elapsedTime);
         handleEnemiesMovement();
         handleEnemyLasers(gameTimer);
         handleSpaceshipLasers();
         handlePowerUps(gameTimer);
+    }
+
+    private void attemptLevelVictory() {
+        if(enemies.size() == 0) {
+            myGame.setMenuActive();
+            clearLevel();
+            if (getLevelNumber() == Game.MAX_LEVEL) {
+                StatusDisplay.createVictoryMenu(root);
+            } else {
+                StatusDisplay.createLevelIntermissionMenu(root);
+            }
+            return;
+        }
     }
 
     public void addPowerUp(double gameTimer) {
@@ -134,6 +156,7 @@ public class Level {
             spaceship.lowerLives();
             StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
             if (spaceship.getLives() == 0) {
+                myGame.setMenuActive();
                 clearLevel();
                 StatusDisplay.createGameOverMenu(root);
             }
@@ -142,14 +165,6 @@ public class Level {
 
     private void handleSpaceshipLasers() {
         List<Enemy> enemiesToRemove = new ArrayList<>();
-        if(enemies.size() == 0) {
-            if (getLevelNumber() == Game.MAX_LEVEL) {
-                StatusDisplay.createVictoryMenu(root);
-            } else {
-                StatusDisplay.createLevelIntermissionMenu(root);
-            }
-            return;
-        }
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
                 Enemy enemyToRemove = (Enemy) handleLaserCollisions(spaceshipLasers, enemy);

@@ -34,6 +34,7 @@ public class Game extends Application {
     private double gameTimer = 0;
     private Level curLevel;
     private Group root;
+    private boolean isMenuActive = false;
 
     /**
      * Initialize what will be displayed and how it will be updated.
@@ -62,8 +63,7 @@ public class Game extends Application {
         myScene = new Scene(root, width, height, background);
 
         // create a level
-        curLevel = new Level(root,1);
-        curLevel.addEnemiesAndSpaceshipToScene();
+        curLevel = new Level(root,1, this);
         StatusDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
 
         // respond to input
@@ -79,10 +79,20 @@ public class Game extends Application {
         return curLevel;
     }
 
+    public void setMenuActive() {
+        isMenuActive = true;
+    }
+
+    public boolean isMenuActive() {
+        return isMenuActive;
+    }
+
     // Change properties of shapes to animate them
     void step() {
-        gameTimer += Game.SECOND_DELAY;
-        curLevel.handleEntitiesAndLasers(gameTimer, Game.SECOND_DELAY);
+        if (!isMenuActive) {
+            gameTimer += Game.SECOND_DELAY;
+            curLevel.handleEntitiesAndLasers(gameTimer, Game.SECOND_DELAY);
+        }
     }
 
     // What to do each time a key is pressed
@@ -98,6 +108,12 @@ public class Game extends Application {
         else if (code == KeyCode.SPACE) {
             curLevel.attemptSpaceshipFire(gameTimer);
         }
+        if (isKeyCodeADigit(code) || code == KeyCode.R || code == KeyCode.S) {
+            if (isMenuActive) {
+                isMenuActive = false;
+                StatusDisplay.removeMenu(root);
+            }
+        }
         // pause/restart animation
         if (code == KeyCode.P) {
             if (myAnimation.getStatus() == Animation.Status.RUNNING) {
@@ -108,11 +124,7 @@ public class Game extends Application {
             }
         }
         else if (code == KeyCode.R) {
-            //root.getChildren().clear();
-            curLevel.clearLevel();
-            gameTimer = 0;
-            curLevel = new Level(root, curLevel.getLevelNumber());
-            curLevel.addEnemiesAndSpaceshipToScene();
+            goToLevel(curLevel.getLevelNumber());
         }
         else if (code == KeyCode.S) {
             if (curLevel.getLevelNumber() < MAX_LEVEL) {
@@ -125,7 +137,7 @@ public class Game extends Application {
         else if (code == KeyCode.A) {
             curLevel.addPowerUp(gameTimer);
         }
-        else if (code.getCode() >= KEY_CODE_1 && code.getCode() <= KEY_CODE_9) {
+        else if (isKeyCodeADigit(code)) {
             int levelNumber = code.getCode() <= KEY_CODE_9 - 7 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;
             goToLevel(levelNumber);
         }
@@ -134,9 +146,12 @@ public class Game extends Application {
     private void goToLevel(int levelNumber) {
         curLevel.clearLevel();
         gameTimer = 0;
-        curLevel = new Level(root, levelNumber);
+        curLevel = new Level(root, levelNumber, this);
         StatusDisplay.updateLevelNumberDisplay(levelNumber);
-        curLevel.addEnemiesAndSpaceshipToScene();
+    }
+
+    private boolean isKeyCodeADigit(KeyCode code) {
+        return (code.getCode() >= KEY_CODE_1 && code.getCode() <= KEY_CODE_9);
     }
 
     /**
