@@ -8,7 +8,7 @@ import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
 
 import javafx.scene.Group;
-import javafx.scene.Node;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -70,7 +70,14 @@ public class Level {
         handleEnemiesMovement();
         handleEnemyLasers(gameTimer);
         handleSpaceshipLasers();
-        handlePowerUpsMovement(gameTimer);
+        handlePowerUps(gameTimer);
+    }
+
+    public void addPowerUp(double gameTimer) {
+        SpaceshipSpeedPowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2);
+        powerUp.setTimeActive(gameTimer);
+        powerUps.add(powerUp);
+        root.getChildren().add(powerUp);
     }
 
     private void updateNodePositionsOnStep(double elapsedTime) {
@@ -157,17 +164,28 @@ public class Level {
         removeInactiveEnemies(enemiesToRemove);
     }
 
-    private void handlePowerUpsMovement(double gameTimer) {
-        List<PowerUp> powerUpsToRemove = new ArrayList<>();
+    private void handlePowerUps(double gameTimer) {
+        List<PowerUp> powerUpsToRemoveFromScene = new ArrayList<>();
+        List<PowerUp> powerUpsToRemoveFromGame = new ArrayList<>();
         for (PowerUp powerUp: powerUps) {
-            if (powerUp.intersects(spaceship) || powerUp.isOutOfYBounds()) {
+            if (powerUp.hasBeenActivated()) {
+                if (!powerUp.isActive(gameTimer)) {
+                    powerUp.deactivate(gameTimer, spaceship);
+                    powerUpsToRemoveFromGame.add(powerUp);
+                }
+            }
+            else if (powerUp.intersects(spaceship) || powerUp.isOutOfYBounds()) {
                 if (powerUp.intersects(spaceship)) {
                     powerUp.activate(gameTimer, spaceship);
                 }
-                powerUpsToRemove.add(powerUp);
+                else {
+                    powerUpsToRemoveFromGame.add(powerUp);
+                }
+                powerUpsToRemoveFromScene.add(powerUp);
             }
         }
-        root.getChildren().removeAll(powerUpsToRemove);
+        root.getChildren().removeAll(powerUpsToRemoveFromScene);
+        powerUps.removeAll(powerUpsToRemoveFromGame);
     }
 
     private void removeInactiveEnemies(List<Enemy> enemiesToRemove) {

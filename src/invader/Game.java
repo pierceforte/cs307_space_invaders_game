@@ -25,7 +25,7 @@ public class Game extends Application {
     public static final int KEY_CODE_1 = 49;
     public static final int KEY_CODE_9 = 57;
     public static final int KEY_CODE_TO_LEVEL_CONVERSION = 48;
-    public static final int MAX_LEVEL = 4;
+    public static final int MAX_LEVEL = 3;
 
 
     // some things we need to remember during our game
@@ -121,6 +121,9 @@ public class Game extends Application {
         }
         else if (code == KeyCode.L) {
             curLevel.addLife();
+        }
+        else if (code == KeyCode.A) {
+            curLevel.addPowerUp(gameTimer);
         }
         else if (code.getCode() >= KEY_CODE_1 && code.getCode() <= KEY_CODE_9) {
             int levelNumber = code.getCode() <= KEY_CODE_9 - 7 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;

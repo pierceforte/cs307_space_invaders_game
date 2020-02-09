@@ -18,5 +18,10 @@ public class SpaceshipSpeedPowerUp extends PowerUp {
         setTimeWhenActivated(gameTimer);
     }
 
+    @Override
+    public void deactivate(double gameTimer, Spaceship spaceship) {
+        spaceship.setXSpeedOnKeyPress(Spaceship.DEFAULT_X_SPEED_ON_KEY_PRESS);
+    }
+
 
 }
