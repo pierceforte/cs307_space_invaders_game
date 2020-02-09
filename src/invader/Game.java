@@ -99,12 +99,12 @@ public class Game extends Application {
     }
 
     private void handleMenuKeyInput (KeyCode code) {
-        if (isKeyCodeADigit(code) || code == KeyCode.R || code == KeyCode.S) {
-            if (isMenuActive) {
-                isMenuActive = false;
-                StatusDisplay.removeMenu(root);
-            }
-        }
+//        if (isKeyCodeADigit(code) || code == KeyCode.R || code == KeyCode.S) {
+//            if (isMenuActive) {
+//                isMenuActive = false;
+//                StatusDisplay.removeMenu(root);
+//            }
+//        }
         if (code == KeyCode.R) {
             goToLevel(curLevel.getLevelNumber());
         }
