@@ -227,4 +227,9 @@ public class GameTest extends DukeApplicationTest {
         // assert that enemy's speed is in opposite direction of wall after collision
         assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) < 0);
     }
+
+    @Test
+    public void testWhenClearLevel() {
+
+    }
 }

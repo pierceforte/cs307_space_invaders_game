@@ -91,7 +91,6 @@ public class Level {
             } else {
                 StatusDisplay.createLevelIntermissionMenu(root);
             }
-            return;
         }
     }
 

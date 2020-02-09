@@ -93,6 +93,30 @@ public class Game extends Application {
             gameTimer += Game.SECOND_DELAY;
             curLevel.handleEntitiesAndLasers(gameTimer, Game.SECOND_DELAY);
         }
+        if (isMenuActive) {
+            myScene.setOnKeyPressed(e -> handleMenuKeyInput(e.getCode()));
+        }
+    }
+
+    private void handleMenuKeyInput (KeyCode code) {
+        if (isKeyCodeADigit(code) || code == KeyCode.R || code == KeyCode.S) {
+            if (isMenuActive) {
+                isMenuActive = false;
+                StatusDisplay.removeMenu(root);
+            }
+        }
+        if (code == KeyCode.R) {
+            goToLevel(curLevel.getLevelNumber());
+        }
+        else if (code == KeyCode.S) {
+            if (curLevel.getLevelNumber() < MAX_LEVEL) {
+                goToLevel(curLevel.getLevelNumber()+1);
+            }
+        }
+        else if (isKeyCodeADigit(code)) {
+            int levelNumber = code.getCode() <= KEY_CODE_9 - 7 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;
+            goToLevel(levelNumber);
+        }
     }
 
     // What to do each time a key is pressed
