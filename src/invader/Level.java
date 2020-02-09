@@ -3,6 +3,8 @@ package invader;
 import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
+import invader.powerup.PowerUp;
+import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
 
 import javafx.scene.Group;
@@ -33,6 +35,7 @@ public class Level {
     private List<List<Integer>> enemyIdentifiers = new ArrayList<>();
     private List<List<Enemy>> enemies = new ArrayList<>();
     private List<Laser> enemyLasers = new ArrayList<>();
+    private List<PowerUp> powerUps = new ArrayList<>();
 
     public Level(Group root, int levelNumber){
         this.root = root;
@@ -62,18 +65,29 @@ public class Level {
         StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
     }
 
-    public List<List<Enemy>> getEnemies() {
-        return enemies;
-    }
-
-    public int getNumberOfRows() {
-        return rows;
-    }
-
     public void handleEntitiesAndLasers(double gameTimer, double elapsedTime) {
-        handleEnemiesMovement(elapsedTime);
-        handleEnemyLasers(gameTimer, elapsedTime);
-        handleSpaceshipLasers(elapsedTime);
+        updateNodePositionsOnStep(elapsedTime);
+        handleEnemiesMovement();
+        handleEnemyLasers(gameTimer);
+        handleSpaceshipLasers();
+        handlePowerUpsMovement(gameTimer);
+    }
+
+    private void updateNodePositionsOnStep(double elapsedTime) {
+        for (List<Enemy> enemyRow : enemies) {
+            for (Enemy enemy : enemyRow) {
+                enemy.updatePositionOnStep(elapsedTime);
+            }
+        }
+        for (PowerUp powerUp: powerUps) powerUp.updatePositionOnStep(elapsedTime);
+        updateLaserPositionsOnStep(elapsedTime, enemyLasers);
+        updateLaserPositionsOnStep(elapsedTime, spaceshipLasers);
+    }
+
+    private void updateLaserPositionsOnStep(double elapsedTime, List<Laser> lasers) {
+        for (Laser laser : lasers) {
+            laser.updatePositionOnStep(elapsedTime);
+        }
     }
 
     public void attemptSpaceshipFire(double gameTimer) {
@@ -86,12 +100,7 @@ public class Level {
         }
     }
 
-    private void handleEnemiesMovement(double elapsedTime) {
-        for (List<Enemy> enemyRow : enemies) {
-            for (Enemy enemy : enemyRow) {
-                enemy.updatePositionOnStep(elapsedTime);
-            }
-        }
+    private void handleEnemiesMovement() {
         boolean reverseMovement = false;
         for (List<Enemy> enemyRow : enemies) {
             if (enemyRow.get(0).isOutOfXBounds() || enemyRow.get(enemyRow.size()-1).isOutOfXBounds()) {
@@ -108,8 +117,7 @@ public class Level {
         }
     }
 
-    private void handleEnemyLasers(double gameTimer, double elapsedTime) {
-        updateLaserPositionsOnStep(elapsedTime, enemyLasers);
+    private void handleEnemyLasers(double gameTimer) {
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
                 attemptLaserFire(gameTimer, enemy, enemyLasers, 50);
@@ -121,15 +129,33 @@ public class Level {
         }
     }
 
-    private void handleSpaceshipLasers(double elapsedTime) {
-        updateLaserPositionsOnStep(elapsedTime, spaceshipLasers);
+    private void handleSpaceshipLasers() {
         List<Enemy> enemiesToRemove = new ArrayList<>();
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                enemiesToRemove.add((Enemy) handleLaserCollisions(spaceshipLasers, enemy));
+                Enemy enemyToRemove = (Enemy) handleLaserCollisions(spaceshipLasers, enemy);
+                if (enemyToRemove != null) {
+                    enemiesToRemove.add(enemyToRemove);
+                    powerUps.add(enemy.getPowerUp());
+                    root.getChildren().add(enemy.getPowerUp());
+                    //enemy.getPowerUp().setActive();
+                }
             }
         }
         removeInactiveEnemies(enemiesToRemove);
+    }
+
+    private void handlePowerUpsMovement(double gameTimer) {
+        List<PowerUp> powerUpsToRemove = new ArrayList<>();
+        for (PowerUp powerUp: powerUps) {
+            if (powerUp.intersects(spaceship) || powerUp.isOutOfYBounds()) {
+                if (powerUp.intersects(spaceship)) {
+                    powerUp.activate(gameTimer, spaceship);
+                }
+                powerUpsToRemove.add(powerUp);
+            }
+        }
+        root.getChildren().removeAll(powerUpsToRemove);
     }
 
     private void removeInactiveEnemies(List<Enemy> enemiesToRemove) {
@@ -141,16 +167,16 @@ public class Level {
         for(List<Enemy> enemyRow : enemies) {
             if (enemyRow.size() == 0) enemyRowsToRemove.add(enemyRow);
         }
-        enemies.removeAll(enemyRowsToRemove );
+        enemies.removeAll(enemyRowsToRemove);
     }
 
     private Entity handleLaserCollisions(List<Laser> lasers, Entity entity) {
         List<Laser> lasersToRemove = new ArrayList<>();
         boolean removeEntity = false;
         for (Laser laser : lasers) {
-            if (didCollide(laser, entity) || laser.isOutOfYBounds()) {
+            if (laser.intersects(entity) || laser.isOutOfYBounds()) {
                 lasersToRemove.add(laser);
-                if (didCollide(laser, entity)) {
+                if (laser.intersects(entity)) {
                     removeEntity = true;
                     if (entity.getClass() == Enemy.class) {
                         StatusDisplay.updatePointsDisplay(POINTS_PER_ENEMY_HIT);
@@ -161,16 +187,6 @@ public class Level {
         lasers.removeAll(lasersToRemove);
         root.getChildren().removeAll(lasersToRemove);
         return removeEntity ? entity : null;
-    }
-
-    private boolean didCollide(Laser laser, Node node) {
-        return node.getBoundsInParent().intersects(laser.getBoundsInLocal());
-    }
-
-    private void updateLaserPositionsOnStep(double elapsedTime, List<Laser> lasers) {
-        for (Laser laser : lasers) {
-            laser.updatePositionOnStep(elapsedTime);
-        }
     }
 
     private void shootLaser(Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot) {
@@ -189,8 +205,12 @@ public class Level {
             List<Enemy> tempRow = new ArrayList<>();
             double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
             for (int j = 0; j < enemyIdentifiers.get(0).size(); j++) {
+
+
+                SpaceshipSpeedPowerUp curPowerUp = new SpaceshipSpeedPowerUp(xPos + Enemy.WIDTH/2, yPos);
+
                 Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*levelNumber,
-                        0, enemyIdentifiers.get(i).get(j), j + i*Level.ENEMIES_PER_ROW);
+                        0, enemyIdentifiers.get(i).get(j), j + i*Level.ENEMIES_PER_ROW, curPowerUp);
                 /*
                 if (!powerUpGrid.get(i*BRICKS_PER_ROW + j).equals("none")) {
                     curBrick.setPowerUp(powerUpGrid.get(i*BRICKS_PER_ROW + j));
@@ -205,7 +225,7 @@ public class Level {
     }
 
     public void moveSpaceship(boolean toRight) {
-        spaceship.setX(spaceship.getX() + Spaceship.X_SPEED_ON_KEY_PRESS * (toRight ? 1 : -1));
+        spaceship.setX(spaceship.getX() + spaceship.getXSpeedOnKeyPress() * (toRight ? 1 : -1));
         spaceship.wrap();
     }
 

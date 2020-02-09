@@ -165,10 +165,10 @@ public class GameTest extends DukeApplicationTest {
     public void testSpaceshipMoveLeftAndRight () {
         // test movement to right
         testSpaceshipMove(KeyCode.RIGHT, Spaceship.DEFAULT_X_POS +
-                mySpaceship.X_SPEED_ON_KEY_PRESS, Spaceship.DEFAULT_X_POS);
+                mySpaceship.getXSpeedOnKeyPress(), Spaceship.DEFAULT_X_POS);
         // test movement to left
         testSpaceshipMove(KeyCode.LEFT, Spaceship.DEFAULT_X_POS -
-                mySpaceship.X_SPEED_ON_KEY_PRESS, Spaceship.DEFAULT_X_POS);
+                mySpaceship.getXSpeedOnKeyPress(), Spaceship.DEFAULT_X_POS);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package invader;
 
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -7,12 +8,10 @@ import javafx.scene.image.ImageView;
  * @author Jeff Kim
  * started 2/4/20
  */
-public class MovingObject extends ImageView {
+public abstract class MovingObject extends ImageView {
     private double xSpeed;
     private double ySpeed;
     private Image image;
-
-//    public MovingObject(){}
 
     public MovingObject(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height, String imgName) {
         this.setX(xPos);
@@ -60,5 +59,9 @@ public class MovingObject extends ImageView {
 
     public void reverseYDirection() {
         this.ySpeed *= -1;
+    }
+
+    public boolean intersects(Node node) {
+        return this.getBoundsInParent().intersects(node.getBoundsInLocal());
     }
 }
