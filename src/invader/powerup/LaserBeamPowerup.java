@@ -10,7 +10,6 @@ public class LaserBeamPowerup extends PowerUp {
     }
 
     @Override
-    public void activate(Spaceship spaceship) {
-
+    public void activate(double gameTimer, Spaceship spaceship) {
     }
 }

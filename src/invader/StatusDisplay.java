@@ -8,6 +8,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 public class StatusDisplay {
 
@@ -98,7 +99,7 @@ public class StatusDisplay {
         return String.format("%06d", points);
     }
 
-    /*
+
     private static void createMenu(Group root, double xPos, double yPos, String text) {
         menuBackground = new Rectangle(0, 0, Game.SCENE_WIDTH, Game.SCENE_HEIGHT);
         menuBackground.setFill(MENU_BACKGROUND);
@@ -127,5 +128,5 @@ public class StatusDisplay {
     }
     public static void createVictoryMenu(Group root) {
         createMenu(root, 100, 300, "YOU WIN!\n\n\nUSE CHEAT CODES TO CONTINUE");
-    }*/
+    }
 }

@@ -126,11 +126,23 @@ public class Level {
         if (handleLaserCollisions(enemyLasers, spaceship) != null) {
             spaceship.lowerLives();
             StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
+            if (spaceship.getLives() == 0) {
+                clearLevel();
+                StatusDisplay.createGameOverMenu(root);
+            }
         }
     }
 
     private void handleSpaceshipLasers() {
         List<Enemy> enemiesToRemove = new ArrayList<>();
+        if(enemies.size() == 0) {
+            if (getLevelNumber() == Game.MAX_LEVEL) {
+                StatusDisplay.createVictoryMenu(root);
+            } else {
+                StatusDisplay.createLevelIntermissionMenu(root);
+            }
+            return;
+        }
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
                 Enemy enemyToRemove = (Enemy) handleLaserCollisions(spaceshipLasers, enemy);
