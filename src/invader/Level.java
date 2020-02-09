@@ -27,6 +27,7 @@ public class Level {
 
     private int curSpaceshipLaserIdNumber = 0;
     private int curEnemyLaserIdNumber = 0;
+    private boolean levelLost = false;
 
     private Game myGame;
     private Group root;
@@ -79,16 +80,16 @@ public class Level {
     }
 
     public void handleEntitiesAndLasers(double gameTimer, double elapsedTime) {
-        attemptLevelVictory();
         updateNodePositionsOnStep(elapsedTime);
         handleEnemiesMovement();
         handleEnemyLasers(gameTimer);
         handleSpaceshipLasers();
         handlePowerUps(gameTimer);
+        attemptLevelVictory();
     }
 
     private void attemptLevelVictory() {
-        if(enemies.size() == 0) {
+        if(!levelLost && enemies.size() == 0) {
             myGame.setMenuActive();
             clearLevel();
             if (getLevelNumber() == Game.MAX_LEVEL) {
@@ -160,6 +161,7 @@ public class Level {
             spaceship.lowerLives();
             StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
             if (spaceship.getLives() == 0) {
+                levelLost = true;
                 myGame.setMenuActive();
                 clearLevel();
                 StatusDisplay.createGameOverMenu(root);
@@ -176,7 +178,6 @@ public class Level {
                     enemiesToRemove.add(enemyToRemove);
                     powerUps.add(enemy.getPowerUp());
                     root.getChildren().add(enemy.getPowerUp());
-                    //enemy.getPowerUp().setActive();
                 }
             }
         }

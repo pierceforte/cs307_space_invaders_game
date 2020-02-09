@@ -95,22 +95,17 @@ public class Game extends Application {
     }
 
     private void handleMenuKeyInput (KeyCode code) {
-        if (code == KeyCode.R) {
-            goToLevel(curLevel.getLevelNumber());
-        }
-        else if (code == KeyCode.S) {
-            if (curLevel.getLevelNumber() < MAX_LEVEL) {
-                goToLevel(curLevel.getLevelNumber()+1);
-            }
-        }
-        else if (isKeyCodeADigit(code)) {
-            int levelNumber = code.getCode() <= KEY_CODE_9 - 7 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;
-            goToLevel(levelNumber);
-        }
+        isMenuActive = false;
+        StatusDisplay.removeMenu(root);
+        restartSkipAndDigitKeyActions(code);
     }
 
     // What to do each time a key is pressed
     private void handleKeyInput (KeyCode code) {
+        if (isMenuActive) {
+            handleMenuKeyInput(code);
+            return;
+        }
         if (code == KeyCode.RIGHT) {
             //moverShape.setX(moverShape.getX() + MOVER_SPEED);
             curLevel.moveSpaceship(true);
@@ -122,12 +117,6 @@ public class Game extends Application {
         else if (code == KeyCode.SPACE) {
             curLevel.attemptSpaceshipFire(gameTimer);
         }
-        if (isKeyCodeADigit(code) || code == KeyCode.R || code == KeyCode.S) {
-            if (isMenuActive) {
-                isMenuActive = false;
-                StatusDisplay.removeMenu(root);
-            }
-        }
         // pause/restart animation
         if (code == KeyCode.P) {
             if (myAnimation.getStatus() == Animation.Status.RUNNING) {
@@ -137,19 +126,22 @@ public class Game extends Application {
                 myAnimation.play();
             }
         }
-        else if (code == KeyCode.R) {
+        else if (code == KeyCode.L) {
+            curLevel.addLife();
+        }
+        else if (code == KeyCode.A) {
+            curLevel.addPowerUp(gameTimer);
+        }
+    }
+
+    private void restartSkipAndDigitKeyActions(KeyCode code) {
+        if (code == KeyCode.R) {
             goToLevel(curLevel.getLevelNumber());
         }
         else if (code == KeyCode.S) {
             if (curLevel.getLevelNumber() < MAX_LEVEL) {
                 goToLevel(curLevel.getLevelNumber()+1);
             }
-        }
-        else if (code == KeyCode.L) {
-            curLevel.addLife();
-        }
-        else if (code == KeyCode.A) {
-            curLevel.addPowerUp(gameTimer);
         }
         else if (isKeyCodeADigit(code)) {
             int levelNumber = code.getCode() <= KEY_CODE_9 - 7 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;
