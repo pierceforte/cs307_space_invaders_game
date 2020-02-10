@@ -8,6 +8,8 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.util.WaitForAsyncUtils;
@@ -207,6 +209,39 @@ public class GameTest extends DukeApplicationTest {
         }
     }
 
+    @Test
+    public void testClearPageWhenBeatLevel() {
+        myLevel.setLevelNumber(1);
+        myLevel.setLevelLost(false);
+        myLevel.getEnemies().clear();
+        step();
+
+        assertEquals("LEVEL COMPLETE!\n\n\n" +
+                "PRESS S TO ADVANCE\n\n" +
+                "PRESS R TO RESTART LEVEL\n\n" +
+                "PRESS 1-9 TO CHANGE LEVEL", StatusDisplay.getMenuText().getText());
+        assertEquals(0.0, StatusDisplay.getMenuBackground().getX());
+        assertEquals(0.0, StatusDisplay.getMenuBackground().getY());
+        assertEquals(400.0, StatusDisplay.getMenuBackground().getWidth());
+        assertEquals(700.0, StatusDisplay.getMenuBackground().getHeight());
+    }
+
+    @Test
+    public void testClearPageWhenBeatGame() {
+        myLevel.setLevelNumber(3);
+        myLevel.setLevelLost(false);
+        myLevel.getEnemies().clear();
+        step();
+
+        assertEquals("YOU WIN!\n\n\n" +
+                "PRESS R TO RESTART LEVEL\n\n" +
+                "PRESS 1-9 TO CHANGE LEVEL", StatusDisplay.getMenuText().getText());
+        assertEquals(0.0, StatusDisplay.getMenuBackground().getX());
+        assertEquals(0.0, StatusDisplay.getMenuBackground().getY());
+        assertEquals(400.0, StatusDisplay.getMenuBackground().getWidth());
+        assertEquals(700.0, StatusDisplay.getMenuBackground().getHeight());
+    }
+
     private void step() {
         javafxRun(() -> myGame.step());
     }
@@ -239,8 +274,4 @@ public class GameTest extends DukeApplicationTest {
         assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) < 0);
     }
 
-    @Test
-    public void testWhenClearLevel() {
-
-    }
 }

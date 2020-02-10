@@ -28,15 +28,18 @@ public class Level {
     private int curSpaceshipLaserIdNumber = 0;
     private int curEnemyLaserIdNumber = 0;
     private int curPowerUpIdNumber = 0;
+
     private boolean levelLost = false;
 
     private Game myGame;
     private Group root;
+
     private int levelNumber;
     private int rows;
     private Spaceship spaceship;
     private List<Laser> spaceshipLasers = new ArrayList<>();
     private List<List<Integer>> enemyIdentifiers = new ArrayList<>();
+
     private List<List<Enemy>> enemies = new ArrayList<>();
     private List<Laser> enemyLasers = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
@@ -89,7 +92,7 @@ public class Level {
         attemptLevelVictory();
     }
 
-    private void attemptLevelVictory() {
+    public void attemptLevelVictory() {
         if(!levelLost && enemies.size() == 0) {
             myGame.setMenuActive();
             clearLevel();
@@ -309,4 +312,19 @@ public class Level {
         return levelNumber;
     }
 
+    public void setLevelNumber(int levelNumber) {
+        this.levelNumber = levelNumber;
+    }
+
+    public List<List<Enemy>> getEnemies() {
+        return enemies;
+    }
+
+    public void setLevelLost(boolean levelLost) {
+        this.levelLost = levelLost;
+    }
+
+    public void setEnemies(List<List<Enemy>> enemies) {
+        this.enemies = enemies;
+    }
 }

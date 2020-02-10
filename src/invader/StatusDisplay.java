@@ -27,10 +27,11 @@ public class StatusDisplay {
     public static final int POINTS_X_DIST_FROM_SCENE_CENTER = -35;
     public static final int POINTS_Y_DIST_FROM_GAME_HEIGHT = 35;
 
-
     private static Rectangle menuBackground;
     private static Rectangle userInterfaceArea;
     private static ImageView heartImageDisplay;
+
+
     private static Text menuText;
     private static Text lifeCountText;
     private static Text levelNumberDisplay;
@@ -135,5 +136,13 @@ public class StatusDisplay {
 
     private static void resetPointsDisplay() {
         //pointsDisplay.setText("POINTS\n" + formatPoints(0));
+    }
+
+    public static Rectangle getMenuBackground() {
+        return menuBackground;
+    }
+
+    public static Text getMenuText() {
+        return menuText;
     }
 }
