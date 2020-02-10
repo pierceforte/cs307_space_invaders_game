@@ -14,9 +14,9 @@ public abstract class PowerUp extends MovingObject {
     private double timeWhenActivated;
     private double timeActive;
 
-    public PowerUp (double xPos, double yPos, String imgName, int idNumber) {
+    public PowerUp (double xPos, double yPos, String imgName, String id) {
         super(xPos, yPos, X_SPEED, Y_SPEED, WIDTH, HEIGHT, imgName);
-        this.setId("powerUp" + idNumber);
+        this.setId(id);
     }
 
     public void setInactive() {
@@ -41,11 +41,15 @@ public abstract class PowerUp extends MovingObject {
         return hasBeenActivated;
     }
 
-    public boolean isActive(double gameTimer, Spaceship spaceship) {
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public boolean updateAndGetActiveStatus(double gameTimer, Spaceship spaceship) {
         if (gameTimer - timeWhenActivated >= timeActive) {
             this.setInactive();
         }
-        else activate(gameTimer, spaceship);
+        else reapplyPowerUp(gameTimer, spaceship);
         return isActive;
     }
 

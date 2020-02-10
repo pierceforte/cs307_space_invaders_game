@@ -14,19 +14,26 @@ public class Enemy extends Entity {
     public static final String ENEMY_IMG_NAME= "enemy.png";
 
     private PowerUp powerUp;
+    private boolean hasPowerUp = false;
 
     public Enemy(double xPos, double yPos, double xSpeed, double ySpeed, int lives, int idNumber, PowerUp powerUp) {
         super(xPos, yPos, xSpeed, ySpeed, WIDTH, HEIGHT, ENEMY_IMG_NAME);
         setLives(lives);
         this.setId("enemy" + idNumber);
         addToStartShootingTime(ThreadLocalRandom.current().nextInt(1, 40));
-        this.powerUp = powerUp;
+        if (powerUp != null) {
+            this.powerUp = powerUp;
+            hasPowerUp = true;
+        }
     }
 
     public PowerUp getPowerUp() {
         return powerUp;
     }
 
+    public boolean hasPowerUp() {
+        return hasPowerUp;
+    }
 
 
 }

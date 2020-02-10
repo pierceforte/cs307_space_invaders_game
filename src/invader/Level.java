@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Level {
@@ -27,7 +26,7 @@ public class Level {
 
     private int curSpaceshipLaserIdNumber = 0;
     private int curEnemyLaserIdNumber = 0;
-    private int curPowerUpIdNumber = 0;
+    private int curCheatKeyPowerUpIdNumber = 0;
 
     private boolean levelLost = false;
 
@@ -105,7 +104,8 @@ public class Level {
     }
 
     public void addPowerUp(double gameTimer) {
-        SpaceshipSpeedPowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2, curPowerUpIdNumber++);
+        SpaceshipSpeedPowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
+                "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
         powerUp.setTimeActive(gameTimer);
         powerUps.add(powerUp);
         root.getChildren().add(powerUp);
@@ -180,8 +180,12 @@ public class Level {
                 Enemy enemyToRemove = (Enemy) handleLaserCollisions(spaceshipLasers, enemy);
                 if (enemyToRemove != null) {
                     enemiesToRemove.add(enemyToRemove);
-                    powerUps.add(enemy.getPowerUp());
-                    root.getChildren().add(enemy.getPowerUp());
+                    if (enemy.hasPowerUp()) {
+                        enemy.getPowerUp().setX(enemy.getX());
+                        enemy.getPowerUp().setY(enemy.getY());
+                        powerUps.add(enemy.getPowerUp());
+                        root.getChildren().add(enemy.getPowerUp());
+                    }
                 }
             }
         }
@@ -193,8 +197,7 @@ public class Level {
         List<PowerUp> powerUpsToRemoveFromGame = new ArrayList<>();
         for (PowerUp powerUp: powerUps) {
             if (powerUp.hasBeenActivated()) {
-                powerUp.reapplyPowerUp(gameTimer, spaceship);
-                if (!powerUp.isActive(gameTimer, spaceship)) {
+                if (!powerUp.updateAndGetActiveStatus(gameTimer, spaceship)) {
                     powerUp.deactivate(gameTimer, spaceship);
                     powerUpsToRemoveFromGame.add(powerUp);
                 }
@@ -256,17 +259,17 @@ public class Level {
     private void createEnemies() {
         // get height of first brick row to ensure they are centered
         double yPos = Game.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
-        for (int i = 0; i < enemyIdentifiers.size(); i++) {
+        for (int row = 0; row < enemyIdentifiers.size(); row++) {
             List<Enemy> tempRow = new ArrayList<>();
             double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
-            for (int j = 0; j < enemyIdentifiers.get(0).size(); j++) {
-
-
-                SpaceshipSpeedPowerUp curPowerUp = new SpaceshipSpeedPowerUp(xPos + Enemy.WIDTH/2, yPos, curPowerUpIdNumber++);
-
-
+            for (int col = 0; col < enemyIdentifiers.get(0).size(); col++) {
+                SpaceshipSpeedPowerUp curPowerUp = null;
+                if ((col == 1 && row % 2 != 0) || (col == 4 && (row % 2 == 0)) || (col == 7 && row == 3)) {
+                    curPowerUp = new SpaceshipSpeedPowerUp(xPos + Enemy.WIDTH/2, yPos,
+                            "enemyPowerUp" + col + row*Level.ENEMIES_PER_ROW);
+                }
                 Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*levelNumber,
-                        0, enemyIdentifiers.get(i).get(j), j + i*Level.ENEMIES_PER_ROW, curPowerUp);
+                        0, enemyIdentifiers.get(row).get(col), col + row*Level.ENEMIES_PER_ROW, curPowerUp);
                 /*
                 if (!powerUpGrid.get(i*BRICKS_PER_ROW + j).equals("none")) {
                     curBrick.setPowerUp(powerUpGrid.get(i*BRICKS_PER_ROW + j));

@@ -61,29 +61,37 @@ public class GameTest extends DukeApplicationTest {
     public void testSpaceshipSpeedUpPowerUpActivation() {
         // press cheat key to drop powerUp
         press(myScene, KeyCode.A);
-        // we say powerUp36 because it is the first power up created after all enemy power ups (0-35)
-        PowerUp myPowerUp = lookup("#powerUp36").query();
+        // we say cheatPowerUp0 because it is the 0th power up added to the game with the cheat key "A"
+        PowerUp myPowerUp = lookup("#cheatPowerUp0").query();
         // position the powerUp one step prior to hitting spaceship
         myPowerUp.setY(mySpaceship.getY() - 10);
+        // set powerUp such that it will only be in effect for a sing›le step
+        myPowerUp.setTimeActive(Game.SECOND_DELAY);
         // assert that powerUp is in scene and spaceship speed on key press is at the default
         assertTrue(isNodeInMyScene(myPowerUp));
         assertEquals(Spaceship.DEFAULT_X_SPEED_ON_KEY_PRESS, mySpaceship.getXSpeedOnKeyPress());
         step();
-        // assert that powerUp has been removed from scene and spaceship speed on key press is
-        // now set to increased speed
+        // assert that powerUp has been removed from scene, spaceship speed on key press is
+        // now set to increased speed, and powerUp is active
         assertFalse(isNodeInMyScene(myPowerUp));
         assertEquals(SpaceshipSpeedPowerUp.INCREASED_SPEED, mySpaceship.getXSpeedOnKeyPress());
+        assertTrue(myPowerUp.isActive());
+        // step to deactivate powerUp (since it is only set to last for one step)
+        step();
+        //  assert that spaceship speed on key press is set to default and powerUp is no longer active
+        assertEquals(Spaceship.DEFAULT_X_SPEED_ON_KEY_PRESS, mySpaceship.getXSpeedOnKeyPress());
+        assertFalse(myPowerUp.isActive());
     }
 
     @Test
     public void testPowerUpCheatKey() {
         // assert that an exception is thrown when querying power up before it is created;
-        // we say powerUp36 because it is the first power up created after all enemy power ups (0-35)
-        assertThrows(org.testfx.service.query.EmptyNodeQueryException.class, () -> lookup("#powerUp36").query());
+        // we say cheatPowerUp0 because it is the 0th power up added to the game with the cheat key "A"
+        assertThrows(org.testfx.service.query.EmptyNodeQueryException.class, () -> lookup("#cheatPowerUp0").query());
         // press cheat key to drop powerUp
         press(myScene, KeyCode.A);
         // assert that powerUp has been created and added to scene
-        assertTrue(isNodeInMyScene(lookup("#powerUp36").query()));
+        assertTrue(isNodeInMyScene(lookup("#cheatPowerUp0").query()));
     }
 
     @Test
