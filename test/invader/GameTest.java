@@ -3,6 +3,7 @@ package invader;
 import invader.entity.Enemy;
 import invader.entity.Spaceship;
 import invader.powerup.PowerUp;
+import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -55,14 +56,37 @@ public class GameTest extends DukeApplicationTest {
         Platform.runLater(() -> mySpaceshipLaser = lookup("#spaceshipLaser0").query());
     }
 
+    // FIXME
+    @Test
+    public void testSpaceshipSpeedUpPowerUpActivation() {
+        // press cheat key to drop powerUp
+        press(myScene, KeyCode.A);
+        sleep(2, TimeUnit.SECONDS);
+        // query powerUp; we know it is the first one added to the scene (the 0th) and
+        // can query it as such
+        for (Node node : myGame.getRoot().getChildren()) System.out.println(node.getId());
+        PowerUp myPowerUp = lookup("powerUp36").query();
+        // position the powerUp one step prior to hitting spaceship
+        myPowerUp.setY(mySpaceship.getY() - 6*Laser.Y_SPEED*Game.SECOND_DELAY);
+        // assert that powerUp is in scene and spaceship speed on key press is at the default
+        assertTrue(isNodeInMyScene(myPowerUp));
+        assertEquals(Spaceship.DEFAULT_X_SPEED_ON_KEY_PRESS, mySpaceship.getXSpeedOnKeyPress());
+        step();
+        // assert that powerUp has been removed from scene and spaceship speed on key press is
+        // now set to increased speed
+        assertFalse(isNodeInMyScene(myPowerUp));
+        assertEquals(SpaceshipSpeedPowerUp.INCREASED_SPEED, mySpaceship.getXSpeedOnKeyPress());
+    }
+
     @Test
     public void testPowerUpCheatKey() {
-        // assert that an exception is thrown when querying power up before it is created
-        assertThrows(org.testfx.service.query.EmptyNodeQueryException.class, () -> lookup("powerUp0").query());
-        // press cheat key to drop powerup
+        // assert that an exception is thrown when querying power up before it is created we say
+        // powerUp36 because it is the first power up created after all enemy power ups (0-35)
+        assertThrows(org.testfx.service.query.EmptyNodeQueryException.class, () -> lookup("powerUp36").query());
+        // press cheat key to drop powerUp
         press(myScene, KeyCode.A);
-        // assert that powerup has been created
-        assertNotNull(lookup("powerUp0"));
+        // assert that powerUp has been created
+        assertNotNull(lookup("powerUp36").query());
     }
 
     @Test
