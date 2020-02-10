@@ -61,13 +61,10 @@ public class GameTest extends DukeApplicationTest {
     public void testSpaceshipSpeedUpPowerUpActivation() {
         // press cheat key to drop powerUp
         press(myScene, KeyCode.A);
-        sleep(2, TimeUnit.SECONDS);
-        // query powerUp; we know it is the first one added to the scene (the 0th) and
-        // can query it as such
-        for (Node node : myGame.getRoot().getChildren()) System.out.println(node.getId());
-        PowerUp myPowerUp = lookup("powerUp36").query();
+        // we say powerUp36 because it is the first power up created after all enemy power ups (0-35)
+        PowerUp myPowerUp = lookup("#powerUp36").query();
         // position the powerUp one step prior to hitting spaceship
-        myPowerUp.setY(mySpaceship.getY() - 6*Laser.Y_SPEED*Game.SECOND_DELAY);
+        myPowerUp.setY(mySpaceship.getY() - 10);
         // assert that powerUp is in scene and spaceship speed on key press is at the default
         assertTrue(isNodeInMyScene(myPowerUp));
         assertEquals(Spaceship.DEFAULT_X_SPEED_ON_KEY_PRESS, mySpaceship.getXSpeedOnKeyPress());
@@ -80,13 +77,13 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testPowerUpCheatKey() {
-        // assert that an exception is thrown when querying power up before it is created we say
-        // powerUp36 because it is the first power up created after all enemy power ups (0-35)
-        assertThrows(org.testfx.service.query.EmptyNodeQueryException.class, () -> lookup("powerUp36").query());
+        // assert that an exception is thrown when querying power up before it is created;
+        // we say powerUp36 because it is the first power up created after all enemy power ups (0-35)
+        assertThrows(org.testfx.service.query.EmptyNodeQueryException.class, () -> lookup("#powerUp36").query());
         // press cheat key to drop powerUp
         press(myScene, KeyCode.A);
-        // assert that powerUp has been created
-        assertNotNull(lookup("powerUp36").query());
+        // assert that powerUp has been created and added to scene
+        assertTrue(isNodeInMyScene(lookup("#powerUp36").query()));
     }
 
     @Test
