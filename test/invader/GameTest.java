@@ -98,11 +98,10 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testJumpToLevelCheatKeys() {
-        List<KeyCode> keyCodes1Through9 = List.of(KeyCode.DIGIT1, KeyCode.DIGIT2, KeyCode.DIGIT3, KeyCode.DIGIT4,
-                KeyCode.DIGIT5, KeyCode.DIGIT6, KeyCode.DIGIT7, KeyCode.DIGIT8, KeyCode.DIGIT9);
+
         // the first expected level is level 1
         int expectedLevelNumber = 1;
-        for (KeyCode code : keyCodes1Through9) {
+        for (KeyCode code : Game.KEY_CODES_1_THROUGH_9) {
             // press cheat key to jump to level
             press(myScene, code);
             // need to reassign our level to the new level created in game

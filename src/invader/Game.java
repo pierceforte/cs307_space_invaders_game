@@ -12,6 +12,10 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Game extends Application {
     public static final String TITLE = "Space Invaders";
     public static final String WINNING_MESSAGE = "WINNER!";
@@ -26,6 +30,8 @@ public class Game extends Application {
     public static final int KEY_CODE_9 = 57;
     public static final int KEY_CODE_TO_LEVEL_CONVERSION = 48;
     public static final int MAX_LEVEL = 3;
+    public static final List<KeyCode> KEY_CODES_1_THROUGH_9 = List.of(KeyCode.DIGIT1, KeyCode.DIGIT2, KeyCode.DIGIT3, KeyCode.DIGIT4,
+            KeyCode.DIGIT5, KeyCode.DIGIT6, KeyCode.DIGIT7, KeyCode.DIGIT8, KeyCode.DIGIT9);
 
 
     // some things we need to remember during our game
@@ -66,6 +72,7 @@ public class Game extends Application {
         StatusDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
         curLevel = new Level(root,1, this);
         // respond to input
+        addDigitCodesToMap();
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         return myScene;
     }
@@ -97,8 +104,17 @@ public class Game extends Application {
     private void handleMenuKeyInput (KeyCode code) {
         isMenuActive = false;
         StatusDisplay.removeMenu(root);
-        restartSkipAndDigitKeyActions(code);
     }
+
+    private Map<KeyCode, Runnable> keyToActionMap =
+            Map.of(KeyCode.RIGHT, () -> curLevel.moveSpaceship(true),
+                    KeyCode.LEFT, () -> curLevel.moveSpaceship(false),
+                    KeyCode.SPACE, () -> curLevel.attemptSpaceshipFire(gameTimer),
+                    KeyCode.L, () -> curLevel.addLife(),
+                    KeyCode.A, () -> curLevel.addPowerUp(gameTimer),
+                    KeyCode.R, () -> goToLevel(curLevel.getLevelNumber()),
+                    KeyCode.S, () -> {if (curLevel.getLevelNumber() < MAX_LEVEL) {
+                        goToLevel(curLevel.getLevelNumber()+1);}});
 
     // What to do each time a key is pressed
     private void handleKeyInput (KeyCode code) {
@@ -106,48 +122,7 @@ public class Game extends Application {
             if (isKeyCodeADigit(code) || code == KeyCode.R || code == KeyCode.S) handleMenuKeyInput(code);
             return;
         }
-        else if (code == KeyCode.RIGHT) {
-            //moverShape.setX(moverShape.getX() + MOVER_SPEED);
-            curLevel.moveSpaceship(true);
-        }
-        else if (code == KeyCode.LEFT) {
-            //moverShape.setX(moverShape.getX() - MOVER_SPEED);
-            curLevel.moveSpaceship(false);
-        }
-        else if (code == KeyCode.SPACE) {
-            curLevel.attemptSpaceshipFire(gameTimer);
-        }
-        // pause/restart animation
-        else if (code == KeyCode.P) {
-            if (myAnimation.getStatus() == Animation.Status.RUNNING) {
-                myAnimation.pause();
-            }
-            else {
-                myAnimation.play();
-            }
-        }
-        else if (code == KeyCode.L) {
-            curLevel.addLife();
-        }
-        else if (code == KeyCode.A) {
-            curLevel.addPowerUp(gameTimer);
-        }
-        else restartSkipAndDigitKeyActions(code);
-    }
-
-    private void restartSkipAndDigitKeyActions(KeyCode code) {
-        if (code == KeyCode.R) {
-            goToLevel(curLevel.getLevelNumber());
-        }
-        else if (code == KeyCode.S) {
-            if (curLevel.getLevelNumber() < MAX_LEVEL) {
-                goToLevel(curLevel.getLevelNumber()+1);
-            }
-        }
-        else if (isKeyCodeADigit(code)) {
-            int levelNumber = code.getCode() <= KEY_CODE_9 - 7 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;
-            goToLevel(levelNumber);
-        }
+        new Thread(keyToActionMap.get(code)).start();
     }
 
     private void goToLevel(int levelNumber) {
@@ -158,6 +133,13 @@ public class Game extends Application {
 
     private boolean isKeyCodeADigit(KeyCode code) {
         return (code.getCode() >= KEY_CODE_1 && code.getCode() <= KEY_CODE_9);
+    }
+
+    private void addDigitCodesToMap() {
+        for (KeyCode code : KEY_CODES_1_THROUGH_9) {
+            keyToActionMap.put(code, () -> {int levelNumber = code.getCode() <= KEY_CODE_9 - 7 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;
+                goToLevel(levelNumber);});
+        }
     }
 
     /**

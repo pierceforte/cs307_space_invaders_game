@@ -14,7 +14,7 @@ public class Enemy extends Entity {
     public static final String ENEMY_IMG_NAME= "enemy.png";
     public static final int TIME_BETWEEN_SHOTS = 50;
     public static final int EARLIEST_START_FIRING_TIME = 1;
-    public static final int LATEST_START_FIRING_TIME = 1;
+    public static final int LATEST_START_FIRING_TIME = 40;
 
     private PowerUp powerUp;
     private boolean hasPowerUp = false;
