@@ -158,7 +158,7 @@ public class Level {
     private void handleEnemyLasers(double gameTimer) {
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                attemptLaserFire(gameTimer, enemy, enemyLasers, 50);
+                attemptLaserFire(gameTimer, enemy, enemyLasers, Enemy.TIME_BETWEEN_SHOTS);
             }
         }
         if (handleLaserCollisions(enemyLasers, spaceship) != null) {

@@ -12,6 +12,9 @@ public class Enemy extends Entity {
     public static final int HEIGHT = 30;
     public static final int WIDTH = 30;
     public static final String ENEMY_IMG_NAME= "enemy.png";
+    public static final int TIME_BETWEEN_SHOTS = 50;
+    public static final int EARLIEST_START_FIRING_TIME = 1;
+    public static final int LATEST_START_FIRING_TIME = 1;
 
     private PowerUp powerUp;
     private boolean hasPowerUp = false;
@@ -20,7 +23,7 @@ public class Enemy extends Entity {
         super(xPos, yPos, xSpeed, ySpeed, WIDTH, HEIGHT, ENEMY_IMG_NAME);
         setLives(lives);
         this.setId("enemy" + idNumber);
-        addToStartShootingTime(ThreadLocalRandom.current().nextInt(1, 40));
+        addToStartShootingTime(ThreadLocalRandom.current().nextInt(EARLIEST_START_FIRING_TIME, LATEST_START_FIRING_TIME));
         if (powerUp != null) {
             this.powerUp = powerUp;
             hasPowerUp = true;

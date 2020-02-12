@@ -9,6 +9,8 @@ import javafx.scene.image.ImageView;
  * started 2/4/20
  */
 public abstract class MovingObject extends ImageView {
+    public static final int OUT_OF_BOUNDS_LOCATION = 20;
+
     private double xSpeed;
     private double ySpeed;
     private Image image;
@@ -50,7 +52,7 @@ public abstract class MovingObject extends ImageView {
     }
 
     public boolean isOutOfYBounds() {
-        return (this.getY() >= Game.GAME_HEIGHT - 20 || this.getY() <= 20);
+        return (this.getY() >= Game.GAME_HEIGHT - OUT_OF_BOUNDS_LOCATION || this.getY() <= OUT_OF_BOUNDS_LOCATION);
     }
 
     public void reverseXDirection() {
