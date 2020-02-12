@@ -94,6 +94,8 @@ public class GameTest extends DukeApplicationTest {
         assertTrue(isNodeInMyScene(lookup("#cheatPowerUp0").query()));
     }
 
+
+
     @Test
     public void testJumpToLevelCheatKeys() {
         List<KeyCode> keyCodes1Through9 = List.of(KeyCode.DIGIT1, KeyCode.DIGIT2, KeyCode.DIGIT3, KeyCode.DIGIT4,

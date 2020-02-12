@@ -16,6 +16,8 @@ public class StatusDisplay {
     public static final Paint INTERFACE_BACKGROUND = Color.GRAY;
     public static final Paint TEXT_COLOR = Color.MAROON;
     public static final String RESTART_AND_CHANGE_LEVEL = "\n\nPRESS R TO RESTART LEVEL\n\nPRESS 1-9 TO CHANGE LEVEL";
+    public static final String FONT = "Verdana";
+    public static final int DEFAULT_TEXT_SIZE = 15;
     public static final String HEART_IMAGE = "heart.png";
     public static final int HEART_IMAGE_X_POS = 15;
     public static final int HEART_IMAGE_Y_DIST_FROM_GAME_HEIGHT = 20;
@@ -26,6 +28,14 @@ public class StatusDisplay {
     public static final int LEVEL_NUM_Y_DIST_FROM_GAME_HEIGHT = 45;
     public static final int POINTS_X_DIST_FROM_SCENE_CENTER = -35;
     public static final int POINTS_Y_DIST_FROM_GAME_HEIGHT = 35;
+    public static final int DEFAULT_MENU_X_POS = 85;
+    public static final int DEFAULT_MENU_Y_POS = 275;
+    public static final int START_MENU_X_POS = 50;
+    public static final int START_MENU_Y_POS = 30;
+    public static final int VICTORY_MENU_Y_POS = 300;
+    public static final String POINTS_FORMAT = "%06d";
+
+
 
     private static Rectangle menuBackground;
     private static Rectangle userInterfaceArea;
@@ -90,7 +100,7 @@ public class StatusDisplay {
 
     private static Text createTextDisplay(String text, double xPos, double yPos, Paint color) {
         Text tempDisplay = new Text(text);
-        tempDisplay.setFont(Font.font ("Verdana", 15));
+        tempDisplay.setFont(Font.font (FONT, DEFAULT_TEXT_SIZE));
         tempDisplay.setX(xPos);
         tempDisplay.setY(yPos);
         tempDisplay.setFill(color);
@@ -98,7 +108,7 @@ public class StatusDisplay {
     }
 
     private static String formatPoints(int points) {
-        return String.format("%06d", points);
+        return String.format(POINTS_FORMAT, points);
     }
 
 
@@ -111,7 +121,7 @@ public class StatusDisplay {
     }
 
     public static void createStartMenu(Group root) {
-        createMenu(root, 50, 30, "BREAKOUT BY PIERCE FORTE\n\n\nDIRECTIONS\n\nBREAK BRICKS TO EARN POINTS\n\nBE CAREFUL!\n" +
+        createMenu(root, START_MENU_X_POS, START_MENU_Y_POS, "BREAKOUT BY PIERCE FORTE\n\n\nDIRECTIONS\n\nBREAK BRICKS TO EARN POINTS\n\nBE CAREFUL!\n" +
                 "YOU START WITH 3 LIVES\n\nRELEASE THE BALL WITH THE SPACE BAR\n\nMOVE THE PADDLES WITH\nTHE LEFT AND RIGHT KEYS\n\n" +
                 "COLLECT POWER UPS TO HELP\n(OR HURT!) YOU\n\nBEAT ALL 4 LEVELS TO WIN!\n\n\nCHEAT CODES\n\n1-9   SKIP TO LEVEL\n\nJ   SKIP " +
                 "TO NEXT LEVEL\n\nR   RESET LEVEL\n\nL   ADD 1 LIFE\n\nC   RESET BALL AND PADDLE\n(HELPFUL WHEN ENCOUNTERING BUGS)\n\n\nPRESS SPACE TO BEGIN");
@@ -123,19 +133,19 @@ public class StatusDisplay {
     }
 
     public static void createGameOverMenu(Group root) {
-        createMenu(root, 85, 275, "GAME OVER!\n" + RESTART_AND_CHANGE_LEVEL);
+        createMenu(root, DEFAULT_MENU_X_POS, DEFAULT_MENU_Y_POS, "GAME OVER!\n" + RESTART_AND_CHANGE_LEVEL);
     }
 
     public static void createLevelIntermissionMenu(Group root) {
-        createMenu(root, 85, 275, "LEVEL COMPLETE!\n\n\nPRESS S TO ADVANCE" + RESTART_AND_CHANGE_LEVEL);
+        createMenu(root, DEFAULT_MENU_X_POS, DEFAULT_MENU_Y_POS, "LEVEL COMPLETE!\n\n\nPRESS S TO ADVANCE" + RESTART_AND_CHANGE_LEVEL);
     }
     public static void createVictoryMenu(Group root) {
-        createMenu(root, 85, 300, "YOU WIN!\n" + RESTART_AND_CHANGE_LEVEL);
+        createMenu(root, DEFAULT_MENU_Y_POS, VICTORY_MENU_Y_POS, "YOU WIN!\n" + RESTART_AND_CHANGE_LEVEL);
         //resetPointsDisplay();
     }
 
     private static void resetPointsDisplay() {
-        //pointsDisplay.setText("POINTS\n" + formatPoints(0));
+        pointsDisplay.setText("POINTS\n" + formatPoints(0));
     }
 
     public static Rectangle getMenuBackground() {
