@@ -94,8 +94,6 @@ public class GameTest extends DukeApplicationTest {
         assertTrue(isNodeInMyScene(lookup("#cheatPowerUp0").query()));
     }
 
-
-
     @Test
     public void testJumpToLevelCheatKeys() {
 
