@@ -20,10 +20,14 @@ public abstract class MovingObject extends ImageView {
         this.setY(yPos);
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
-        this.image = new Image(this.getClass().getClassLoader().getResource(imgName).toExternalForm());
+        this.image = makeImage(imgName);
         this.setImage(image);
         this.setFitWidth(width);
         this.setFitHeight(height);
+    }
+
+    public Image makeImage (String imgName) {
+        return new Image(this.getClass().getClassLoader().getResource(imgName).toExternalForm());
     }
 
     public double getXSpeed() {

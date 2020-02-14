@@ -8,6 +8,7 @@ import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
 
 import javafx.scene.Group;
+import javafx.scene.image.Image;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -179,12 +180,17 @@ public class Level {
             for (Enemy enemy : enemyRow) {
                 Enemy enemyToRemove = (Enemy) handleLaserCollisions(spaceshipLasers, enemy);
                 if (enemyToRemove != null) {
-                    enemiesToRemove.add(enemyToRemove);
-                    if (enemy.hasPowerUp()) {
-                        enemy.getPowerUp().setX(enemy.getX());
-                        enemy.getPowerUp().setY(enemy.getY());
-                        powerUps.add(enemy.getPowerUp());
-                        root.getChildren().add(enemy.getPowerUp());
+                    enemy.lowerLives();
+                    if (enemy.getLives() == 0) {
+                        enemiesToRemove.add(enemyToRemove);
+                        if (enemy.hasPowerUp()) {
+                            enemy.getPowerUp().setX(enemy.getX());
+                            enemy.getPowerUp().setY(enemy.getY());
+                            powerUps.add(enemy.getPowerUp());
+                            root.getChildren().add(enemy.getPowerUp());
+                        }
+                    } else {
+                        enemy.setImage(enemy.makeImage("enemy" + enemy.getLives() + ".png"));
                     }
                 }
             }
