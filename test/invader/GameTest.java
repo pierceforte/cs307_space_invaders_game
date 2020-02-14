@@ -8,6 +8,7 @@ import invader.projectile.Laser;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -301,5 +302,46 @@ public class GameTest extends DukeApplicationTest {
         // assert that enemy's speed is in opposite direction of wall after collision
         assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) < 0);
     }
+
+    @Test
+    public void testEnemyImageChangingLevel1To2() {
+        Image level1Img = myLevel.getEnemies().get(0).get(0).getImage();
+        press(myScene, KeyCode.S);
+        myLevel = myGame.getCurLevel();
+        Image level2Img = myLevel.getEnemies().get(0).get(0).getImage();
+        assertFalse(level1Img == level2Img);
+    }
+
+    @Test
+    public void testEnemyImageChangingLevel2To3() {
+        press(myScene, KeyCode.S);
+        myLevel = myGame.getCurLevel();
+        Image level2Img = myLevel.getEnemies().get(0).get(0).getImage();
+        press(myScene, KeyCode.S);
+        myLevel = myGame.getCurLevel();
+        Image level3Img = myLevel.getEnemies().get(0).get(0).getImage();
+        assertFalse(level2Img == level3Img);
+    }
+
+    @Test
+    public void testEnemyImageChangeWhenHit() {
+        press(myScene, KeyCode.S);
+        press(myScene, KeyCode.SPACE);
+        myLevel = myGame.getCurLevel();
+        myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
+        mySpaceshipLaser = lookup("#spaceshipLaser0").query();
+
+        // Check if image changed after getting hit
+        Image imgBefore = myEnemy31.getImage();
+
+        mySpaceshipLaser.setX(myEnemy31.getX());
+        mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
+        step();
+
+        Image imgAfter = myEnemy31.getImage();
+
+        assertFalse(imgBefore == imgAfter);
+    }
+
 
 }
