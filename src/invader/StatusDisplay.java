@@ -140,7 +140,7 @@ public class StatusDisplay {
         createMenu(root, DEFAULT_MENU_X_POS, DEFAULT_MENU_Y_POS, "LEVEL COMPLETE!\n\n\nPRESS S TO ADVANCE" + RESTART_AND_CHANGE_LEVEL);
     }
     public static void createVictoryMenu(Group root) {
-        createMenu(root, DEFAULT_MENU_Y_POS, VICTORY_MENU_Y_POS, "YOU WIN!\n" + RESTART_AND_CHANGE_LEVEL);
+        createMenu(root, DEFAULT_MENU_X_POS, VICTORY_MENU_Y_POS, "YOU WIN!\n" + RESTART_AND_CHANGE_LEVEL);
         //resetPointsDisplay();
     }
 

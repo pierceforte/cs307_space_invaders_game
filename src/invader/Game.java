@@ -131,6 +131,7 @@ public class Game extends Application {
         keyToActionMap.put(KeyCode.L, () -> curLevel.addLife());
         keyToActionMap.put(KeyCode.A, () -> curLevel.addPowerUp(gameTimer));
         keyToActionMap.put(KeyCode.R, () -> goToLevel(curLevel.getLevelNumber()));
+        keyToActionMap.put(KeyCode.D, () -> curLevel.destroyFirstEnemy());
         keyToActionMap.put(KeyCode.P, () -> {
             if (myAnimation.getStatus() == Animation.Status.RUNNING) myAnimation.pause();
             else myAnimation.play();
