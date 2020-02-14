@@ -23,12 +23,14 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest extends DukeApplicationTest {
+    private final String LEFTMOST_BOTTOM_ENEMY = "#enemy27";
     private final String ENEMY_ABOVE_SPACESHIP = "#enemy31";
     private final Game myGame = new Game();
 
     private Scene myScene;
     private Spaceship mySpaceship;
     private List<List<Enemy>> myEnemies = new ArrayList<>();
+    private Enemy myEnemy27;
     private Enemy myEnemy31;
     private Laser mySpaceshipLaser;
     private Level myLevel;
@@ -49,6 +51,8 @@ public class GameTest extends DukeApplicationTest {
                 myEnemies.get(row).add(lookup("#enemy" + (col + row*Level.ENEMIES_PER_ROW)).query());
             }
         }
+        // leftmost enemy in bottom row is enemy27, such that when "D" is pressed it will be destroyed
+        myEnemy27 = lookup(LEFTMOST_BOTTOM_ENEMY).query();
         // when a laser is fired from the spaceship's default position, it will hit enemy31
         myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
         press(myScene, KeyCode.SPACE);
@@ -84,6 +88,18 @@ public class GameTest extends DukeApplicationTest {
     }
 
     @Test
+    public void testDestroyFirstEnemyCheatKey() {
+        // first enemy is defined as leftmost enemy in the bottom row. this enemy's id is enemy27
+
+        // check if enemy is on scene before key press
+        assertTrue(isNodeInMyScene(myEnemy27));
+        // press D, which is the cheat code to destroy first enemy
+        press(myScene, KeyCode.D);
+        // check if enemy27 has been destroyed
+        assertFalse(isNodeInMyScene(myEnemy27));
+    }
+
+    @Test
     public void testPowerUpCheatKey() {
         // assert that an exception is thrown when querying power up before it is created;
         // we say cheatPowerUp0 because it is the 0th power up added to the game with the cheat key "A"
@@ -96,7 +112,6 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testJumpToLevelCheatKeys() {
-
         // the first expected level is level 1
         int expectedLevelNumber = 1;
         for (KeyCode code : Game.KEY_CODES_1_THROUGH_9) {

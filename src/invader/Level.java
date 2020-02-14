@@ -112,6 +112,12 @@ public class Level {
         root.getChildren().add(powerUp);
     }
 
+    public void destroyFirstEnemy() {
+        Enemy firstEnemy = enemies.get(enemies.size()-1).get(0);
+        System.out.println(firstEnemy.getId());
+        removeInactiveEnemies(List.of(firstEnemy));
+    }
+
     private void updateNodePositionsOnStep(double elapsedTime) {
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
