@@ -3,12 +3,13 @@ package invader;
 import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
+import invader.powerup.LaserBeamPowerup;
 import invader.powerup.PowerUp;
 import invader.powerup.SpaceshipSpeedPowerUp;
+import invader.projectile.Bomb;
 import invader.projectile.Laser;
 
 import javafx.scene.Group;
-import javafx.scene.image.Image;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,6 +31,7 @@ public class Level {
     private int curCheatKeyPowerUpIdNumber = 0;
 
     private boolean levelLost = false;
+    private boolean isBombPowered = false;
 
     private Game myGame;
     private Group root;
@@ -104,12 +106,20 @@ public class Level {
         }
     }
 
-    public void addPowerUp(double gameTimer) {
-        SpaceshipSpeedPowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
+    public void addPowerUpSpeed(double gameTimer) {
+        SpaceshipSpeedPowerUp powerUpSpeed = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
                 "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
-        powerUp.setTimeActive(gameTimer);
-        powerUps.add(powerUp);
-        root.getChildren().add(powerUp);
+        powerUpSpeed.setTimeActive(gameTimer);
+        powerUps.add(powerUpSpeed);
+        root.getChildren().add(powerUpSpeed);
+    }
+
+    public void addPowerUpBomb(double gameTimer) {
+        LaserBeamPowerup powerUpLaser = new LaserBeamPowerup(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
+                "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
+        powerUpLaser.setTimeActive(gameTimer);
+        powerUps.add(powerUpLaser);
+        root.getChildren().add(powerUpLaser);
     }
 
     public void destroyFirstEnemy() {
@@ -186,7 +196,12 @@ public class Level {
             for (Enemy enemy : enemyRow) {
                 Enemy enemyToRemove = (Enemy) handleLaserCollisions(spaceshipLasers, enemy);
                 if (enemyToRemove != null) {
-                    enemy.lowerLives();
+                    if (isBombPowered) {
+                        enemy.lowerLives();
+                    }
+                    if (enemy.getLives() > 0) {
+                        enemy.lowerLives();
+                    }
                     if (enemy.getLives() == 0) {
                         enemiesToRemove.add(enemyToRemove);
                         if (enemy.hasPowerUp()) {
@@ -216,6 +231,9 @@ public class Level {
             }
             else if (powerUp.intersects(spaceship) || powerUp.isOutOfYBounds()) {
                 if (powerUp.intersects(spaceship)) {
+                    if (powerUp.getClass() == LaserBeamPowerup.class) {
+                        isBombPowered = true;
+                    }
                     powerUp.activate(gameTimer, spaceship);
                 }
                 else {
@@ -261,11 +279,27 @@ public class Level {
 
     private void shootLaser(Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot) {
         boolean isEnemy = entityShooting.getClass() == Enemy.class;
-        Laser laser = new Laser(entityShooting.getX() + Entity.NON_BOSS_WIDTH/2,
-                entityShooting.getY(), isEnemy, isEnemy ? curEnemyLaserIdNumber++ : curSpaceshipLaserIdNumber++);
-        lasers.add(laser);
-        root.getChildren().add(laser);
-        entityShooting.addToStartShootingTime(timeBeforeNextShot);
+        if (isEnemy) {
+            Laser laser = new Laser(entityShooting.getX() + Entity.NON_BOSS_WIDTH/2,
+                    entityShooting.getY(), isEnemy, isEnemy ? curEnemyLaserIdNumber++ : curSpaceshipLaserIdNumber++);
+            lasers.add(laser);
+            root.getChildren().add(laser);
+            entityShooting.addToStartShootingTime(timeBeforeNextShot);
+        } else {
+            if (isBombPowered) {
+                Bomb laserBomb = new Bomb(entityShooting.getX() + Entity.NON_BOSS_WIDTH/2,
+                        entityShooting.getY(), curSpaceshipLaserIdNumber++);
+                lasers.add(laserBomb);
+                root.getChildren().add(laserBomb);
+                entityShooting.addToStartShootingTime(timeBeforeNextShot);
+            } else {
+                Laser laser = new Laser(entityShooting.getX() + Entity.NON_BOSS_WIDTH/2,
+                        entityShooting.getY(), isEnemy, isEnemy ? curEnemyLaserIdNumber++ : curSpaceshipLaserIdNumber++);
+                lasers.add(laser);
+                root.getChildren().add(laser);
+                entityShooting.addToStartShootingTime(timeBeforeNextShot);
+            }
+        }
     }
 
     private void createEnemies() {

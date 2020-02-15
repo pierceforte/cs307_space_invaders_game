@@ -129,7 +129,8 @@ public class Game extends Application {
         keyToActionMap.put(KeyCode.LEFT, () -> curLevel.moveSpaceship(false));
         keyToActionMap.put(KeyCode.SPACE, () -> curLevel.attemptSpaceshipFire(gameTimer));
         keyToActionMap.put(KeyCode.L, () -> curLevel.addLife());
-        keyToActionMap.put(KeyCode.A, () -> curLevel.addPowerUp(gameTimer));
+        keyToActionMap.put(KeyCode.A, () -> curLevel.addPowerUpSpeed(gameTimer));
+        keyToActionMap.put(KeyCode.B, () -> curLevel.addPowerUpBomb(gameTimer));
         keyToActionMap.put(KeyCode.R, () -> goToLevel(curLevel.getLevelNumber()));
         keyToActionMap.put(KeyCode.D, () -> curLevel.destroyFirstEnemy());
         keyToActionMap.put(KeyCode.P, () -> {
@@ -146,7 +147,7 @@ public class Game extends Application {
     }
 
     /**
-     * Start the program.
+     * Start the program.x
      */
     public static void main (String[] args) {
         launch(args);

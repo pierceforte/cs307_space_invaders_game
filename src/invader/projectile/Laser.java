@@ -18,7 +18,6 @@ public class Laser extends MovingObject {
         this.isEnemy = isEnemy;
         String idString = isEnemy ? "enemy" : "spaceship";
         this.setId(idString + "Laser" + idNumber);
-
     }
 
     public int getDamage() {
