@@ -27,9 +27,10 @@ public class Game extends Application {
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final Paint BACKGROUND = Color.BLACK;
     public static final int KEY_CODE_1 = 49;
+    public static final int KEY_CODE_3 = 51;
     public static final int KEY_CODE_9 = 57;
     public static final int KEY_CODE_TO_LEVEL_CONVERSION = 48;
-    public static final int MAX_LEVEL = 3;
+    public static final int MAX_LEVEL = 4;
     private Map<KeyCode, Runnable> keyToActionMap = new HashMap<>();
     public static final List<KeyCode> KEY_CODES_1_THROUGH_9 = List.of(KeyCode.DIGIT1, KeyCode.DIGIT2, KeyCode.DIGIT3, KeyCode.DIGIT4,
             KeyCode.DIGIT5, KeyCode.DIGIT6, KeyCode.DIGIT7, KeyCode.DIGIT8, KeyCode.DIGIT9);
@@ -117,7 +118,8 @@ public class Game extends Application {
     private void goToLevel(int levelNumber) {
         curLevel.clearLevel();
         gameTimer = 0;
-        curLevel = new EnemyLevel(root, levelNumber, this);
+        if (levelNumber == MAX_LEVEL) curLevel = new BossLevel(root, levelNumber, this);
+        else curLevel = new EnemyLevel(root, levelNumber, this);
     }
 
     private boolean isKeyCodeADigit(KeyCode code) {
@@ -140,7 +142,7 @@ public class Game extends Application {
             if (curLevel.getLevelNumber() < MAX_LEVEL) goToLevel(curLevel.getLevelNumber()+1);
             });
         for (KeyCode code : KEY_CODES_1_THROUGH_9) {
-            keyToActionMap.put(code, () -> {int levelNumber = code.getCode() <= KEY_CODE_9 - 7 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;
+            keyToActionMap.put(code, () -> {int levelNumber = code.getCode() <= KEY_CODE_3 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;
                 goToLevel(levelNumber);});
         }
     }

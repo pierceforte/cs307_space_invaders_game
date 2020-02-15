@@ -16,6 +16,7 @@ public class Enemy extends Entity {
     public static final int TIME_BETWEEN_SHOTS = 50;
     public static final int EARLIEST_START_FIRING_TIME = 1;
     public static final int LATEST_START_FIRING_TIME = 40;
+    public static final int POINTS_PER_HIT = 25;
 
     private PowerUp powerUp;
     private boolean hasPowerUp = false;
@@ -29,6 +30,7 @@ public class Enemy extends Entity {
             this.powerUp = powerUp;
             hasPowerUp = true;
         }
+        setPointsPerHit(POINTS_PER_HIT);
     }
 
     public PowerUp getPowerUp() {

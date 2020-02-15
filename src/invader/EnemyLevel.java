@@ -26,7 +26,6 @@ public class EnemyLevel extends Level {
 
     private List<List<Integer>> enemyIdentifiers = new ArrayList<>();
     private List<List<Enemy>> enemies;
-    private List<Laser> enemyLasers = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
     private List<List<Integer>> powerUpGrid = new ArrayList<>();
     //private Map<Integer, PowerUp> powerUpIntegerToType = Map.of(1, SpaceshipSpeedPowerUp);
@@ -37,17 +36,11 @@ public class EnemyLevel extends Level {
 
     @Override
     public void clearLevel() {
-        root.getChildren().remove(spaceship);
-        spaceship = null;
-        root.getChildren().removeAll(enemyLasers);
-        root.getChildren().removeAll(spaceshipLasers);
-        root.getChildren().removeAll(powerUps);
-        for (List<Enemy> enemyRow : enemies) {
-            root.getChildren().removeAll(enemyRow);
-        }
-        for (List list : List.of(enemies, enemyLasers, spaceshipLasers, powerUps)) {
-            list.clear();
-        }
+        clearNodesFromSceneAndLevel(spaceship);
+        clearNodesFromSceneAndLevel(evilEntityLasers);
+        clearNodesFromSceneAndLevel(spaceshipLasers);
+        clearNodesFromSceneAndLevel(powerUps);
+        clear2dNodesFromSceneAndLevel(enemies);
     }
 
     @Override
@@ -70,13 +63,7 @@ public class EnemyLevel extends Level {
     @Override
     public void attemptLevelVictory() {
         if(!levelLost && enemies.size() == 0) {
-            myGame.setMenuActive();
-            clearLevel();
-            if (getLevelNumber() == Game.MAX_LEVEL) {
-                StatusDisplay.createVictoryMenu(root);
-            } else {
-                StatusDisplay.createLevelIntermissionMenu(root);
-            }
+            initiateLevelVictory();
         }
     }
 
@@ -103,7 +90,7 @@ public class EnemyLevel extends Level {
             }
         }
         for (PowerUp powerUp: powerUps) powerUp.updatePositionOnStep(elapsedTime);
-        updateLaserPositionsOnStep(elapsedTime, enemyLasers);
+        updateLaserPositionsOnStep(elapsedTime, evilEntityLasers);
         updateLaserPositionsOnStep(elapsedTime, spaceshipLasers);
     }
 
@@ -111,6 +98,12 @@ public class EnemyLevel extends Level {
     public List<List<Enemy>> getEvilEntities() {
         return enemies;
     }
+
+    /*public <T extends Entity> List<T> getEvillEntities() {
+        List<T> evilEntities = new ArrayList<>();
+        for (Collection<Enemy> enemyRow : enemies) evilEntities.addAll(enemyRow);
+        return evilEntities;
+    }*/
 
     @Override
     protected void handleEvilEntitiesMovement() {
@@ -134,19 +127,10 @@ public class EnemyLevel extends Level {
     protected void handleEvilEntityLasers(double gameTimer) {
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                attemptLaserFire(gameTimer, enemy, enemyLasers, Enemy.TIME_BETWEEN_SHOTS);
+                attemptLaserFire(gameTimer, enemy, evilEntityLasers, Enemy.TIME_BETWEEN_SHOTS, curEnemyLaserIdNumber);
             }
         }
-        if (handleLaserCollisions(enemyLasers, spaceship) != null) {
-            spaceship.lowerLives();
-            StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
-            if (spaceship.getLives() == 0) {
-                levelLost = true;
-                myGame.setMenuActive();
-                clearLevel();
-                StatusDisplay.createGameOverMenu(root);
-            }
-        }
+        handleLaserCollisionWithSpaceship(evilEntityLasers, spaceship);
     }
 
     @Override
@@ -172,36 +156,6 @@ public class EnemyLevel extends Level {
             }
         }
         removeInactiveEnemies(enemiesToRemove);
-    }
-
-    @Override
-    protected Entity handleLaserCollisions(List<Laser> lasers, Entity entity) {
-        List<Laser> lasersToRemove = new ArrayList<>();
-        boolean removeEntity = false;
-        for (Laser laser : lasers) {
-            if (laser.intersects(entity) || laser.isOutOfYBounds()) {
-                lasersToRemove.add(laser);
-                if (laser.intersects(entity)) {
-                    removeEntity = true;
-                    if (entity.getClass() == Enemy.class) {
-                        StatusDisplay.updatePointsDisplay(POINTS_PER_ENEMY_HIT);
-                    }
-                }
-            }
-        }
-        lasers.removeAll(lasersToRemove);
-        root.getChildren().removeAll(lasersToRemove);
-        return removeEntity ? entity : null;
-    }
-
-    @Override
-    protected void shootLaser(Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot) {
-        boolean isEnemy = entityShooting.getClass() == Enemy.class;
-        Laser laser = new Laser(entityShooting.getX() + Entity.NON_BOSS_WIDTH/2,
-                entityShooting.getY(), isEnemy, isEnemy ? curEnemyLaserIdNumber++ : curSpaceshipLaserIdNumber++);
-        lasers.add(laser);
-        root.getChildren().add(laser);
-        entityShooting.addToStartShootingTime(timeBeforeNextShot);
     }
 
     @Override

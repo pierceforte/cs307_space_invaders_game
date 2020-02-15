@@ -30,6 +30,7 @@ public abstract class Level {
 
     protected Spaceship spaceship;
     protected List<Laser> spaceshipLasers = new ArrayList<>();
+    protected List<Laser> evilEntityLasers = new ArrayList<>();
 
     private List<Node> nodes = new ArrayList<>();
 
@@ -70,13 +71,95 @@ public abstract class Level {
         }
     }
 
-    protected void attemptSpaceshipFire(double gameTimer) {
-        attemptLaserFire(gameTimer, spaceship, spaceshipLasers, 1);
+    protected void handleLaserCollisionWithSpaceship(List<Laser> evilEntityLasers, Spaceship spaceship) {
+        if (handleLaserCollisions(evilEntityLasers, spaceship) != null) {
+            spaceship.lowerLives();
+            StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
+            if (spaceship.getLives() == 0) {
+                levelLost = true;
+                myGame.setMenuActive();
+                clearLevel();
+                StatusDisplay.createGameOverMenu(root);
+            }
+        }
     }
 
-    protected void attemptLaserFire(double gameTimer, Entity entity, List<Laser> lasers, double timeBeforeNextShot) {
+    protected Entity handleLaserCollisions(List<Laser> lasers, Entity entity) {
+        List<Laser> lasersToRemove = new ArrayList<>();
+        boolean removeEntity = false;
+        for (Laser laser : lasers) {
+            if (laser.intersects(entity) || laser.isOutOfYBounds()) {
+                lasersToRemove.add(laser);
+                if (laser.intersects(entity)) {
+                    removeEntity = true;
+                    StatusDisplay.updatePointsDisplay(entity.getPointsPerHit());
+                }
+            }
+        }
+        lasers.removeAll(lasersToRemove);
+        root.getChildren().removeAll(lasersToRemove);
+        return removeEntity ? entity : null;
+    }
+
+    protected void attemptSpaceshipFire(double gameTimer) {
+        attemptLaserFire(gameTimer, spaceship, spaceshipLasers, 1, curSpaceshipLaserIdNumber);
+    }
+
+    protected void attemptLaserFire(double gameTimer, Entity entity, List<Laser> lasers, double timeBeforeNextShot, int idNumber) {
         if (gameTimer >= entity.getStartShootingTime()) {
-            shootLaser(entity, lasers, timeBeforeNextShot);
+            shootLaser(entity, lasers, timeBeforeNextShot, idNumber);
+        }
+    }
+
+    protected void shootLaser(Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot, int idNumber) {
+        boolean isEnemy = entityShooting.getClass() == Enemy.class;
+        Laser laser = new Laser(entityShooting.getX() + entityShooting.getFitWidth()/2,
+                entityShooting.getY(), isEnemy, idNumber++);
+        lasers.add(laser);
+        root.getChildren().add(laser);
+        entityShooting.addToStartShootingTime(timeBeforeNextShot);
+    }
+
+    protected <T extends Node> void clearNodesFromSceneAndLevel(T node) {
+        root.getChildren().remove(node);
+        node = null;
+    }
+
+    protected <T extends Node> void clearNodesFromSceneAndLevel(List<T> nodes) {
+        root.getChildren().removeAll(nodes);
+        nodes.clear();
+    }
+
+    protected <T extends Node> void clear2dNodesFromSceneAndLevel(List<List<T>> nodes) {
+        for (List<T> row : nodes) {
+            root.getChildren().removeAll(row);
+        }
+        nodes.clear();
+    }
+
+    protected void clearNodesFromSceneAndLevel(List<Node> nodes, List<Object> list) {
+        root.getChildren().removeAll(nodes);
+        list.removeAll(nodes);
+    }
+
+    /*
+    protected void removeNodesFromSceneAndLevel(Node node, List<Object> list) {
+        root.getChildren().remove(node);
+        list.remove(node);
+    }
+
+    protected void removeNodesFromSceneAndLevel(List<Node> nodes, List<Object> list) {
+        root.getChildren().removeAll(nodes);
+        list.removeAll(nodes);
+    }*/
+
+    protected void initiateLevelVictory() {
+        myGame.setMenuActive();
+        clearLevel();
+        if (getLevelNumber() == Game.MAX_LEVEL) {
+            StatusDisplay.createVictoryMenu(root);
+        } else {
+            StatusDisplay.createLevelIntermissionMenu(root);
         }
     }
 
@@ -85,10 +168,6 @@ public abstract class Level {
     protected abstract void handleEvilEntityLasers(double gameTimer);
 
     protected abstract void handleSpaceshipLasers();
-
-    protected abstract Entity handleLaserCollisions(List<Laser> lasers, Entity entity);
-
-    protected abstract void shootLaser(Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot);
 
     protected abstract void createEvilEntities();
 

@@ -1,19 +1,19 @@
 package invader.entity;
 
+import invader.Game;
 import invader.MovingObject;
-import javafx.scene.image.Image;
-
-import javax.swing.text.Element;
-import javax.swing.text.html.ImageView;
 
 /**
  * @author Jeff Kim
  * started 2/4/20
  */
-public class Entity extends MovingObject {
+public abstract class Entity extends MovingObject {
     public static final int NON_BOSS_WIDTH = 30;
+    public static final int TOP_OUT_OF_BOUNDS_LOCATION = 150;
+    public static final int BOTTOM_OUT_OF_BOUNDS_LOCATION = 250;
     private double startingShootTime;
 
+    private int pointsPerHit;
     private int lives;
 
     public Entity(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height, String imgName) {
@@ -30,6 +30,14 @@ public class Entity extends MovingObject {
 
     public int getLives() { return this.lives; }
 
+    public void setPointsPerHit(int pointsPerHit) {
+        this.pointsPerHit = pointsPerHit;
+    }
+
+    public int getPointsPerHit() {
+        return pointsPerHit;
+    }
+
     public double getStartShootingTime() {
         return startingShootTime;
     }
@@ -40,5 +48,10 @@ public class Entity extends MovingObject {
 
     public void setStartShootingTime(double startingShootTime) {
         this.startingShootTime = startingShootTime;
+    }
+
+    @Override
+    public boolean isOutOfYBounds() {
+        return (this.getY() >= Game.GAME_HEIGHT - BOTTOM_OUT_OF_BOUNDS_LOCATION || this.getY() <= TOP_OUT_OF_BOUNDS_LOCATION);
     }
 }
