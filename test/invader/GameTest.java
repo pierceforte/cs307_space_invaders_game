@@ -10,16 +10,11 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.util.WaitForAsyncUtils;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,8 +43,8 @@ public class GameTest extends DukeApplicationTest {
         mySpaceship = lookup("#spaceship").query();
         for (int row = 0; row < 4; row++) {
             myEnemies.add(new ArrayList<>());
-            for (int col = 0; col < Level.ENEMIES_PER_ROW; col++) {
-                myEnemies.get(row).add(lookup("#enemy" + (col + row*Level.ENEMIES_PER_ROW)).query());
+            for (int col = 0; col < EnemyLevel.ENEMIES_PER_ROW; col++) {
+                myEnemies.get(row).add(lookup("#enemy" + (col + row*EnemyLevel.ENEMIES_PER_ROW)).query());
             }
         }
         // leftmost enemy in bottom row is enemy27, such that when "D" is pressed it will be destroyed
@@ -172,7 +167,7 @@ public class GameTest extends DukeApplicationTest {
     @Test
     public void testEnemiesBounceOffRightWall() {
         // check collision off right wall
-        testEnemiesReverseXDirection(Level.ENEMIES_PER_ROW-1,
+        testEnemiesReverseXDirection(EnemyLevel.ENEMIES_PER_ROW-1,
                 Game.GAME_WIDTH - Enemy.WIDTH - Game.SECOND_DELAY, true);
     }
 
@@ -241,13 +236,14 @@ public class GameTest extends DukeApplicationTest {
         int rows = 4;
         double yPos = Game.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
         for (int row = 0; row < rows; row++) {
-            double xPos = (Game.GAME_WIDTH - Level.ENEMIES_PER_ROW * (Level.ENEMY_SPACING + Enemy.WIDTH) - Level.ENEMY_SPACING)/2;
-            for (int col = 0; col < Level.ENEMIES_PER_ROW; col++) {
+            double xPos = (Game.GAME_WIDTH - EnemyLevel.ENEMIES_PER_ROW * (EnemyLevel.ENEMY_SPACING + Enemy.WIDTH)
+                    - EnemyLevel.ENEMY_SPACING)/2;
+            for (int col = 0; col < EnemyLevel.ENEMIES_PER_ROW; col++) {
                 Enemy curEnemy = myEnemies.get(row).get(col);
                 // check that enemy is in expected position
                 assertEquals(curEnemy.getX(), xPos);
                 assertEquals(curEnemy.getY(), yPos);
-                xPos += Enemy.WIDTH + Level.ENEMY_SPACING;
+                xPos += Enemy.WIDTH + EnemyLevel.ENEMY_SPACING;
             }
             yPos += Enemy.HEIGHT;
         }
@@ -257,7 +253,7 @@ public class GameTest extends DukeApplicationTest {
     public void testClearPageWhenBeatLevel() {
         myLevel.setLevelNumber(1);
         myLevel.setLevelLost(false);
-        myLevel.getEnemies().clear();
+        myLevel.getEvilEntities().clear();
         step();
 
         assertEquals("LEVEL COMPLETE!\n\n\n" +
@@ -274,7 +270,7 @@ public class GameTest extends DukeApplicationTest {
     public void testClearPageWhenBeatGame() {
         myLevel.setLevelNumber(3);
         myLevel.setLevelLost(false);
-        myLevel.getEnemies().clear();
+        myLevel.getEvilEntities().clear();
         step();
 
         assertEquals("YOU WIN!\n\n\n" +
@@ -320,10 +316,10 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testEnemyImageChangingLevel1To2() {
-        Image level1Img = myLevel.getEnemies().get(0).get(0).getImage();
+        Image level1Img = myLevel.getEvilEntities().get(0).get(0).getImage();
         press(myScene, KeyCode.S);
         myLevel = myGame.getCurLevel();
-        Image level2Img = myLevel.getEnemies().get(0).get(0).getImage();
+        Image level2Img = myLevel.getEvilEntities().get(0).get(0).getImage();
         assertFalse(level1Img == level2Img);
     }
 
@@ -331,10 +327,10 @@ public class GameTest extends DukeApplicationTest {
     public void testEnemyImageChangingLevel2To3() {
         press(myScene, KeyCode.S);
         myLevel = myGame.getCurLevel();
-        Image level2Img = myLevel.getEnemies().get(0).get(0).getImage();
+        Image level2Img = myLevel.getEvilEntities().get(0).get(0).getImage();
         press(myScene, KeyCode.S);
         myLevel = myGame.getCurLevel();
-        Image level3Img = myLevel.getEnemies().get(0).get(0).getImage();
+        Image level3Img = myLevel.getEvilEntities().get(0).get(0).getImage();
         assertFalse(level2Img == level3Img);
     }
 

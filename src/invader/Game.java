@@ -71,7 +71,7 @@ public class Game extends Application {
 
         // create a level
         StatusDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
-        curLevel = new Level(root,1, this);
+        curLevel = new EnemyLevel(root,1, this);
         // respond to input
         initializeKeyToActionMap();
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
@@ -117,7 +117,7 @@ public class Game extends Application {
     private void goToLevel(int levelNumber) {
         curLevel.clearLevel();
         gameTimer = 0;
-        curLevel = new Level(root, levelNumber, this);
+        curLevel = new EnemyLevel(root, levelNumber, this);
     }
 
     private boolean isKeyCodeADigit(KeyCode code) {

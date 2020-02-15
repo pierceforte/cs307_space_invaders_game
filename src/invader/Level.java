@@ -3,12 +3,10 @@ package invader;
 import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
-import invader.powerup.PowerUp;
-import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
 
 import javafx.scene.Group;
-import javafx.scene.image.Image;
+import javafx.scene.Node;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,284 +14,83 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Level {
+public abstract class Level {
 
     public static final String LEVEL_FILE_PATH = "resources/level_files/level_";
     public static final String LEVEL_FILE_EXTENSION = ".txt";
-    public static final double ENEMY_SPACING = 10;
-    public static final int ENEMIES_PER_ROW = 9;
-    public static final int POINTS_PER_ENEMY_HIT = 25;
-    public static final int ENEMY_SPEED_FACTOR_BY_LEVEL = 10;
 
-    private int curSpaceshipLaserIdNumber = 0;
-    private int curEnemyLaserIdNumber = 0;
-    private int curCheatKeyPowerUpIdNumber = 0;
+    protected int curSpaceshipLaserIdNumber = 0;
 
-    private boolean levelLost = false;
+    protected boolean levelLost = false;
 
-    private Game myGame;
-    private Group root;
+    protected Game myGame;
+    protected Group root;
 
-    private int levelNumber;
-    private int rows;
-    private Spaceship spaceship;
-    private List<Laser> spaceshipLasers = new ArrayList<>();
-    private List<List<Integer>> enemyIdentifiers = new ArrayList<>();
+    protected int levelNumber;
 
-    private List<List<Enemy>> enemies = new ArrayList<>();
-    private List<Laser> enemyLasers = new ArrayList<>();
-    private List<PowerUp> powerUps = new ArrayList<>();
-    private List<List<Integer>> powerUpGrid = new ArrayList<>();
-    //private Map<Integer, PowerUp> powerUpIntegerToType = Map.of(1, SpaceshipSpeedPowerUp);
+    protected Spaceship spaceship;
+    protected List<Laser> spaceshipLasers = new ArrayList<>();
+
+    private List<Node> nodes = new ArrayList<>();
 
     public Level(Group root, int levelNumber, Game myGame){
         this.root = root;
         String levelFile = LEVEL_FILE_PATH + levelNumber + LEVEL_FILE_EXTENSION;
         readFile(levelFile);
         this.levelNumber = levelNumber;
-        createEnemies();
-        addEnemiesAndSpaceshipToScene();
+        createEvilEntities();
+        addEntitiesToScene();
         this.myGame = myGame;
         StatusDisplay.updateLevelNumberDisplay(levelNumber);
         StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
     }
 
-    public void clearLevel() {
-        root.getChildren().remove(spaceship);
-        spaceship = null;
-        root.getChildren().removeAll(enemyLasers);
-        root.getChildren().removeAll(spaceshipLasers);
-        root.getChildren().removeAll(powerUps);
-        for (List<Enemy> enemyRow : enemies) {
-            root.getChildren().removeAll(enemyRow);
-        }
-        for (List list : List.of(enemies, enemyLasers, spaceshipLasers, powerUps)) {
-            list.clear();
-        }
-    }
+    public abstract void clearLevel();
 
-    public void addEnemiesAndSpaceshipToScene() {
-        for (List<Enemy> enemyRow : enemies) root.getChildren().addAll(enemyRow);
-        spaceship = new Spaceship(Spaceship.DEFAULT_X_POS, Spaceship.DEFAULT_Y_POS);
-        root.getChildren().add(spaceship);
-    }
+    public abstract void addEntitiesToScene();
 
     public void addLife() {
         spaceship.addLife();
         StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
     }
 
-    public void handleEntitiesAndLasers(double gameTimer, double elapsedTime) {
-        updateNodePositionsOnStep(elapsedTime);
-        handleEnemiesMovement();
-        handleEnemyLasers(gameTimer);
-        handleSpaceshipLasers();
-        handlePowerUps(gameTimer);
-        attemptLevelVictory();
-    }
+    public abstract void handleEntitiesAndLasers(double gameTimer, double elapsedTime);
 
-    public void attemptLevelVictory() {
-        if(!levelLost && enemies.size() == 0) {
-            myGame.setMenuActive();
-            clearLevel();
-            if (getLevelNumber() == Game.MAX_LEVEL) {
-                StatusDisplay.createVictoryMenu(root);
-            } else {
-                StatusDisplay.createLevelIntermissionMenu(root);
-            }
-        }
-    }
+    public abstract void attemptLevelVictory();
 
-    public void addPowerUp(double gameTimer) {
-        SpaceshipSpeedPowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
-        powerUp.setTimeActive(gameTimer);
-        powerUps.add(powerUp);
-        root.getChildren().add(powerUp);
-    }
+    public abstract void addPowerUp(double gameTimer);
 
-    public void destroyFirstEnemy() {
-        Enemy firstEnemy = enemies.get(enemies.size()-1).get(0);
-        System.out.println(firstEnemy.getId());
-        removeInactiveEnemies(List.of(firstEnemy));
-    }
+    public abstract void destroyFirstEnemy();
 
-    private void updateNodePositionsOnStep(double elapsedTime) {
-        for (List<Enemy> enemyRow : enemies) {
-            for (Enemy enemy : enemyRow) {
-                enemy.updatePositionOnStep(elapsedTime);
-            }
-        }
-        for (PowerUp powerUp: powerUps) powerUp.updatePositionOnStep(elapsedTime);
-        updateLaserPositionsOnStep(elapsedTime, enemyLasers);
-        updateLaserPositionsOnStep(elapsedTime, spaceshipLasers);
-    }
+    protected abstract void updateNodePositionsOnStep(double elapsedTime);
 
-    private void updateLaserPositionsOnStep(double elapsedTime, List<Laser> lasers) {
+    protected void updateLaserPositionsOnStep(double elapsedTime, List<Laser> lasers) {
         for (Laser laser : lasers) {
             laser.updatePositionOnStep(elapsedTime);
         }
     }
 
-    public void attemptSpaceshipFire(double gameTimer) {
+    protected void attemptSpaceshipFire(double gameTimer) {
         attemptLaserFire(gameTimer, spaceship, spaceshipLasers, 1);
     }
 
-    private void attemptLaserFire(double gameTimer, Entity entity, List<Laser> lasers, double timeBeforeNextShot) {
+    protected void attemptLaserFire(double gameTimer, Entity entity, List<Laser> lasers, double timeBeforeNextShot) {
         if (gameTimer >= entity.getStartShootingTime()) {
             shootLaser(entity, lasers, timeBeforeNextShot);
         }
     }
 
-    private void handleEnemiesMovement() {
-        boolean reverseMovement = false;
-        for (List<Enemy> enemyRow : enemies) {
-            if (enemyRow.get(0).isOutOfXBounds() || enemyRow.get(enemyRow.size()-1).isOutOfXBounds()) {
-                reverseMovement = true;
-                break;
-            }
-        }
-        if (reverseMovement) {
-            for (List<Enemy> enemyRow : enemies) {
-                for (Enemy enemy : enemyRow) {
-                    enemy.reverseXDirection();
-                }
-            }
-        }
-    }
+    protected abstract void handleEvilEntitiesMovement();
 
-    private void handleEnemyLasers(double gameTimer) {
-        for (List<Enemy> enemyRow : enemies) {
-            for (Enemy enemy : enemyRow) {
-                attemptLaserFire(gameTimer, enemy, enemyLasers, Enemy.TIME_BETWEEN_SHOTS);
-            }
-        }
-        if (handleLaserCollisions(enemyLasers, spaceship) != null) {
-            spaceship.lowerLives();
-            StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
-            if (spaceship.getLives() == 0) {
-                levelLost = true;
-                myGame.setMenuActive();
-                clearLevel();
-                StatusDisplay.createGameOverMenu(root);
-            }
-        }
-    }
+    protected abstract void handleEvilEntityLasers(double gameTimer);
 
-    private void handleSpaceshipLasers() {
-        List<Enemy> enemiesToRemove = new ArrayList<>();
-        for (List<Enemy> enemyRow : enemies) {
-            for (Enemy enemy : enemyRow) {
-                Enemy enemyToRemove = (Enemy) handleLaserCollisions(spaceshipLasers, enemy);
-                if (enemyToRemove != null) {
-                    enemy.lowerLives();
-                    if (enemy.getLives() == 0) {
-                        enemiesToRemove.add(enemyToRemove);
-                        if (enemy.hasPowerUp()) {
-                            enemy.getPowerUp().setX(enemy.getX());
-                            enemy.getPowerUp().setY(enemy.getY());
-                            powerUps.add(enemy.getPowerUp());
-                            root.getChildren().add(enemy.getPowerUp());
-                        }
-                    } else {
-                        enemy.setImage(enemy.makeImage("enemy" + enemy.getLives() + ".png"));
-                    }
-                }
-            }
-        }
-        removeInactiveEnemies(enemiesToRemove);
-    }
+    protected abstract void handleSpaceshipLasers();
 
-    private void handlePowerUps(double gameTimer) {
-        List<PowerUp> powerUpsToRemoveFromScene = new ArrayList<>();
-        List<PowerUp> powerUpsToRemoveFromGame = new ArrayList<>();
-        for (PowerUp powerUp: powerUps) {
-            if (powerUp.hasBeenActivated()) {
-                if (!powerUp.updateAndGetActiveStatus(gameTimer, spaceship)) {
-                    powerUp.deactivate(gameTimer, spaceship);
-                    powerUpsToRemoveFromGame.add(powerUp);
-                }
-            }
-            else if (powerUp.intersects(spaceship) || powerUp.isOutOfYBounds()) {
-                if (powerUp.intersects(spaceship)) {
-                    powerUp.activate(gameTimer, spaceship);
-                }
-                else {
-                    powerUpsToRemoveFromGame.add(powerUp);
-                }
-                powerUpsToRemoveFromScene.add(powerUp);
-            }
-        }
-        root.getChildren().removeAll(powerUpsToRemoveFromScene);
-        powerUps.removeAll(powerUpsToRemoveFromGame);
-    }
+    protected abstract Entity handleLaserCollisions(List<Laser> lasers, Entity entity);
 
-    private void removeInactiveEnemies(List<Enemy> enemiesToRemove) {
-        root.getChildren().removeAll(enemiesToRemove);
-        for(List<Enemy> enemyRow : enemies) {
-            enemyRow.removeAll(enemiesToRemove);
-        }
-        List<List<Enemy>> enemyRowsToRemove = new ArrayList<>();
-        for(List<Enemy> enemyRow : enemies) {
-            if (enemyRow.size() == 0) enemyRowsToRemove.add(enemyRow);
-        }
-        enemies.removeAll(enemyRowsToRemove);
-    }
+    protected abstract void shootLaser(Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot);
 
-    private Entity handleLaserCollisions(List<Laser> lasers, Entity entity) {
-        List<Laser> lasersToRemove = new ArrayList<>();
-        boolean removeEntity = false;
-        for (Laser laser : lasers) {
-            if (laser.intersects(entity) || laser.isOutOfYBounds()) {
-                lasersToRemove.add(laser);
-                if (laser.intersects(entity)) {
-                    removeEntity = true;
-                    if (entity.getClass() == Enemy.class) {
-                        StatusDisplay.updatePointsDisplay(POINTS_PER_ENEMY_HIT);
-                    }
-                }
-            }
-        }
-        lasers.removeAll(lasersToRemove);
-        root.getChildren().removeAll(lasersToRemove);
-        return removeEntity ? entity : null;
-    }
-
-    private void shootLaser(Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot) {
-        boolean isEnemy = entityShooting.getClass() == Enemy.class;
-        Laser laser = new Laser(entityShooting.getX() + Entity.NON_BOSS_WIDTH/2,
-                entityShooting.getY(), isEnemy, isEnemy ? curEnemyLaserIdNumber++ : curSpaceshipLaserIdNumber++);
-        lasers.add(laser);
-        root.getChildren().add(laser);
-        entityShooting.addToStartShootingTime(timeBeforeNextShot);
-    }
-
-    private void createEnemies() {
-        // get height of first brick row to ensure they are centered
-        double yPos = Game.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
-        for (int row = 0; row < enemyIdentifiers.size(); row++) {
-            List<Enemy> tempRow = new ArrayList<>();
-            double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
-            for (int col = 0; col < enemyIdentifiers.get(0).size(); col++) {
-                SpaceshipSpeedPowerUp curPowerUp = null;
-                if ((col == 1 && row % 2 != 0) || (col == 4 && (row % 2 == 0)) || (col == 7 && row == 3)) {
-                    curPowerUp = new SpaceshipSpeedPowerUp(xPos + Enemy.WIDTH/2, yPos,
-                            "enemyPowerUp" + col + row*Level.ENEMIES_PER_ROW);
-                }
-                Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*levelNumber,
-                        0, enemyIdentifiers.get(row).get(col), col + row*Level.ENEMIES_PER_ROW, curPowerUp);
-                /*
-                if (!powerUpGrid.get(i*BRICKS_PER_ROW + j).equals("none")) {
-                    curBrick.setPowerUp(powerUpGrid.get(i*BRICKS_PER_ROW + j));
-                }
-                */
-                tempRow.add(curEnemy);
-                xPos += Enemy.WIDTH + ENEMY_SPACING;
-            }
-            yPos += Enemy.HEIGHT;
-            enemies.add(tempRow);
-        }
-    }
+    protected abstract void createEvilEntities();
 
     public void moveSpaceship(boolean toRight) {
         spaceship.setX(spaceship.getX() + spaceship.getXSpeedOnKeyPress() * (toRight ? 1 : -1));
@@ -304,24 +101,15 @@ public class Level {
         try {
             File file = new File(levelFile);
             Scanner myReader = new Scanner(file);
-            enemyIdentifiers = new ArrayList<>();
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                String [] cleanRow = data.split(",");
-                List<Integer> row = new ArrayList<>();
-                for (String brick : cleanRow) {
-                    row.add(Integer.parseInt(brick));
-                }
-                enemyIdentifiers.add(row);
-            }
-            rows = this.enemyIdentifiers.size();
-            //assignPowerUpsToBricks();
+            handleFileLines(myReader);
             myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred while reading level layout txt file: " + levelFile);
             e.printStackTrace();
         }
     }
+
+    protected abstract void handleFileLines(Scanner myReader);
 
     public int getLevelNumber() {
         return levelNumber;
@@ -331,15 +119,9 @@ public class Level {
         this.levelNumber = levelNumber;
     }
 
-    public List<List<Enemy>> getEnemies() {
-        return enemies;
-    }
+    public abstract List<List<Enemy>> getEvilEntities();
 
     public void setLevelLost(boolean levelLost) {
         this.levelLost = levelLost;
-    }
-
-    public void setEnemies(List<List<Enemy>> enemies) {
-        this.enemies = enemies;
     }
 }
