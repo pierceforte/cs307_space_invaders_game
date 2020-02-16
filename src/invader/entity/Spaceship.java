@@ -82,7 +82,7 @@ public class Spaceship extends Entity {
         Projectile projectile;
         if (this.hasMissilePowerUp()) {
             projectile = new Missile(this.getX() + this.getFitWidth()/2,
-                    this.getY(), false, rotation, idNumber++);
+                    this.getY(), false, rotation, idNumber);
         }
         else {
             projectile = defaultProjectileFire(rotation, idNumber);

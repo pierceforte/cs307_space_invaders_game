@@ -43,6 +43,9 @@ public class Game extends Application {
     private boolean isHighScoreTextFieldActive = false;
     private boolean isQuitGameMenuActive = false;
 
+    public Game() {
+        super();
+    }
     /**
      * Initialize what will be displayed and how it will be updated.
      */

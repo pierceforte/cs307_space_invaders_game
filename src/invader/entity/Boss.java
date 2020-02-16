@@ -103,7 +103,7 @@ public class Boss extends Entity {
     public Projectile createProjectile(double rotation, int idNumber) {
         if (hasBurstFire()) {
             return new Fireball(this.getX() + this.getFitWidth()/2,
-                    this.getY(), true, rotation, idNumber++);
+                    this.getY(), true, rotation, idNumber);
         }
         else {
             return defaultProjectileFire(rotation, idNumber);
