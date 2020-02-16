@@ -7,6 +7,12 @@ public class SpaceshipSpeedPowerUp extends PowerUp {
     public static final int INCREASED_SPEED = 25;
     public static final int TIME_ACTIVE = 8;
 
+    /**
+     * Constructor
+     * @param xPos
+     * @param yPos
+     * @param id
+     */
     public SpaceshipSpeedPowerUp(double xPos, double yPos, String id) {
         super(xPos, yPos, IMG_NAME, id);
         setTimeActive(TIME_ACTIVE);

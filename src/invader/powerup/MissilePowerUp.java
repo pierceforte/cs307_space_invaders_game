@@ -6,6 +6,9 @@ public class MissilePowerUp extends PowerUp {
     public static final String IMG_NAME = "extraballpower.gif";
     public static final int TIME_ACTIVE = 3;
 
+    /**
+     * Constructor
+     */
     public MissilePowerUp(double xPos, double yPos, String id) {
         super(xPos, yPos, IMG_NAME, id);
         setTimeActive(TIME_ACTIVE);

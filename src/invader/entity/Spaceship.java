@@ -21,6 +21,11 @@ public class Spaceship extends Entity {
     private double xSpeedOnKeyPress = DEFAULT_X_SPEED_ON_KEY_PRESS;
     private boolean hasMissilePowerUp = false;
 
+    /**
+     * Constructor
+     * @param xPos
+     * @param yPos
+     */
     public Spaceship(double xPos, double yPos) {
         super(xPos, yPos, DEFAULT_X_SPEED, DEFAULT_Y_SPEED, HEIGHT, WIDTH, SPACESHIP_IMG_NAME);
         setLives(DEFAULT_LIVES);
@@ -28,6 +33,9 @@ public class Spaceship extends Entity {
         this.setId("spaceship");
     }
 
+    /**
+     * Sets the location of the spaceship to the other side of the screen when it hits the end of the screen
+     */
     public void wrap() {
         if (this.getX() > Game.GAME_WIDTH - this.getFitWidth()) {
             this.setX(0);
@@ -37,18 +45,33 @@ public class Spaceship extends Entity {
         }
     }
 
+    /**
+     * @return Returns the xSpeed of the spaceship
+     */
     public double getXSpeedOnKeyPress() {
         return xSpeedOnKeyPress;
     }
 
+    /**
+     * Set the xSpeed of the spaceship
+     * @param xSpeedOnKeyPress
+     */
     public void setXSpeedOnKeyPress(double xSpeedOnKeyPress) {
         this.xSpeedOnKeyPress = xSpeedOnKeyPress;
     }
 
+    /**
+     * Set the missile power up for the spaceship (Stronger missile)
+     * @param isActive
+     */
     public void setMissilePowerUp(boolean isActive) {
         hasMissilePowerUp = isActive;
     }
 
+    /**
+     * Check if the spaceship has missile power up
+     * @return
+     */
     public boolean hasMissilePowerUp() {
         return hasMissilePowerUp;
     }
