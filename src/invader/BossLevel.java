@@ -2,26 +2,18 @@ package invader;
 
 import invader.entity.Boss;
 import invader.entity.Enemy;
-import invader.entity.Entity;
 import invader.entity.Spaceship;
-import invader.powerup.MissilePowerUp;
-import invader.powerup.PowerUp;
-import invader.powerup.SpaceshipSpeedPowerUp;
-import invader.projectile.Laser;
 import invader.projectile.Projectile;
 import javafx.scene.Group;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class BossLevel extends Level {
-
-    public static final int DEFAULT_LASER_ROTATION = 0;
-    public static final int BLAST_LASER_Y_SPEED = -80;
-    public static final int LEFT_LASER_ROTATION = 45;
-    public static final int LEFT_LASER_X_SPEED = -15;
+public class BossLevel extends Level { public static final int LEFT_LASER_ROTATION = 45;
+    public static final int LEFT_PROJECTILE_X_SPEED = -50;
     public static final int RIGHT_LASER_ROTATION = -45;
-    public static final int RIGHT_LASER_X_SPEED = 15;
+    public static final int RIGHT_PROJECTILE_X_SPEED = 50;
+    public static final int DEFAULT_SPACESHIP_LIVES = 5;
 
     private Boss boss;
     private int bossLives;
@@ -30,6 +22,8 @@ public class BossLevel extends Level {
 
     public BossLevel(Group root, int levelNumber, Game myGame){
         super(root, levelNumber, myGame);
+        spaceship.setLives(DEFAULT_SPACESHIP_LIVES);
+        StatusDisplay.updateLifeCountDisplay(DEFAULT_SPACESHIP_LIVES);
     }
 
     @Override
@@ -91,15 +85,13 @@ public class BossLevel extends Level {
     @Override
     protected void handleEvilEntityLasers(double gameTimer) {
         handleProjectileCollisionWithSpaceship(evilEntityProjectiles, spaceship);
+        handleProjectileBounds(evilEntityProjectiles);
     }
 
     @Override
     protected void handleSpaceshipProjectiles() {
-        boolean isCollision = handleProjectileCollisions(spaceshipProjectiles, boss);
-        if (boss.isVulnerable() && isCollision) {
-            boss.lowerLives();
-            if (boss.getLives() == 0) clearNodesFromSceneAndLevel(boss);
-        }
+        handleProjectileCollisions(spaceshipProjectiles, boss);
+        if (boss.getLives() == 0) clearNodesFromSceneAndLevel(boss);
     }
 
     @Override
@@ -141,28 +133,20 @@ public class BossLevel extends Level {
         }
     }
 
-    @Override
-    protected Projectile createEvilEntityProjectile(Entity entityShooting, double rotation, int idNumber) {
-        Laser laser = new Laser(entityShooting.getX() + entityShooting.getFitWidth()/2,
-                entityShooting.getY(), true, rotation, idNumber++);
-        return laser;
-    }
-
     private void attemptBossFire(double gameTimer) {
         if (!boss.isVulnerable()) invulnerableTimer++;
         if (!boss.isVulnerable() && invulnerableTimer >= boss.getStartShootingTime()) {
-            shootLaser(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, DEFAULT_LASER_ROTATION, curBossProjectileIdNumber);
+            shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, DEFAULT_LASER_ROTATION, curBossProjectileIdNumber);
         }
     }
 
     private void bossBlastFire() {
-        Projectile centerLaser = shootLaser(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, DEFAULT_LASER_ROTATION, curBossProjectileIdNumber);
-        centerLaser.setYSpeed(BLAST_LASER_Y_SPEED);
-        Projectile leftLaser = shootLaser(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, LEFT_LASER_ROTATION, curBossProjectileIdNumber);
-        leftLaser.setXSpeed(LEFT_LASER_X_SPEED);
-        leftLaser.setYSpeed(BLAST_LASER_Y_SPEED);
-        Projectile rightLaser = shootLaser(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, RIGHT_LASER_ROTATION, curBossProjectileIdNumber);
-        rightLaser.setXSpeed(RIGHT_LASER_X_SPEED);
-        rightLaser.setYSpeed(BLAST_LASER_Y_SPEED);
+        boss.setHasFireballBlast(true);
+        shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, DEFAULT_LASER_ROTATION, curBossProjectileIdNumber);
+        Projectile leftProjectile = shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, LEFT_LASER_ROTATION, curBossProjectileIdNumber);
+        leftProjectile.setXSpeed(LEFT_PROJECTILE_X_SPEED);
+        Projectile rightProjectile = shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, RIGHT_LASER_ROTATION, curBossProjectileIdNumber);
+        rightProjectile.setXSpeed(RIGHT_PROJECTILE_X_SPEED);
+        boss.setHasFireballBlast(false);
     }
 }

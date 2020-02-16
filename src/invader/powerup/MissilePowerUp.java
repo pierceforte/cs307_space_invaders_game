@@ -24,5 +24,6 @@ public class MissilePowerUp extends PowerUp {
 
     @Override
     public void reapplyPowerUp(double gameTimer, Spaceship spaceship) {
+        spaceship.setMissilePowerUp(true);
     }
 }

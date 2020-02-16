@@ -1,6 +1,8 @@
 package invader.entity;
 
 import invader.powerup.PowerUp;
+import invader.projectile.Laser;
+import invader.projectile.Projectile;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -41,4 +43,8 @@ public class Enemy extends Entity {
         return hasPowerUp;
     }
 
+    @Override
+    public Projectile createProjectile(double rotation, int idNumber) {
+        return normalEvilEntityLaserBlast(rotation, idNumber);
+    }
 }

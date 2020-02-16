@@ -2,6 +2,8 @@ package invader.entity;
 
 import invader.Game;
 import invader.MovingObject;
+import invader.projectile.Laser;
+import invader.projectile.Projectile;
 
 /**
  * @author Jeff Kim
@@ -57,5 +59,13 @@ public abstract class Entity extends MovingObject {
     @Override
     public boolean isOutOfYBounds() {
         return (this.getY() >= Game.GAME_HEIGHT - BOTTOM_OUT_OF_BOUNDS_LOCATION || this.getY() <= TOP_OUT_OF_BOUNDS_LOCATION);
+    }
+
+    public abstract Projectile createProjectile(double rotation, int idNumber);
+
+    protected Projectile normalEvilEntityLaserBlast(double rotation, int idNumber){
+        Laser laser = new Laser(this.getX() + this.getFitWidth()/2,
+                this.getY(), true, rotation, idNumber++);
+        return laser;
     }
 }

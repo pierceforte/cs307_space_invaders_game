@@ -3,8 +3,6 @@ package invader;
 import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
-import invader.projectile.Missile;
-import invader.projectile.Laser;
 
 import invader.projectile.Projectile;
 import javafx.scene.Group;
@@ -21,6 +19,7 @@ public abstract class Level {
     public static final String LEVEL_FILE_PATH = "resources/level_files/level_";
     public static final String LEVEL_FILE_EXTENSION = ".txt";
     public static final int SPACESHIP_LASER_ROTATION = 0;
+    public static final int DEFAULT_LASER_ROTATION = 0;
 
     protected int curSpaceshipProjectileIdNumber = 0;
     protected boolean levelLost = false;
@@ -126,40 +125,29 @@ public abstract class Level {
     protected void attemptProjectileFire(double gameTimer, Entity entity, List<Projectile> projectiles, double timeBeforeNextShot, double rotation,
                                          int idNumber) {
         if (gameTimer >= entity.getStartShootingTime()) {
-            shootLaser(entity, projectiles, timeBeforeNextShot, rotation, idNumber);
+            shootProjectile(entity, projectiles, timeBeforeNextShot, rotation, idNumber);
         }
     }
 
-    protected Projectile shootLaser(Entity entityShooting, List<Projectile> lasers, double timeBeforeNextShot, double rotation, int idNumber) {
-        boolean isSpaceship = entityShooting.getClass() == Spaceship.class;
-        Projectile projectile;
-        if (isSpaceship) {
-            projectile = createSpaceshipProjectile(spaceship, rotation, idNumber);
-        }
-        else {
-            projectile = createEvilEntityProjectile(entityShooting, rotation, idNumber);
-        }
-
+    protected Projectile shootProjectile(Entity entityShooting, List<Projectile> lasers, double timeBeforeNextShot, double rotation, int idNumber) {
+        Projectile projectile = entityShooting.createProjectile(rotation, idNumber);
         lasers.add(projectile);
         root.getChildren().add(projectile);
         entityShooting.addToStartShootingTime(timeBeforeNextShot);
         return projectile;
     }
 
-    protected Projectile createSpaceshipProjectile(Spaceship spaceship, double rotation, int idNumber) {
-        Projectile projectile;
-        if (spaceship.hasMissilePowerUp()) {
-            projectile = new Missile(spaceship.getX() + spaceship.getFitWidth()/2,
-                    spaceship.getY(), false, rotation, idNumber++);
+    protected void handleProjectileBounds(List<Projectile> projectiles) {
+        for (Projectile evilEntityProjectile : evilEntityProjectiles) {
+            if (evilEntityProjectile.isOutOfXBounds()) {
+                double rotation = evilEntityProjectile.getRotate();
+                if (rotation != DEFAULT_LASER_ROTATION) {
+                    evilEntityProjectile.setRotate(rotation*-1);
+                }
+                evilEntityProjectile.reverseXDirection();
+            }
         }
-        else {
-            projectile = new Laser(spaceship.getX() + spaceship.getFitWidth()/2,
-                    spaceship.getY(), false, rotation, idNumber++);
-        }
-        return projectile;
     }
-
-    protected abstract Projectile createEvilEntityProjectile(Entity entityShooting, double rotation, int idNumber);
 
     protected <T extends Node> void clearNodesFromSceneAndLevel(T node) {
         root.getChildren().remove(node);

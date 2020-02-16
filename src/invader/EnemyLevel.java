@@ -165,13 +165,6 @@ public class EnemyLevel extends Level {
     }
 
     @Override
-    protected Projectile createEvilEntityProjectile(Entity entityShooting, double rotation, int idNumber) {
-        Projectile laser = new Laser(entityShooting.getX() + entityShooting.getFitWidth()/2,
-                entityShooting.getY(), true, rotation, idNumber++);
-        return laser;
-    }
-
-    @Override
     protected void createEvilEntities() {
         enemies = new ArrayList<>();
         // get height of first brick row to ensure they are centered

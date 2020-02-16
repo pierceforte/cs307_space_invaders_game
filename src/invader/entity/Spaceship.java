@@ -1,6 +1,9 @@
 package invader.entity;
 
 import invader.Game;
+import invader.projectile.Laser;
+import invader.projectile.Missile;
+import invader.projectile.Projectile;
 import javafx.scene.image.Image;
 
 public class Spaceship extends Entity {
@@ -48,6 +51,20 @@ public class Spaceship extends Entity {
 
     public boolean hasMissilePowerUp() {
         return hasMissilePowerUp;
+    }
+
+    @Override
+    public Projectile createProjectile(double rotation, int idNumber) {
+        Projectile projectile;
+        if (this.hasMissilePowerUp()) {
+            projectile = new Missile(this.getX() + this.getFitWidth()/2,
+                    this.getY(), false, rotation, idNumber++);
+        }
+        else {
+            projectile = new Laser(this.getX() + this.getFitWidth()/2,
+                    this.getY(), false, rotation, idNumber++);
+        }
+        return projectile;
     }
 
 
