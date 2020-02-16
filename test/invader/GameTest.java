@@ -354,5 +354,33 @@ public class GameTest extends DukeApplicationTest {
         assertFalse(imgBefore == imgAfter);
     }
 
+    @Test
+    public void testBombPowerUp() {
+        press(myScene, KeyCode.S);
+        press(myScene, KeyCode.S);
+        press(myScene, KeyCode.B);
+        PowerUp myPowerUp = lookup("#cheatPowerUp0").query();
+        myPowerUp.setY(mySpaceship.getY() - 10);
+        myPowerUp.setTimeActive(Game.SECOND_DELAY);
+
+        step();
+
+        press(myScene, KeyCode.SPACE);
+        myLevel = myGame.getCurLevel();
+        myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
+        mySpaceshipLaser = lookup("#spaceshipLaser0").query();
+
+        int lifeBefore = myEnemy31.getLives();
+        assertEquals(3, lifeBefore);
+
+        mySpaceshipLaser.setX(myEnemy31.getX());
+        mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
+        step();
+
+        int lifeAfter = myEnemy31.getLives();
+
+        assertEquals(1, lifeAfter);
+    }
+
 
 }
