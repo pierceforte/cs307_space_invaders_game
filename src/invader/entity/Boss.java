@@ -17,7 +17,7 @@ public class Boss extends Entity {
     public static final int DEFAULT_SPEED = 50;
     public static final String BOSS_IMG_NAME = "boss.gif";
     public static final String BOSS_HIDING_IMG_NAME = "boss_hiding.png";
-    public static final int TIME_BETWEEN_SHOTS = 50;
+    public static final int DEFAULT_TIME_BETWEEN_SHOTS = 50;
     public static final int START_FIRING_TIME = 5;
     public static final int POINTS_PER_HIT = 50;
     public static final int POINTS_PER_HIT_WHEN_INVULNERABLE = 0;
@@ -37,7 +37,7 @@ public class Boss extends Entity {
      * @param lives
      */
     public Boss(double xPos, double yPos, double xSpeed, double ySpeed, int lives) {
-        super(xPos, yPos, xSpeed, ySpeed, HIDDEN_WIDTH, HIDDEN_HEIGHT, BOSS_HIDING_IMG_NAME);
+        super(xPos, yPos, xSpeed, ySpeed, HIDDEN_WIDTH, HIDDEN_HEIGHT, DEFAULT_TIME_BETWEEN_SHOTS, BOSS_HIDING_IMG_NAME);
         setLives(lives);
         setPointsPerHit(POINTS_PER_HIT_WHEN_INVULNERABLE);
         this.setId("boss");

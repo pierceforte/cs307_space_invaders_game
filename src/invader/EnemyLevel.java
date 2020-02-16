@@ -2,13 +2,10 @@ package invader;
 
 
 import invader.entity.Enemy;
-import invader.entity.Entity;
 import invader.entity.Spaceship;
 import invader.powerup.MissilePowerUp;
 import invader.powerup.PowerUp;
 import invader.powerup.SpaceshipSpeedPowerUp;
-import invader.projectile.Laser;
-import invader.projectile.Projectile;
 import javafx.scene.Group;
 
 import java.util.ArrayList;
@@ -107,12 +104,6 @@ public class EnemyLevel extends Level {
         return enemies;
     }
 
-    /*public <T extends Entity> List<T> getEvillEntities() {
-        List<T> evilEntities = new ArrayList<>();
-        for (Collection<Enemy> enemyRow : enemies) evilEntities.addAll(enemyRow);
-        return evilEntities;
-    }*/
-
     @Override
     protected void handleEvilEntitiesMovement() {
         boolean reverseMovement = false;
@@ -133,9 +124,11 @@ public class EnemyLevel extends Level {
 
     @Override
     protected void handleEvilEntityLasers(double gameTimer) {
+        //updateTimeBetweenEnemyShots();
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                boolean fired = attemptProjectileFire(gameTimer, enemy, evilEntityProjectiles, Enemy.TIME_BETWEEN_SHOTS,
+                System.out.println(enemy.getTimeBetweenShots());
+                boolean fired = attemptProjectileFire(gameTimer, enemy, evilEntityProjectiles, enemy.getTimeBetweenShots(),
                         ENEMY_LASER_ROTATION, curEnemyProjectileIdNumber);
                 if (fired) curEnemyProjectileIdNumber++;
             }
@@ -253,5 +246,21 @@ public class EnemyLevel extends Level {
         powerUp.setTimeActive(gameTimer);
         powerUps.add(powerUp);
         root.getChildren().add(powerUp);
+    }
+
+    private void updateTimeBetweenEnemyShots() {
+        int numEnemies = 0;
+        for (List<Enemy> enemyRow : enemies) {
+            for (Enemy enemy : enemyRow) {
+                numEnemies++;
+            }
+        }
+        for (List<Enemy> enemyRow : enemies) {
+            for (Enemy enemy : enemyRow) {
+                double changedTime = Enemy.DEFAULT_TIME_BETWEEN_SHOTS * numEnemies/25;
+                double newTime = (changedTime < Enemy.DEFAULT_TIME_BETWEEN_SHOTS) ? Enemy.DEFAULT_TIME_BETWEEN_SHOTS : changedTime;
+                enemy.setTimeBetweenShots(newTime);
+            }
+        }
     }
 }

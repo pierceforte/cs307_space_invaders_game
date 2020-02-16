@@ -7,10 +7,15 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.File;
+import java.net.URISyntaxException;
 
 public class Game extends Application {
     public static final String TITLE = "Space Invaders";
@@ -31,6 +36,7 @@ public class Game extends Application {
     private double gameTimer = 0;
     private Level curLevel;
     private Group root;
+    private MediaPlayer backgroundMusicMediaPlayer;
     private boolean isMenuActive = true;
     private boolean isStartMenuActive = true;
     private boolean isGameOverMenuActive = false;
@@ -41,7 +47,10 @@ public class Game extends Application {
      * Initialize what will be displayed and how it will be updated.
      */
     @Override
-    public void start (Stage stage) {
+    public void start (Stage stage) throws URISyntaxException {
+        // add music. NOTE: due to issues with garbage collection, the following two methods could not be combined into one
+        backgroundMusicMediaPlayer = createMediaPlayer("game_music.mp3");
+        playMusic(MediaPlayer.INDEFINITE, true, backgroundMusicMediaPlayer);
         // attach scene to the stage and display it
         myScene = setupScene(SCENE_WIDTH, SCENE_HEIGHT, BACKGROUND);
         stage.setScene(myScene);
@@ -174,6 +183,18 @@ public class Game extends Application {
     // What to do each time a key is pressed
     private void handleKeyInput (KeyCode code) {
         myKeyHandler.handleInput(code);
+    }
+
+    // due to issues with garbage collection, the media player must be stored globally; here is a function to
+    // create the media player, allowing us to to run playMusic().
+    private MediaPlayer createMediaPlayer(String fileName) throws URISyntaxException {
+        Media song = new Media(this.getClass().getClassLoader().getResource(fileName).toURI().toString());
+        return new MediaPlayer(song);
+    }
+
+    private void playMusic(int cycles, boolean autoPlay, MediaPlayer mediaPlayer) {
+        mediaPlayer.setAutoPlay(autoPlay);
+        mediaPlayer.setCycleCount(cycles);
     }
 
     /**

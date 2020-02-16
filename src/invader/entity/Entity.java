@@ -17,6 +17,7 @@ public abstract class Entity extends MovingObject {
 
     private int pointsPerHit;
     private int lives;
+    private double timeBetweenShots;
 
     /**
      * Constructor
@@ -28,8 +29,10 @@ public abstract class Entity extends MovingObject {
      * @param height
      * @param imgName
      */
-    public Entity(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height, String imgName) {
+    public Entity(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height,
+                  double timeBetweenShots, String imgName) {
         super(xPos, yPos, xSpeed, ySpeed, width, height, imgName);
+        this.timeBetweenShots = timeBetweenShots;
     }
 
     /**
@@ -99,6 +102,14 @@ public abstract class Entity extends MovingObject {
      */
     public void setStartShootingTime(double startingShootTime) {
         this.startingShootTime = startingShootTime;
+    }
+
+    public void setTimeBetweenShots(double timeBetweenShots) {
+        this.timeBetweenShots = timeBetweenShots;
+    }
+
+    public double getTimeBetweenShots() {
+        return timeBetweenShots;
     }
 
     /**
