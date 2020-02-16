@@ -4,7 +4,7 @@ import invader.entity.Spaceship;
 
 public class MissilePowerUp extends PowerUp {
     public static final String IMG_NAME = "extraballpower.gif";
-    public static final int TIME_ACTIVE = 3;
+    public static final int TIME_ACTIVE = 6;
 
     /**
      * Constructor

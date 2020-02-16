@@ -3,7 +3,7 @@ package invader.projectile;
 public class Fireball extends Projectile {
     public static final double WIDTH = 20;
     public static final double HEIGHT = 1.5*WIDTH;
-    public static final double Y_SPEED = 120;
+    public static final double Y_SPEED = 200;
     public static final String FIREBALL_IMG_NAME = "fireball.gif";
     public static final String TYPE = "Fireball";
     public static final int DAMAGE = 2;

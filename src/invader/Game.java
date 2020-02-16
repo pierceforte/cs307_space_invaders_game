@@ -153,7 +153,6 @@ public class Game extends Application {
         keyToActionMap.put(KeyCode.M, () -> curLevel.addPowerUpMissile(gameTimer));
         keyToActionMap.put(KeyCode.R, () -> goToLevel(curLevel.getLevelNumber()));
         keyToActionMap.put(KeyCode.D, () -> curLevel.destroyFirstEnemy());
-        keyToActionMap.put(KeyCode.D, () -> curLevel.destroyFirstEnemy());
         keyToActionMap.put(KeyCode.W, () -> { if (isQuitGameMenuActive) {
             StatusDisplay.removeMenu(root);
             isGameOverMenuActive = false;
