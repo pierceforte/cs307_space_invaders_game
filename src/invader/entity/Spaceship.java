@@ -16,7 +16,7 @@ public class Spaceship extends Entity {
     public static final String SPACESHIP_IMG_NAME = "spaceship.png";
 
     private double xSpeedOnKeyPress = DEFAULT_X_SPEED_ON_KEY_PRESS;
-    private boolean hasBombPowerUp = false;
+    private boolean hasMissilePowerUp = false;
 
     public Spaceship(double xPos, double yPos) {
         super(xPos, yPos, DEFAULT_X_SPEED, DEFAULT_Y_SPEED, HEIGHT, WIDTH, SPACESHIP_IMG_NAME);
@@ -42,12 +42,12 @@ public class Spaceship extends Entity {
         this.xSpeedOnKeyPress = xSpeedOnKeyPress;
     }
 
-    public void setBombPowerUp(boolean isActive) {
-        hasBombPowerUp = isActive;
+    public void setMissilePowerUp(boolean isActive) {
+        hasMissilePowerUp = isActive;
     }
 
-    public boolean hasBombPowerUp() {
-        return hasBombPowerUp;
+    public boolean hasMissilePowerUp() {
+        return hasMissilePowerUp;
     }
 
 

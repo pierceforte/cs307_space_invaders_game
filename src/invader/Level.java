@@ -3,7 +3,7 @@ package invader;
 import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
-import invader.projectile.Bomb;
+import invader.projectile.Missile;
 import invader.projectile.Laser;
 
 import invader.projectile.Projectile;
@@ -75,7 +75,9 @@ public abstract class Level {
 
     public abstract void attemptLevelVictory();
 
-    public abstract void addPowerUp(double gameTimer);
+    public abstract void addPowerUpSpeed(double gameTimer);
+
+    public abstract void addPowerUpMissile(double gameTimer);
 
     public abstract void destroyFirstEnemy();
 
@@ -146,8 +148,8 @@ public abstract class Level {
 
     protected Projectile createSpaceshipProjectile(Spaceship spaceship, double rotation, int idNumber) {
         Projectile projectile;
-        if (spaceship.hasBombPowerUp()) {
-            projectile = new Bomb(spaceship.getX() + spaceship.getFitWidth()/2,
+        if (spaceship.hasMissilePowerUp()) {
+            projectile = new Missile(spaceship.getX() + spaceship.getFitWidth()/2,
                     spaceship.getY(), false, rotation, idNumber++);
         }
         else {

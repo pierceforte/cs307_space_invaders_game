@@ -72,7 +72,7 @@ public class Game extends Application {
 
         // create a level
         StatusDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
-        curLevel = new BossLevel(root,4, this);
+        curLevel = new EnemyLevel(root,1, this);
         // respond to input
         initializeKeyToActionMap();
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
@@ -131,9 +131,8 @@ public class Game extends Application {
         keyToActionMap.put(KeyCode.LEFT, () -> curLevel.moveSpaceship(false));
         keyToActionMap.put(KeyCode.SPACE, () -> curLevel.attemptSpaceshipFire(gameTimer));
         keyToActionMap.put(KeyCode.L, () -> curLevel.addLife());
-        keyToActionMap.put(KeyCode.A, () -> curLevel.addPowerUp(gameTimer));
-        //keyToActionMap.put(KeyCode.A, () -> curLevel.addPowerUpSpeed(gameTimer));
-        //keyToActionMap.put(KeyCode.B, () -> curLevel.addPowerUpBomb(gameTimer));
+        keyToActionMap.put(KeyCode.A, () -> curLevel.addPowerUpSpeed(gameTimer));
+        keyToActionMap.put(KeyCode.M, () -> curLevel.addPowerUpMissile(gameTimer));
         keyToActionMap.put(KeyCode.R, () -> goToLevel(curLevel.getLevelNumber()));
         keyToActionMap.put(KeyCode.D, () -> curLevel.destroyFirstEnemy());
         keyToActionMap.put(KeyCode.P, () -> {

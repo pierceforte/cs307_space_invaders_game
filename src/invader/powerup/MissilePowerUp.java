@@ -2,23 +2,24 @@ package invader.powerup;
 
 import invader.entity.Spaceship;
 
-public class BombPowerUp extends PowerUp {
+public class MissilePowerUp extends PowerUp {
     public static final String IMG_NAME = "extraballpower.gif";
-    public static final int TIME_ACTIVE = 8;
+    public static final int TIME_ACTIVE = 3;
 
-    public BombPowerUp(double xPos, double yPos, String id) {
+    public MissilePowerUp(double xPos, double yPos, String id) {
         super(xPos, yPos, IMG_NAME, id);
         setTimeActive(TIME_ACTIVE);
     }
 
     @Override
     public void activate(double gameTimer, Spaceship spaceship) {
-        spaceship.setBombPowerUp(true);
+        spaceship.setMissilePowerUp(true);
+        setTimeWhenActivated(gameTimer);
     }
 
     @Override
     public void deactivate(double gameTimer, Spaceship spaceship) {
-        spaceship.setBombPowerUp(false);
+        spaceship.setMissilePowerUp(false);
     }
 
     @Override

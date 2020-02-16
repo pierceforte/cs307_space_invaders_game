@@ -4,6 +4,9 @@ import invader.entity.Boss;
 import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
+import invader.powerup.MissilePowerUp;
+import invader.powerup.PowerUp;
+import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
 import invader.projectile.Projectile;
 import javafx.scene.Group;
@@ -106,7 +109,12 @@ public class BossLevel extends Level {
     }
 
     @Override
-    public void addPowerUp(double gameTimer) {
+    public void addPowerUpSpeed(double gameTimer) {
+       return;
+    }
+
+    @Override
+    public void addPowerUpMissile(double gameTimer) {
         return;
     }
 

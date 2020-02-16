@@ -341,7 +341,7 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, KeyCode.SPACE);
         myLevel = myGame.getCurLevel();
         myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
-        mySpaceshipProjectile = lookup("#spaceshipLaser0").query();
+        mySpaceshipProjectile = lookup("#spaceshipProjectile0").query();
 
         // Check if image changed after getting hit
         Image imgBefore = myEnemy31.getImage();
@@ -359,7 +359,8 @@ public class GameTest extends DukeApplicationTest {
     public void testBombPowerUp() {
         press(myScene, KeyCode.S);
         press(myScene, KeyCode.S);
-        press(myScene, KeyCode.B);
+        press(myScene, KeyCode.M);
+        for (Node node : myGame.getRoot().getChildren()) System.out.println(node.getId());
         PowerUp myPowerUp = lookup("#cheatPowerUp0").query();
         myPowerUp.setY(mySpaceship.getY() - 10);
         myPowerUp.setTimeActive(Game.SECOND_DELAY);
@@ -369,7 +370,7 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, KeyCode.SPACE);
         myLevel = myGame.getCurLevel();
         myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
-        mySpaceshipProjectile = lookup("#spaceshipLaser0").query();
+        mySpaceshipProjectile = lookup("#spaceshipProjectile0").query();
 
         int lifeBefore = myEnemy31.getLives();
         assertEquals(3, lifeBefore);
@@ -380,7 +381,7 @@ public class GameTest extends DukeApplicationTest {
 
         int lifeAfter = myEnemy31.getLives();
 
-        assertEquals(1, lifeAfter);
+        assertEquals(lifeBefore - mySpaceshipProjectile.getDamage(), lifeAfter);
     }
 
 

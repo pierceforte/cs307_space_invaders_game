@@ -4,6 +4,7 @@ package invader;
 import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
+import invader.powerup.MissilePowerUp;
 import invader.powerup.PowerUp;
 import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
@@ -70,12 +71,17 @@ public class EnemyLevel extends Level {
     }
 
     @Override
-    public void addPowerUp(double gameTimer) {
-        SpaceshipSpeedPowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
+    public void addPowerUpSpeed(double gameTimer) {
+        PowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
                 "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
-        powerUp.setTimeActive(gameTimer);
-        powerUps.add(powerUp);
-        root.getChildren().add(powerUp);
+        addPowerUp(gameTimer, powerUp);
+    }
+
+    @Override
+    public void addPowerUpMissile(double gameTimer) {
+        PowerUp powerUp = new MissilePowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
+                "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
+        addPowerUp(gameTimer, powerUp);
     }
 
     @Override
@@ -181,7 +187,7 @@ public class EnemyLevel extends Level {
             for (int col = 0; col < enemyIdentifiers.get(0).size(); col++) {
                 PowerUp curPowerUp = null;
                 //if ((col == 1 && row % 2 != 0) || (col == 4 && (row % 2 == 0)) || (col == 7 && row == 3)) {
-                    //curPowerUp = new BombPowerUp(xPos + Enemy.WIDTH/2, yPos, "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
+                    curPowerUp = new MissilePowerUp(xPos + Enemy.WIDTH/2, yPos, "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
                 //}
                 Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*enemyIdentifiers.get(row).get(col),
                         0, enemyIdentifiers.get(row).get(col), col + row*ENEMIES_PER_ROW, curPowerUp);
@@ -247,5 +253,11 @@ public class EnemyLevel extends Level {
             if (enemyRow.size() == 0) enemyRowsToRemove.add(enemyRow);
         }
         enemies.removeAll(enemyRowsToRemove);
+    }
+
+    private void addPowerUp(double gameTimer, PowerUp powerUp) {
+        powerUp.setTimeActive(gameTimer);
+        powerUps.add(powerUp);
+        root.getChildren().add(powerUp);
     }
 }
