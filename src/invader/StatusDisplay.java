@@ -38,15 +38,19 @@ public class StatusDisplay {
     public static final int HIGHSCORE_Y_DIST_FROM_GAME_HEIGHT = 35;
     public static final int DEFAULT_MENU_X_POS = 85;
     public static final int DEFAULT_MENU_Y_POS = 275;
+    public static final int GAMEOVER_MENU_Y_POS = 200;
     public static final int START_MENU_X_POS = 40;
     public static final int START_MENU_Y_POS = 70;
-    public static final int VICTORY_MENU_Y_POS = 300;
+    public static final int VICTORY_MENU_Y_POS = 225;
     public static final int THANKS_MENU_X_POS = 100;
-    public static final int THANKS_MENU_Y_POS = 300;
+    public static final int THANKS_MENU_Y_POS = 225;
     public static final int BOSS_MENU_X_POS = 75;
     public static final int BOSS_MENU_Y_POS = 225;
     public static final String POINTS_FORMAT = "%06d";
     public static final String HIGHSCORES_FILE_PATH = "resources/highscores.txt";
+    public static final int NUM_HIGHSCORES_STORED = 100;
+    public static final int NUM_HIGHSCORES_DISPLAYED = 5;
+    public static final String SCORE_DELIMITER = ":";
 
 
     private static Rectangle menuBackground;
@@ -60,7 +64,10 @@ public class StatusDisplay {
     private static Text pointsDisplay;
     private static Text highScoreDisplay;
     private static int points;
-    private static List<String> highscores;
+    private static Set<String> highscores = new TreeSet<>(Comparator
+            .comparing((String entry) -> Integer.parseInt(entry.split(SCORE_DELIMITER)[1]))
+            .reversed()
+            .thenComparing((entry) -> entry.toLowerCase()));
 
     public static void createInterfaceAndAddToRoot(Group root, int game_height, int scene_width, int scene_height) {
         createInterfaceBackground(root, game_height, scene_width, scene_height);
@@ -74,6 +81,7 @@ public class StatusDisplay {
                 POINTS_X_DIST_FROM_SCENE_CENTER, game_height + POINTS_Y_DIST_FROM_GAME_HEIGHT, TEXT_COLOR);
         points = 0;
         addHighScoreDisplay(root, game_height, scene_width);
+        highscores.addAll(readInHighScores());
     }
 
     public static void updateLifeCountDisplay(int lives) {
@@ -103,8 +111,8 @@ public class StatusDisplay {
     }
 
     public static void createGameOverMenu(Group root) {
-        createMenu(root, DEFAULT_MENU_X_POS, DEFAULT_MENU_Y_POS, "GAME OVER!\n\n\nPRESS E TO SAVE YOUR SCORE\nAND RESET POINTS"
-                + RESTART_AND_CHANGE_LEVEL);
+        createMenu(root, DEFAULT_MENU_X_POS, GAMEOVER_MENU_Y_POS, "GAME OVER!\n\n\n" + getYourScoreText() + "PRESS E TO SAVE YOUR SCORE\nAND RESET POINTS"
+                + RESTART_AND_CHANGE_LEVEL + collectTopHighScores(NUM_HIGHSCORES_DISPLAYED));
     }
 
     public static void createLevelIntermissionMenu(Group root) {
@@ -118,13 +126,13 @@ public class StatusDisplay {
     }
 
     public static void createVictoryMenu(Group root) {
-        createMenu(root, DEFAULT_MENU_X_POS, VICTORY_MENU_Y_POS, "YOU WIN!\n\n\nPRESS E TO SAVE YOUR SCORE\nAND RESET POINTS"
-                + RESTART_AND_CHANGE_LEVEL);
+        createMenu(root, DEFAULT_MENU_X_POS, VICTORY_MENU_Y_POS, "YOU WIN!\n\n\n" + getYourScoreText() + "PRESS E TO SAVE YOUR SCORE\nAND RESET POINTS"
+                + RESTART_AND_CHANGE_LEVEL + collectTopHighScores(NUM_HIGHSCORES_DISPLAYED));
     }
 
     public static void createRestartOrEndMenu(Group root) {
-        createMenu(root, THANKS_MENU_X_POS, THANKS_MENU_Y_POS, "THANKS FOR PLAYING!\n\n\n"
-                + "PRESS W TO PLAY AGAIN\n\nPRESS Q TO EXIT GAME");
+        createMenu(root, THANKS_MENU_X_POS, THANKS_MENU_Y_POS, "THANKS FOR PLAYING!\n\n\n" + getYourScoreText()
+                + "PRESS W TO PLAY AGAIN\n\nPRESS Q TO EXIT GAME" + collectTopHighScores(NUM_HIGHSCORES_DISPLAYED));
     }
 
     public static void createHighScoreTextField(Group root) {
@@ -140,10 +148,9 @@ public class StatusDisplay {
 
     public static void storeHighScore(Group root) {
         String name = highScoreTextField.getText();
-        name = String.join("", name.split(":"));
+        name = String.join("", name.split(SCORE_DELIMITER));
         root.getChildren().remove(highScoreTextField);
-
-        highscores = readInHighScoresAndAddCurrentScore(name, points);
+        highscores.add(name + SCORE_DELIMITER + points);
         resetPointsDisplay();
         updateHighScoreList(highscores);
     }
@@ -169,6 +176,10 @@ public class StatusDisplay {
         display.setFitWidth(img.getWidth()/imgScaleDownFactor);
         root.getChildren().add(display);
         return display;
+    }
+
+    private static String getYourScoreText() {
+        return "YOUR SCORE\n" + points + "\n\n";
     }
 
     private static Text createTextDisplayAndAddToRoot(Group root, String text, double xPos, double yPos, Paint color) {
@@ -199,7 +210,7 @@ public class StatusDisplay {
         menuText.setTextAlignment(TextAlignment.CENTER);
     }
 
-    private static List<String> readInHighScoresAndAddCurrentScore(String name, int points) {
+    private static List<String> readInHighScores() {
         List<String> highscores = new ArrayList<>();
         try {
             File file = new File(HIGHSCORES_FILE_PATH);
@@ -212,11 +223,19 @@ public class StatusDisplay {
             System.out.println("An error occurred while reading high scores txt file.");
             e.printStackTrace();
         }
-        highscores.add(name + ":" + points);
-        Collections.sort(highscores, Comparator.comparing((String entry) -> Integer.parseInt(entry.split(":")[1]))
-                .reversed()
-                .thenComparing((entry) -> entry.toLowerCase()));
         return highscores;
+    }
+
+    private static String collectTopHighScores(int maxNumberOfHighScores) {
+        if (highscores.size() == 0) return "";
+        String highscoresChart = "\n\n\nHIGH SCORES:";
+        int scoresCharted = 0;
+        for (String highscore : highscores) {
+            if (scoresCharted >= maxNumberOfHighScores) break;
+            scoresCharted++;
+            highscoresChart += "\n" + highscore.split(SCORE_DELIMITER)[0] + "   " + highscore.split(SCORE_DELIMITER)[1];
+        }
+        return highscoresChart;
     }
 
     private static void addHighScoreDisplay(Group root, double game_height, double scene_width) {
@@ -230,7 +249,7 @@ public class StatusDisplay {
         try {
             Scanner myReader = new Scanner(file);
             if (myReader.hasNextLine()) {
-                int highScore = Integer.parseInt(myReader.nextLine().split(":")[1]);
+                int highScore = Integer.parseInt(myReader.nextLine().split(SCORE_DELIMITER)[1]);
                 highScoreDisplay.setText("HIGHSCORE\n" + formatPoints(highScore));
             }
             myReader.close();
@@ -249,12 +268,12 @@ public class StatusDisplay {
         return menuBackground;
     }
 
-    private static void updateHighScoreList(List<String> highscores) {
+    private static void updateHighScoreList(Set<String> highscores) {
         try {
             PrintWriter pw = new PrintWriter(HIGHSCORES_FILE_PATH);
             int numEntries = 0;
             for (String entry : highscores) {
-                if (numEntries < 100) {
+                if (numEntries < NUM_HIGHSCORES_STORED) {
                     pw.println(entry);
                     numEntries++;
                 }

@@ -1,5 +1,6 @@
 Pierce:550
 PierceName:500
+Pieee:450
 PierName:300
 BobName:200
 Pie:150
@@ -14,7 +15,5 @@ akdEnter name:0
 apple:0
 dafName:0
 Enter name:0
-Enter name:0
-Name:0
 Name:0
 PName:0

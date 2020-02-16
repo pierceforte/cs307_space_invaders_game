@@ -127,7 +127,6 @@ public class EnemyLevel extends Level {
         //updateTimeBetweenEnemyShots();
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                System.out.println(enemy.getTimeBetweenShots());
                 boolean fired = attemptProjectileFire(gameTimer, enemy, evilEntityProjectiles, enemy.getTimeBetweenShots(),
                         ENEMY_LASER_ROTATION, curEnemyProjectileIdNumber);
                 if (fired) curEnemyProjectileIdNumber++;
