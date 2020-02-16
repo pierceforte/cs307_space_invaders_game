@@ -6,7 +6,7 @@ public class Fireball extends Projectile {
     public static final double Y_SPEED = 120;
     public static final String FIREBALL_IMG_NAME = "fireball.gif";
     public static final String TYPE = "Fireball";
-    public static final int DAMAGE = 1;
+    public static final int DAMAGE = 2;
 
     /**
      * Constructor
