@@ -1,7 +1,6 @@
 package invader.entity;
 
 import invader.powerup.PowerUp;
-import invader.projectile.Laser;
 import invader.projectile.Projectile;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,6 +18,7 @@ public class Enemy extends Entity {
     public static final int EARLIEST_START_FIRING_TIME = 5;
     public static final int LATEST_START_FIRING_TIME = 15;
     public static final int POINTS_PER_HIT = 25;
+    public static final boolean IS_EVIL = true;
 
     private PowerUp powerUp;
     private boolean hasPowerUp = false;
@@ -34,7 +34,8 @@ public class Enemy extends Entity {
      * @param powerUp
      */
     public Enemy(double xPos, double yPos, double xSpeed, double ySpeed, int lives, int idNumber, PowerUp powerUp) {
-        super(xPos, yPos, xSpeed, ySpeed, WIDTH, HEIGHT, DEFAULT_TIME_BETWEEN_SHOTS, ENEMY_IMG_PREFIX + lives + ENEMY_IMG_EXTENSION);
+        super(xPos, yPos, xSpeed, ySpeed, WIDTH, HEIGHT, DEFAULT_TIME_BETWEEN_SHOTS,
+                IS_EVIL, ENEMY_IMG_PREFIX + lives + ENEMY_IMG_EXTENSION);
         setLives(lives);
         this.setId("enemy" + idNumber);
         addToStartShootingTime(ThreadLocalRandom.current().nextInt(EARLIEST_START_FIRING_TIME, LATEST_START_FIRING_TIME));
@@ -67,6 +68,6 @@ public class Enemy extends Entity {
      */
     @Override
     public Projectile createProjectile(double rotation, int idNumber) {
-        return normalEvilEntityLaserBlast(rotation, idNumber);
+        return defaultProjectileFire(rotation, idNumber);
     }
 }

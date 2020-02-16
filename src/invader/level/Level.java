@@ -122,19 +122,15 @@ public abstract class Level {
     }
 
     public void attemptSpaceshipFire(double gameTimer) {
-        if (spaceship.hasBurstFirePowerUp()) {
-            if (gameTimer >= spaceship.getStartShootingTime()) {
-                blastFire(spaceship, spaceshipProjectiles);
-            }
-        }
-        else {
-            attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, SPACESHIP_LASER_ROTATION);
-        }
+        attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, SPACESHIP_LASER_ROTATION);
     }
 
     protected void attemptProjectileFire(double gameTimer, Entity entity, List<Projectile> projectiles, double rotation) {
         if (gameTimer >= entity.getStartShootingTime()) {
-            shootProjectile(entity, projectiles, rotation);
+            if (entity.hasBurstFire()) {
+                blastFire(entity, projectiles);
+            }
+            else shootProjectile(entity, projectiles, rotation);
         }
     }
 

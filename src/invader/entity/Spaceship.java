@@ -1,10 +1,8 @@
 package invader.entity;
 
 import invader.Game;
-import invader.projectile.Laser;
 import invader.projectile.Missile;
 import invader.projectile.Projectile;
-import javafx.scene.image.Image;
 
 public class Spaceship extends Entity {
     public static final int DEFAULT_X_SPEED = 0;
@@ -18,6 +16,7 @@ public class Spaceship extends Entity {
     public static final int POINTS_PER_HIT = 0;
     public static final int DEFAULT_TIME_BETWEEN_SHOTS = 1;
     public static final String SPACESHIP_IMG_NAME = "spaceship.png";
+    public static final boolean IS_EVIL = false;
 
     private double xSpeedOnKeyPress = DEFAULT_X_SPEED_ON_KEY_PRESS;
     private boolean hasMissilePowerUp = false;
@@ -29,7 +28,7 @@ public class Spaceship extends Entity {
      * @param yPos
      */
     public Spaceship(double xPos, double yPos) {
-        super(xPos, yPos, DEFAULT_X_SPEED, DEFAULT_Y_SPEED, HEIGHT, WIDTH, DEFAULT_TIME_BETWEEN_SHOTS, SPACESHIP_IMG_NAME);
+        super(xPos, yPos, DEFAULT_X_SPEED, DEFAULT_Y_SPEED, HEIGHT, WIDTH, DEFAULT_TIME_BETWEEN_SHOTS, IS_EVIL, SPACESHIP_IMG_NAME);
         setLives(DEFAULT_LIVES);
         setPointsPerHit(POINTS_PER_HIT);
         this.setId("spaceship");
@@ -79,14 +78,6 @@ public class Spaceship extends Entity {
         return hasMissilePowerUp;
     }
 
-    public void setBurstFirePowerUp(boolean isActive) {
-        hasBurstFirePowerUp = isActive;
-    }
-
-    public boolean hasBurstFirePowerUp() {
-        return hasBurstFirePowerUp;
-    }
-
     @Override
     public Projectile createProjectile(double rotation, int idNumber) {
         Projectile projectile;
@@ -95,8 +86,7 @@ public class Spaceship extends Entity {
                     this.getY(), false, rotation, idNumber++);
         }
         else {
-            projectile = new Laser(this.getX() + this.getFitWidth()/2,
-                    this.getY(), false, rotation, idNumber++);
+            projectile = defaultProjectileFire(rotation, idNumber);
         }
         return projectile;
     }

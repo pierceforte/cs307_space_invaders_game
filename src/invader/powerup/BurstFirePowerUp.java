@@ -17,17 +17,17 @@ public class BurstFirePowerUp extends PowerUp {
 
     @Override
     public void activate(double gameTimer, Spaceship spaceship) {
-        spaceship.setBurstFirePowerUp(true);
+        spaceship.setHasBurstFire(true);
         setTimeWhenActivated(gameTimer);
     }
 
     @Override
     public void deactivate(double gameTimer, Spaceship spaceship) {
-        spaceship.setBurstFirePowerUp(false);
+        spaceship.setHasBurstFire(false);
     }
 
     @Override
     public void reapplyPowerUp(double gameTimer, Spaceship spaceship) {
-        spaceship.setBurstFirePowerUp(true);
+        spaceship.setHasBurstFire(true);
     }
 }

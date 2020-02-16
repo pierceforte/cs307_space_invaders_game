@@ -19,6 +19,8 @@ public abstract class Entity extends MovingObject {
     private int lives;
     private double timeBetweenShots;
     private int curProjectileIdNumber;
+    private boolean hasBurstFire = false;
+    private boolean isEvil;
 
     /**
      * Constructor
@@ -29,10 +31,12 @@ public abstract class Entity extends MovingObject {
      * @param width
      * @param height
      * @param imgName
+     * @param isEvil
      */
     public Entity(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height,
-                  double timeBetweenShots, String imgName) {
+                  double timeBetweenShots, boolean isEvil, String imgName) {
         super(xPos, yPos, xSpeed, ySpeed, width, height, imgName);
+        this.isEvil = isEvil;
         this.timeBetweenShots = timeBetweenShots;
     }
 
@@ -130,16 +134,24 @@ public abstract class Entity extends MovingObject {
         curProjectileIdNumber++;
     }
 
+    public void setHasBurstFire(boolean hasBurstFire) {
+        this.hasBurstFire = hasBurstFire;
+    }
+
+    public boolean hasBurstFire() {
+        return hasBurstFire;
+    }
+
     /**
      * Create a projectile respective to the type of entity, which will be implemented in the subclasses
      * @param rotation
      * @param idNumber
      */
     public abstract Projectile createProjectile(double rotation, int idNumber);
-
-    protected Projectile normalEvilEntityLaserBlast(double rotation, int idNumber){
+    
+    protected Projectile defaultProjectileFire(double rotation, int idNumber){
         Laser laser = new Laser(this.getX() + this.getFitWidth()/2,
-                this.getY(), true, rotation, idNumber++);
+                this.getY(), isEvil, rotation, idNumber);
         return laser;
     }
 

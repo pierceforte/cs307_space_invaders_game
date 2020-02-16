@@ -143,9 +143,9 @@ public class BossLevel extends Level {
         if (gameTimer >= boss.getSwitchVulnerabilityTime()) {
             boss.switchVulnerabilityStatus();
             if (boss.isVulnerable()) {
-                boss.setHasFireballBlast(true);
+                boss.setHasBurstFire(true);
                 blastFire(boss, evilEntityProjectiles);
-                boss.setHasFireballBlast(false);
+                boss.setHasBurstFire(false);
             }
         }
     }

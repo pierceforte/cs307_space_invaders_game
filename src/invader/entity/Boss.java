@@ -1,7 +1,6 @@
 package invader.entity;
 
 import invader.projectile.Fireball;
-import invader.projectile.Laser;
 import invader.projectile.Projectile;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -23,8 +22,8 @@ public class Boss extends Entity {
     public static final int POINTS_PER_HIT_WHEN_INVULNERABLE = 0;
     public static final int TIME_VULNERABLE = 3;
     public static final int TIME_INVULNERABLE = 8;
+    public static final boolean IS_EVIL = true;
 
-    private boolean hasFireballBlast = false;
     private boolean isVulnerable = false;
     private int switchVulnerabilityTime = TIME_INVULNERABLE;
 
@@ -37,7 +36,7 @@ public class Boss extends Entity {
      * @param lives
      */
     public Boss(double xPos, double yPos, double xSpeed, double ySpeed, int lives) {
-        super(xPos, yPos, xSpeed, ySpeed, HIDDEN_WIDTH, HIDDEN_HEIGHT, DEFAULT_TIME_BETWEEN_SHOTS, BOSS_HIDING_IMG_NAME);
+        super(xPos, yPos, xSpeed, ySpeed, HIDDEN_WIDTH, HIDDEN_HEIGHT, DEFAULT_TIME_BETWEEN_SHOTS, IS_EVIL, BOSS_HIDING_IMG_NAME);
         setLives(lives);
         setPointsPerHit(POINTS_PER_HIT_WHEN_INVULNERABLE);
         this.setId("boss");
@@ -64,14 +63,6 @@ public class Boss extends Entity {
     public void setRandomSpeed() {
         setRandomXSpeed();
         setRandomYSpeed();
-    }
-
-    public void setHasFireballBlast(boolean hasFireballBlast) {
-        this.hasFireballBlast = hasFireballBlast;
-    }
-
-    public boolean hasFireballBlast() {
-        return hasFireballBlast;
     }
 
     private void setVulnerable() {
@@ -110,12 +101,12 @@ public class Boss extends Entity {
 
     @Override
     public Projectile createProjectile(double rotation, int idNumber) {
-        if (hasFireballBlast) {
+        if (hasBurstFire()) {
             return new Fireball(this.getX() + this.getFitWidth()/2,
                     this.getY(), true, rotation, idNumber++);
         }
         else {
-            return normalEvilEntityLaserBlast(rotation, idNumber);
+            return defaultProjectileFire(rotation, idNumber);
         }
     }
 
