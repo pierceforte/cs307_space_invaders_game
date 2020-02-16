@@ -18,6 +18,7 @@ public class EnemyLevel extends Level {
     public static final int ENEMIES_PER_ROW = 9;
     public static final int POINTS_PER_ENEMY_HIT = 25;
     public static final int ENEMY_SPEED_FACTOR_BY_LEVEL = 10;
+    public static final int ENEMY_LASER_ROTATION = 0;
 
     private int curEnemyLaserIdNumber = 0;
     private int curCheatKeyPowerUpIdNumber = 0;
@@ -127,7 +128,8 @@ public class EnemyLevel extends Level {
     protected void handleEvilEntityLasers(double gameTimer) {
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                attemptLaserFire(gameTimer, enemy, evilEntityLasers, Enemy.TIME_BETWEEN_SHOTS, curEnemyLaserIdNumber);
+                attemptLaserFire(gameTimer, enemy, evilEntityLasers, Enemy.TIME_BETWEEN_SHOTS,
+                        ENEMY_LASER_ROTATION, curEnemyLaserIdNumber);
             }
         }
         handleLaserCollisionWithSpaceship(evilEntityLasers, spaceship);
@@ -156,6 +158,13 @@ public class EnemyLevel extends Level {
             }
         }
         removeInactiveEnemies(enemiesToRemove);
+    }
+
+    @Override
+    protected Laser createEvilEntityLaser(Entity entityShooting, double rotation, int idNumber) {
+        Laser laser = new Laser(entityShooting.getX() + entityShooting.getFitWidth()/2,
+                entityShooting.getY(), true, rotation, idNumber++);
+        return laser;
     }
 
     @Override

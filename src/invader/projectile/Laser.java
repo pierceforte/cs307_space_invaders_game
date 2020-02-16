@@ -9,23 +9,23 @@ public class Laser extends MovingObject {
     public static final double HEIGHT = 20;
     public static final String ENEMY_LASER_IMG_NAME = "enemylaser.png";
     public static final String SPACESHIP_LASER_IMG_NAME = "spaceshiplaser.png";
+    private static final int DAMAGE = 1;
 
-    private final int DAMAGE = 1;
-    boolean isEnemy;
+    private boolean isEvil;
 
-    public Laser(double xPos, double yPos, boolean isEnemy, int idNumber) {
-        super(xPos,yPos,X_SPEED,Y_SPEED * (isEnemy ? -1 : 1), WIDTH, HEIGHT, isEnemy ? ENEMY_LASER_IMG_NAME : SPACESHIP_LASER_IMG_NAME);
-        this.isEnemy = isEnemy;
-        String idString = isEnemy ? "enemy" : "spaceship";
+    public Laser(double xPos, double yPos, boolean isEvil, double rotation, int idNumber) {
+        super(xPos,yPos,X_SPEED,Y_SPEED * (isEvil ? -1 : 1), WIDTH, HEIGHT, isEvil ? ENEMY_LASER_IMG_NAME : SPACESHIP_LASER_IMG_NAME);
+        this.isEvil = isEvil;
+        setRotate(rotation);
+        String idString = isEvil ? "enemy" : "spaceship";
         this.setId(idString + "Laser" + idNumber);
-
     }
 
     public int getDamage() {
         return DAMAGE;
     }
 
-    public boolean isEnemy() {
-        return isEnemy;
+    public boolean isEvil() {
+        return isEvil;
     }
 }

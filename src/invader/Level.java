@@ -18,6 +18,7 @@ public abstract class Level {
 
     public static final String LEVEL_FILE_PATH = "resources/level_files/level_";
     public static final String LEVEL_FILE_EXTENSION = ".txt";
+    public static final int SPACESHIP_LASER_ROTATION = 0;
 
     protected int curSpaceshipLaserIdNumber = 0;
 
@@ -102,23 +103,39 @@ public abstract class Level {
     }
 
     protected void attemptSpaceshipFire(double gameTimer) {
-        attemptLaserFire(gameTimer, spaceship, spaceshipLasers, 1, curSpaceshipLaserIdNumber);
+        attemptLaserFire(gameTimer, spaceship, spaceshipLasers, 1, SPACESHIP_LASER_ROTATION, curSpaceshipLaserIdNumber);
     }
 
-    protected void attemptLaserFire(double gameTimer, Entity entity, List<Laser> lasers, double timeBeforeNextShot, int idNumber) {
+    protected void attemptLaserFire(double gameTimer, Entity entity, List<Laser> lasers, double timeBeforeNextShot, double rotation,
+                                    int idNumber) {
         if (gameTimer >= entity.getStartShootingTime()) {
-            shootLaser(entity, lasers, timeBeforeNextShot, idNumber);
+            shootLaser(entity, lasers, timeBeforeNextShot, rotation, idNumber);
         }
     }
 
-    protected void shootLaser(Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot, int idNumber) {
-        boolean isEnemy = entityShooting.getClass() == Enemy.class;
-        Laser laser = new Laser(entityShooting.getX() + entityShooting.getFitWidth()/2,
-                entityShooting.getY(), isEnemy, idNumber++);
+    protected Laser shootLaser(Entity entityShooting, List<Laser> lasers, double timeBeforeNextShot, double rotation, int idNumber) {
+        boolean isSpaceship = entityShooting.getClass() == Spaceship.class;
+        Laser laser;
+        if (isSpaceship) {
+            laser = createSpaceshipLaser(spaceship, rotation, idNumber);
+        }
+        else {
+            laser = createEvilEntityLaser(entityShooting, rotation, idNumber);
+        }
+
         lasers.add(laser);
         root.getChildren().add(laser);
         entityShooting.addToStartShootingTime(timeBeforeNextShot);
+        return laser;
     }
+
+    protected Laser createSpaceshipLaser(Spaceship spaceship, double rotation, int idNumber) {
+        Laser laser = new Laser(spaceship.getX() + spaceship.getFitWidth()/2,
+                spaceship.getY(), false, rotation, idNumber++);
+        return laser;
+    }
+
+    protected abstract Laser createEvilEntityLaser(Entity entityShooting, double rotation, int idNumber);
 
     protected <T extends Node> void clearNodesFromSceneAndLevel(T node) {
         root.getChildren().remove(node);
