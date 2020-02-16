@@ -4,6 +4,7 @@ package invader;
 import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
+import invader.powerup.BombPowerUp;
 import invader.powerup.PowerUp;
 import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
@@ -20,7 +21,7 @@ public class EnemyLevel extends Level {
     public static final int ENEMY_SPEED_FACTOR_BY_LEVEL = 10;
     public static final int ENEMY_LASER_ROTATION = 0;
 
-    private int curEnemyLaserIdNumber = 0;
+    private int curEnemyProjectileIdNumber = 0;
     private int curCheatKeyPowerUpIdNumber = 0;
 
     private int rows;
@@ -38,8 +39,8 @@ public class EnemyLevel extends Level {
     @Override
     public void clearLevel() {
         clearNodesFromSceneAndLevel(spaceship);
-        clearNodesFromSceneAndLevel(evilEntityLasers);
-        clearNodesFromSceneAndLevel(spaceshipLasers);
+        clearNodesFromSceneAndLevel(evilEntityProjectiles);
+        clearNodesFromSceneAndLevel(spaceshipProjectiles);
         clearNodesFromSceneAndLevel(powerUps);
         clear2dNodesFromSceneAndLevel(enemies);
     }
@@ -56,7 +57,7 @@ public class EnemyLevel extends Level {
         updateNodePositionsOnStep(elapsedTime);
         handleEvilEntitiesMovement();
         handleEvilEntityLasers(gameTimer);
-        handleSpaceshipLasers();
+        handleSpaceshipProjectiles();
         handlePowerUps(gameTimer);
         attemptLevelVictory();
     }
@@ -91,8 +92,8 @@ public class EnemyLevel extends Level {
             }
         }
         for (PowerUp powerUp: powerUps) powerUp.updatePositionOnStep(elapsedTime);
-        updateLaserPositionsOnStep(elapsedTime, evilEntityLasers);
-        updateLaserPositionsOnStep(elapsedTime, spaceshipLasers);
+        updateProjectilePositionsOnStep(elapsedTime, evilEntityProjectiles);
+        updateProjectilePositionsOnStep(elapsedTime, spaceshipProjectiles);
     }
 
     @Override
@@ -128,32 +129,29 @@ public class EnemyLevel extends Level {
     protected void handleEvilEntityLasers(double gameTimer) {
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                attemptLaserFire(gameTimer, enemy, evilEntityLasers, Enemy.TIME_BETWEEN_SHOTS,
-                        ENEMY_LASER_ROTATION, curEnemyLaserIdNumber);
+                attemptLaserFire(gameTimer, enemy, evilEntityProjectiles, Enemy.TIME_BETWEEN_SHOTS,
+                        ENEMY_LASER_ROTATION, curEnemyProjectileIdNumber);
             }
         }
-        handleLaserCollisionWithSpaceship(evilEntityLasers, spaceship);
+        handleProjectileCollisionWithSpaceship(evilEntityProjectiles, spaceship);
     }
 
     @Override
-    protected void handleSpaceshipLasers() {
+    protected void handleSpaceshipProjectiles() {
         List<Enemy> enemiesToRemove = new ArrayList<>();
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                Enemy enemyToRemove = (Enemy) handleLaserCollisions(spaceshipLasers, enemy);
-                if (enemyToRemove != null) {
-                    enemy.lowerLives();
-                    if (enemy.getLives() == 0) {
-                        enemiesToRemove.add(enemyToRemove);
-                        if (enemy.hasPowerUp()) {
-                            enemy.getPowerUp().setX(enemy.getX());
-                            enemy.getPowerUp().setY(enemy.getY());
-                            powerUps.add(enemy.getPowerUp());
-                            root.getChildren().add(enemy.getPowerUp());
-                        }
-                    } else {
-                        enemy.setImage(enemy.makeImage("enemy" + enemy.getLives() + ".png"));
+                handleProjectileCollisions(spaceshipProjectiles, enemy);
+                if (enemy.getLives() <= 0) {
+                    enemiesToRemove.add(enemy);
+                    if (enemy.hasPowerUp()) {
+                        enemy.getPowerUp().setX(enemy.getX());
+                        enemy.getPowerUp().setY(enemy.getY());
+                        powerUps.add(enemy.getPowerUp());
+                        root.getChildren().add(enemy.getPowerUp());
                     }
+                } else {
+                    enemy.setImage(enemy.makeImage("enemy" + enemy.getLives() + ".png"));
                 }
             }
         }
@@ -176,11 +174,10 @@ public class EnemyLevel extends Level {
             List<Enemy> tempRow = new ArrayList<>();
             double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
             for (int col = 0; col < enemyIdentifiers.get(0).size(); col++) {
-                SpaceshipSpeedPowerUp curPowerUp = null;
-                if ((col == 1 && row % 2 != 0) || (col == 4 && (row % 2 == 0)) || (col == 7 && row == 3)) {
-                    curPowerUp = new SpaceshipSpeedPowerUp(xPos + Enemy.WIDTH/2, yPos,
-                            "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
-                }
+                PowerUp curPowerUp = null;
+                //if ((col == 1 && row % 2 != 0) || (col == 4 && (row % 2 == 0)) || (col == 7 && row == 3)) {
+                    //curPowerUp = new BombPowerUp(xPos + Enemy.WIDTH/2, yPos, "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
+                //}
                 Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*enemyIdentifiers.get(row).get(col),
                         0, enemyIdentifiers.get(row).get(col), col + row*ENEMIES_PER_ROW, curPowerUp);
                 /*

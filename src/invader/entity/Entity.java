@@ -28,6 +28,10 @@ public abstract class Entity extends MovingObject {
 
     public void lowerLives() { this.lives--; }
 
+    public void removeLives(int livesToRemove) {
+        lives -= livesToRemove;
+    }
+
     public int getLives() { return this.lives; }
 
     public void setPointsPerHit(int pointsPerHit) {

@@ -5,6 +5,7 @@ import invader.entity.Spaceship;
 import invader.powerup.PowerUp;
 import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
+import invader.projectile.Projectile;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -28,7 +29,7 @@ public class GameTest extends DukeApplicationTest {
     private List<List<Enemy>> myEnemies = new ArrayList<>();
     private Enemy myEnemy27;
     private Enemy myEnemy31;
-    private Laser mySpaceshipLaser;
+    private Projectile mySpaceshipProjectile;
     private Level myLevel;
 
     @Override
@@ -49,11 +50,11 @@ public class GameTest extends DukeApplicationTest {
         }
         // leftmost enemy in bottom row is enemy27, such that when "D" is pressed it will be destroyed
         myEnemy27 = lookup(LEFTMOST_BOTTOM_ENEMY).query();
-        // when a laser is fired from the spaceship's default position, it will hit enemy31
+        // when a projectile is fired from the spaceship's default position, it will hit enemy31
         myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
         press(myScene, KeyCode.SPACE);
         // need to wait for scene to update after key press in application thread
-        Platform.runLater(() -> mySpaceshipLaser = lookup("#spaceshipLaser0").query());
+        Platform.runLater(() -> mySpaceshipProjectile = lookup("#spaceshipProjectile0").query());
     }
 
     // FIXME
@@ -152,15 +153,15 @@ public class GameTest extends DukeApplicationTest {
         step();
         // since all other enemies cannot fire until 1 second after game begins,
         // we know enemy31's laser is the 0th laser and can query it as such
-        Laser myEnemy31Laser = lookup("#enemyLaser0").query();
+        Projectile myEnemy31Projectile = lookup("#enemyProjectile0").query();
         // position the laser one step prior to hitting spaceship
-        myEnemy31Laser.setY(mySpaceship.getY() - 6*Laser.Y_SPEED*Game.SECOND_DELAY);
+        myEnemy31Projectile.setY(mySpaceship.getY() - 6*Laser.Y_SPEED*Game.SECOND_DELAY);
         // assert that laser is in scene and spaceship has 3 (default) lives before collision
-        assertTrue(isNodeInMyScene(myEnemy31Laser));
+        assertTrue(isNodeInMyScene(myEnemy31Projectile));
         assertEquals(3, mySpaceship.getLives());
         step();
         // assert that laser has been removed from scene and spaceship has 2 lives after collision
-        assertFalse(isNodeInMyScene(myEnemy31Laser));
+        assertFalse(isNodeInMyScene(myEnemy31Projectile));
         assertEquals(2, mySpaceship.getLives());
     }
 
@@ -181,28 +182,28 @@ public class GameTest extends DukeApplicationTest {
     @Test
     public void testLaserDisappearsIfOutOfBounds() {
         // check if laser is on scene before being out of bounds
-        assertTrue(isNodeInMyScene(mySpaceshipLaser));
+        assertTrue(isNodeInMyScene(mySpaceshipProjectile));
         // position the laser one step prior to being out of bounds
-        mySpaceshipLaser.setY(Game.GAME_HEIGHT - 20 + Laser.Y_SPEED*Game.SECOND_DELAY);
+        mySpaceshipProjectile.setY(Game.GAME_HEIGHT - 20 + Laser.Y_SPEED*Game.SECOND_DELAY);
         // step so laser is out of bounds
         step();
         // check if the laser has been removed from scene upon being out of bounds
-        assertFalse(isNodeInMyScene(mySpaceshipLaser));
+        assertFalse(isNodeInMyScene(mySpaceshipProjectile));
     }
 
     @Test
     public void testLaserCollisionWithEnemy() {
         // check if laser and enemy are on scene before collision
         assertTrue(isNodeInMyScene(myEnemy31));
-        assertTrue(isNodeInMyScene(mySpaceshipLaser));
+        assertTrue(isNodeInMyScene(mySpaceshipProjectile));
         // position the laser one step prior to hitting enemy31
-        mySpaceshipLaser.setX(myEnemy31.getX());
-        mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
+        mySpaceshipProjectile.setX(myEnemy31.getX());
+        mySpaceshipProjectile.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
         // step to initiate collision
         step();
         // check if both enemy31 and the laser have been removed from scene upon collision
         assertFalse(isNodeInMyScene(myEnemy31));
-        assertFalse(isNodeInMyScene(mySpaceshipLaser));
+        assertFalse(isNodeInMyScene(mySpaceshipProjectile));
     }
 
     @Test
@@ -340,13 +341,13 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, KeyCode.SPACE);
         myLevel = myGame.getCurLevel();
         myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
-        mySpaceshipLaser = lookup("#spaceshipLaser0").query();
+        mySpaceshipProjectile = lookup("#spaceshipLaser0").query();
 
         // Check if image changed after getting hit
         Image imgBefore = myEnemy31.getImage();
 
-        mySpaceshipLaser.setX(myEnemy31.getX());
-        mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
+        mySpaceshipProjectile.setX(myEnemy31.getX());
+        mySpaceshipProjectile.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
         step();
 
         Image imgAfter = myEnemy31.getImage();
@@ -368,13 +369,13 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, KeyCode.SPACE);
         myLevel = myGame.getCurLevel();
         myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
-        mySpaceshipLaser = lookup("#spaceshipLaser0").query();
+        mySpaceshipProjectile = lookup("#spaceshipLaser0").query();
 
         int lifeBefore = myEnemy31.getLives();
         assertEquals(3, lifeBefore);
 
-        mySpaceshipLaser.setX(myEnemy31.getX());
-        mySpaceshipLaser.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
+        mySpaceshipProjectile.setX(myEnemy31.getX());
+        mySpaceshipProjectile.setY(myEnemy31.getY() + 9.5*Laser.Y_SPEED*Game.SECOND_DELAY);
         step();
 
         int lifeAfter = myEnemy31.getLives();
