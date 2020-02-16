@@ -41,23 +41,28 @@ public class GameTest extends DukeApplicationTest {
         myScene = myGame.setupScene(Game.GAME_WIDTH, Game.GAME_HEIGHT, Game.BACKGROUND);
         stage.setScene(myScene);
         stage.show();
-        myLevel = myGame.getCurLevel();
-
-        // find individual items within game by ID (must have been set in your code using setID())
-        mySpaceship = lookup("#spaceship").query();
-        for (int row = 0; row < 4; row++) {
-            myEnemies.add(new ArrayList<>());
-            for (int col = 0; col < EnemyLevel.ENEMIES_PER_ROW; col++) {
-                myEnemies.get(row).add(lookup("#enemy" + (col + row*EnemyLevel.ENEMIES_PER_ROW)).query());
-            }
-        }
-        // leftmost enemy in bottom row is enemy27, such that when "D" is pressed it will be destroyed
-        myEnemy27 = lookup(LEFTMOST_BOTTOM_ENEMY).query();
-        // when a projectile is fired from the spaceship's default position, it will hit enemy31
-        myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
+        // advance past start menu
         press(myScene, KeyCode.SPACE);
-        // need to wait for scene to update after key press in application thread
-        Platform.runLater(() -> mySpaceshipProjectile = lookup("#spaceshipLaserProjectile0").query());
+
+        Platform.runLater(() -> {
+            myLevel = myGame.getCurLevel();
+            // find individual items within game by ID (must have been set in your code using setID())
+            mySpaceship = lookup("#spaceship").query();
+            for (int row = 0; row < 4; row++) {
+                myEnemies.add(new ArrayList<>());
+                for (int col = 0; col < EnemyLevel.ENEMIES_PER_ROW; col++) {
+                    myEnemies.get(row).add(lookup("#enemy" + (col + row*EnemyLevel.ENEMIES_PER_ROW)).query());
+                }
+            }
+            // leftmost enemy in bottom row is enemy27, such that when "D" is pressed it will be destroyed
+            myEnemy27 = lookup(LEFTMOST_BOTTOM_ENEMY).query();
+            // when a projectile is fired from the spaceship's default position, it will hit enemy31
+            myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
+            // fire laser from spaceship
+            press(myScene, KeyCode.SPACE);
+            // need to wait for scene to update after key press in application thread
+            Platform.runLater(() -> mySpaceshipProjectile = lookup("#spaceshipLaserProjectile0").query());
+        });
     }
 
     @Test

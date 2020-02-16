@@ -31,7 +31,8 @@ public class Game extends Application {
     private double gameTimer = 0;
     private Level curLevel;
     private Group root;
-    private boolean isMenuActive = false;
+    private boolean isMenuActive = true;
+    private boolean isStartMenuActive = true;
     private boolean isGameOverMenuActive = false;
     private boolean isHighScoreTextFieldActive = false;
     private boolean isQuitGameMenuActive = false;
@@ -52,7 +53,6 @@ public class Game extends Application {
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(frame);
         myAnimation.play();
-        //StatusDisplay.createStartMenu(root);
     }
 
     // Create the game's "scene": what shapes will be in the game and their starting properties
@@ -64,8 +64,7 @@ public class Game extends Application {
         myScene = new Scene(root, width, height, background);
 
         // create a level
-        StatusDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
-        curLevel = new EnemyLevel(root,1, this);
+        StatusDisplay.createStartMenu(root);
         // respond to input
         myKeyHandler = new KeyHandler(this);
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
@@ -96,7 +95,7 @@ public class Game extends Application {
         isMenuActive = true;
     }
 
-    public void setMenuInActive() {
+    public void setMenuInactive() {
         isMenuActive = false;
     }
 
@@ -114,6 +113,18 @@ public class Game extends Application {
 
     public void setGameOverMenuInactive() {
         isGameOverMenuActive = false;
+    }
+
+    public boolean isStartMenuActive() {
+        return isStartMenuActive;
+    }
+
+    public void setStartMenuActive() {
+        isStartMenuActive = true;
+    }
+
+    public void setStartMenuInactive() {
+        isStartMenuActive = false;
     }
 
     public boolean isQuitGameMenuActive() {

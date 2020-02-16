@@ -33,15 +33,19 @@ public class KeyHandler {
     }
 
     private boolean handleMenuKeyInput(KeyCode code) {
-        if (List.of(KeyCode.ENTER, KeyCode.E, KeyCode.Q, KeyCode.E, KeyCode.W).contains(code)) {
+        if (List.of(KeyCode.SPACE, KeyCode.ENTER, KeyCode.E, KeyCode.Q, KeyCode.E, KeyCode.W).contains(code)) {
             return true;
         }
         else if (isKeyCodeADigit(code) || List.of(KeyCode.R, KeyCode.S).contains(code)) {
-            myGame.setMenuInActive();
+            myGame.setMenuInactive();
             StatusDisplay.removeMenu(myGame.getRoot());
             return true;
         }
         return false;
+    }
+
+    private void createFirstLevel() {
+        myGame.setCurLevel(new EnemyLevel(myGame.getRoot(), 1, myGame));
     }
 
     private void goToLevel(int levelNumber) {
@@ -59,7 +63,7 @@ public class KeyHandler {
     private void initializeKeyToActionMap() {
         keyToActionMap.put(KeyCode.RIGHT, () -> myGame.getCurLevel().moveSpaceship(true));
         keyToActionMap.put(KeyCode.LEFT, () -> myGame.getCurLevel().moveSpaceship(false));
-        keyToActionMap.put(KeyCode.SPACE, () -> myGame.getCurLevel().attemptSpaceshipFire(myGame.getGameTimer()));
+        keyToActionMap.put(KeyCode.SPACE, () -> handleSpaceKeyPress());
         keyToActionMap.put(KeyCode.L, () -> myGame.getCurLevel().addLife());
         keyToActionMap.put(KeyCode.A, () -> myGame.getCurLevel().addPowerUpSpeed(myGame.getGameTimer()));
         keyToActionMap.put(KeyCode.M, () -> myGame.getCurLevel().addPowerUpMissile(myGame.getGameTimer()));
@@ -75,6 +79,19 @@ public class KeyHandler {
             keyToActionMap.put(code, () -> {
                 int levelNumber = code.getCode() <= KEY_CODE_3 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : Game.MAX_LEVEL;
                 goToLevel(levelNumber);});
+        }
+    }
+
+    private void handleSpaceKeyPress() {
+        if (myGame.isStartMenuActive()) {
+            myGame.setMenuInactive();
+            myGame.setStartMenuInactive();
+            StatusDisplay.removeMenu(myGame.getRoot());
+            StatusDisplay.createInterfaceAndAddToRoot(myGame.getRoot(), Game.GAME_HEIGHT, Game.SCENE_WIDTH, Game.SCENE_HEIGHT);
+            createFirstLevel();
+        }
+        else {
+            myGame.getCurLevel().attemptSpaceshipFire(myGame.getGameTimer());
         }
     }
 
@@ -113,7 +130,7 @@ public class KeyHandler {
     private void resetGame() {
         if (myGame.isQuitGameMenuActive()) {
             StatusDisplay.removeMenu(myGame.getRoot());
-            myGame.setMenuInActive();
+            myGame.setMenuInactive();
             myGame.setGameOverMenuInactive();
             myGame.setQuitGameMenuInactive();
             StatusDisplay.updateHighScoreDisplay();
