@@ -30,6 +30,7 @@ public class EnemyLevel extends Level {
     public static final double PERCENT_ENEMIES_WITH_EACH_POWERUP = 0.10;
     public static final List<Class> POWER_UP_TYPES = List.of(BurstFirePowerUp.class, MissilePowerUp.class, SpaceshipSpeedPowerUp.class);
     public static final int NUM_POWER_UP_TYPES = POWER_UP_TYPES.size();
+    public static final String CHEAT_POWER_UP_ID_PREFIX = "cheatPowerUp";
 
     private int curCheatKeyPowerUpIdNumber = 0;
 
@@ -84,28 +85,28 @@ public class EnemyLevel extends Level {
         int randomIndex = ThreadLocalRandom.current().nextInt(0, NUM_POWER_UP_TYPES);
         Class powerUpClass = POWER_UP_TYPES.get(randomIndex);
         PowerUp powerUp = createPowerUpFromClassName(powerUpClass, Game.GAME_WIDTH/2,Game.GAME_HEIGHT/2,
-                "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
+                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber++);
         addPowerUp(gameTimer, powerUp);
     }
 
     @Override
     public void addSpeedPowerUp(double gameTimer) {
         PowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
+                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber++);
         addPowerUp(gameTimer, powerUp);
     }
 
     @Override
     public void addMissilePowerUp(double gameTimer) {
         PowerUp powerUp = new MissilePowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
+                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber++);
         addPowerUp(gameTimer, powerUp);
     }
 
     @Override
     public void addBurstFirePowerUp(double gameTimer) {
         PowerUp powerUp = new BurstFirePowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
+                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber++);
         addPowerUp(gameTimer, powerUp);
     }
 
