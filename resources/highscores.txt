@@ -1,8 +1,10 @@
 PierName:300
+BobName:200
 Pie:150
 a:100
 Pierce2:100
 Pierce:100
+Pierce:75
 Pierce:25
 pName:25
 Abc:0

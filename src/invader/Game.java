@@ -4,7 +4,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -12,10 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Game extends Application {
     public static final String TITLE = "Space Invaders";
@@ -27,19 +22,12 @@ public class Game extends Application {
     public static final int FRAMES_PER_SECOND = 60;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final Paint BACKGROUND = Color.BLACK;
-    public static final int KEY_CODE_1 = 49;
-    public static final int KEY_CODE_3 = 51;
-    public static final int KEY_CODE_9 = 57;
-    public static final int KEY_CODE_TO_LEVEL_CONVERSION = 48;
     public static final int MAX_LEVEL = 4;
-    private Map<KeyCode, Runnable> keyToActionMap = new HashMap<>();
-    public static final List<KeyCode> KEY_CODES_1_THROUGH_9 = List.of(KeyCode.DIGIT1, KeyCode.DIGIT2, KeyCode.DIGIT3, KeyCode.DIGIT4,
-            KeyCode.DIGIT5, KeyCode.DIGIT6, KeyCode.DIGIT7, KeyCode.DIGIT8, KeyCode.DIGIT9);
-
 
     // some things we need to remember during our game
     private Scene myScene;
     private Timeline myAnimation;
+    private KeyHandler myKeyHandler;
     private double gameTimer = 0;
     private Level curLevel;
     private Group root;
@@ -78,7 +66,7 @@ public class Game extends Application {
         StatusDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
         curLevel = new EnemyLevel(root,1, this);
         // respond to input
-        initializeKeyToActionMap();
+        myKeyHandler = new KeyHandler(this);
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
         return myScene;
     }
@@ -91,16 +79,76 @@ public class Game extends Application {
         return curLevel;
     }
 
+    public void setCurLevel(Level curLevel) {
+        this.curLevel = curLevel;
+    }
+
+    public double getGameTimer() {
+        return gameTimer;
+    }
+
+    public void setGameTimer(double time) {
+        gameTimer = time;
+    }
+
     public void setMenuActive() {
         isMenuActive = true;
+    }
+
+    public void setMenuInActive() {
+        isMenuActive = false;
+    }
+
+    public boolean isMenuActive() {
+        return isMenuActive;
+    }
+
+    public boolean isGameOverMenuActive() {
+        return isGameOverMenuActive;
     }
 
     public void setGameOverMenuActive() {
         isGameOverMenuActive = true;
     }
 
-    public boolean isMenuActive() {
-        return isMenuActive;
+    public void setGameOverMenuInactive() {
+        isGameOverMenuActive = false;
+    }
+
+    public boolean isQuitGameMenuActive() {
+        return isQuitGameMenuActive;
+    }
+
+    public void setQuitGameMenuActive() {
+        isQuitGameMenuActive = true;
+    }
+
+    public void setQuitGameMenuInactive() {
+        isQuitGameMenuActive = false;
+    }
+
+    public boolean isHighScoreTextFieldActive() {
+        return isHighScoreTextFieldActive;
+    }
+
+    public void setHighScoreTextFieldActive() {
+        isHighScoreTextFieldActive = true;
+    }
+
+    public void setHighScoreTextFieldInactive() {
+        isHighScoreTextFieldActive = false;
+    }
+
+    public Animation.Status getAnimationStatus() {
+        return myAnimation.getStatus();
+    }
+
+    public void pauseAnimation() {
+        myAnimation.pause();
+    }
+
+    public void playAnimation() {
+        myAnimation.play();
     }
 
     // Change properties of shapes to animate them
@@ -113,81 +161,7 @@ public class Game extends Application {
 
     // What to do each time a key is pressed
     private void handleKeyInput (KeyCode code) {
-        if (isMenuActive) {
-            if (code == KeyCode.ENTER || code == KeyCode.E || code == KeyCode.Q || code == KeyCode.W) {
-
-            }
-            else if (isKeyCodeADigit(code) || code == KeyCode.R || code == KeyCode.S) {
-                isMenuActive = false;
-                StatusDisplay.removeMenu(root);
-            }
-            else return;
-        }
-        if (keyToActionMap.containsKey(code)) keyToActionMap.get(code).run();
-    }
-
-    private void goToLevel(int levelNumber) {
-        curLevel.clearLevel();
-        gameTimer = 0;
-        if (levelNumber == MAX_LEVEL) curLevel = new BossLevel(root, levelNumber, this);
-        else curLevel = new EnemyLevel(root, levelNumber, this);
-    }
-
-    private boolean isKeyCodeADigit(KeyCode code) {
-        return (code.getCode() >= KEY_CODE_1 && code.getCode() <= KEY_CODE_9);
-    }
-
-    private void initializeKeyToActionMap() {
-        keyToActionMap.put(KeyCode.RIGHT, () -> curLevel.moveSpaceship(true));
-        keyToActionMap.put(KeyCode.LEFT, () -> curLevel.moveSpaceship(false));
-        keyToActionMap.put(KeyCode.SPACE, () -> curLevel.attemptSpaceshipFire(gameTimer));
-        keyToActionMap.put(KeyCode.L, () -> curLevel.addLife());
-        keyToActionMap.put(KeyCode.A, () -> curLevel.addPowerUpSpeed(gameTimer));
-        keyToActionMap.put(KeyCode.M, () -> curLevel.addPowerUpMissile(gameTimer));
-        keyToActionMap.put(KeyCode.R, () -> goToLevel(curLevel.getLevelNumber()));
-        keyToActionMap.put(KeyCode.D, () -> curLevel.destroyFirstEnemy());
-        keyToActionMap.put(KeyCode.D, () -> curLevel.destroyFirstEnemy());
-        keyToActionMap.put(KeyCode.W, () -> { if (isQuitGameMenuActive) {
-            StatusDisplay.removeMenu(root);
-            isGameOverMenuActive = false;
-            isMenuActive = false;
-            isGameOverMenuActive = false;
-            StatusDisplay.updateHighScoreDisplay();
-            goToLevel(1);
-        }
-        });
-        keyToActionMap.put(KeyCode.Q, () -> { if (isQuitGameMenuActive) {
-            Platform.exit(); System.exit(0);}
-                });
-        keyToActionMap.put(KeyCode.E, () -> {
-            if (isGameOverMenuActive) {
-                System.out.println("here");
-                isHighScoreTextFieldActive = true;
-                StatusDisplay.removeMenu(root);
-                StatusDisplay.createHighScoreTextField(root);
-            }
-        }
-
-                );
-        keyToActionMap.put(KeyCode.ENTER, () -> {
-            if (isHighScoreTextFieldActive) {
-                StatusDisplay.storeHighScore(root);
-                StatusDisplay.createRestartOrEndMenu(root);
-                isHighScoreTextFieldActive = false;
-                isQuitGameMenuActive = true;
-            }
-        });
-        keyToActionMap.put(KeyCode.P, () -> {
-            if (myAnimation.getStatus() == Animation.Status.RUNNING) myAnimation.pause();
-            else myAnimation.play();
-        });
-        keyToActionMap.put(KeyCode.S, () -> {
-            if (curLevel.getLevelNumber() < MAX_LEVEL) goToLevel(curLevel.getLevelNumber()+1);
-            });
-        for (KeyCode code : KEY_CODES_1_THROUGH_9) {
-            keyToActionMap.put(code, () -> {int levelNumber = code.getCode() <= KEY_CODE_3 ? code.getCode()-KEY_CODE_TO_LEVEL_CONVERSION : MAX_LEVEL;
-                goToLevel(levelNumber);});
-        }
+        myKeyHandler.handleInput(code);
     }
 
     /**

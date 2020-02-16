@@ -112,7 +112,7 @@ public class BossLevel extends Level { public static final int LEFT_LASER_ROTATI
 
     @Override
     public void destroyFirstEnemy() {
-        return;
+        boss.setLives(0);
     }
 
     private void updateBossPosition() {

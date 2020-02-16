@@ -113,7 +113,7 @@ public class GameTest extends DukeApplicationTest {
     public void testJumpToLevelCheatKeys() {
         // the first expected level is level 1
         int expectedLevelNumber = 1;
-        for (KeyCode code : Game.KEY_CODES_1_THROUGH_9) {
+        for (KeyCode code : KeyHandler.KEY_CODES_1_THROUGH_9) {
             // press cheat key to jump to level
             press(myScene, code);
             // need to reassign our level to the new level created in game
