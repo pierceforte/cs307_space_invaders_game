@@ -93,8 +93,7 @@ public abstract class Level {
             StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
             if (spaceship.getLives() == 0) {
                 levelLost = true;
-                myGame.setMenuActive();
-                clearLevel();
+                endLevel();
                 StatusDisplay.createGameOverMenu(root);
             }
         }
@@ -171,13 +170,18 @@ public abstract class Level {
     }
 
     protected void initiateLevelVictory() {
-        myGame.setMenuActive();
-        clearLevel();
+        endLevel();
         if (getLevelNumber() == Game.MAX_LEVEL) {
             StatusDisplay.createVictoryMenu(root);
         } else {
             StatusDisplay.createLevelIntermissionMenu(root);
         }
+    }
+
+    private void endLevel() {
+        myGame.setMenuActive();
+        myGame.setGameOverMenuActive();
+        clearLevel();
     }
 
     protected abstract void handleEvilEntitiesMovement();
