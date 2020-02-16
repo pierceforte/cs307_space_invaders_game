@@ -119,7 +119,7 @@ public abstract class Level {
     }
 
     protected void attemptSpaceshipFire(double gameTimer) {
-        boolean fired = attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, 1,
+        boolean fired = attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, Spaceship.TIME_BETWEEN_SHOTS,
                 SPACESHIP_LASER_ROTATION, curSpaceshipProjectileIdNumber);
         if (fired) curSpaceshipProjectileIdNumber++;
     }

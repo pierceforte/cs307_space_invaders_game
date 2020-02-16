@@ -16,6 +16,7 @@ public class Spaceship extends Entity {
     public static final int DEFAULT_X_SPEED_ON_KEY_PRESS = 10;
     public static final int DEFAULT_LIVES = 3;
     public static final int POINTS_PER_HIT = 0;
+    public static final int TIME_BETWEEN_SHOTS = 1;
     public static final String SPACESHIP_IMG_NAME = "spaceship.png";
 
     private double xSpeedOnKeyPress = DEFAULT_X_SPEED_ON_KEY_PRESS;
@@ -31,6 +32,7 @@ public class Spaceship extends Entity {
         setLives(DEFAULT_LIVES);
         setPointsPerHit(POINTS_PER_HIT);
         this.setId("spaceship");
+        setStartShootingTime(0);
     }
 
     /**
