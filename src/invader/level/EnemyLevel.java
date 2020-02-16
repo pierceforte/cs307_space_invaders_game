@@ -27,7 +27,7 @@ public class EnemyLevel extends Level {
     public static final int POINTS_PER_ENEMY_HIT = 25;
     public static final int ENEMY_SPEED_FACTOR_BY_LEVEL = 10;
     public static final int ENEMY_LASER_ROTATION = 0;
-    public static final double DECREASE_TIME_BETWEEN_SHOTS_FACTOR = 1/30;
+    public static final double DECREASE_TIME_BETWEEN_SHOTS_QUOTIENT = 30;
     public static final double PERCENT_ENEMIES_WITH_EACH_POWERUP = 0.10;
     public static final List<Class> POWER_UP_TYPES = List.of(BurstFirePowerUp.class, MissilePowerUp.class, SpaceshipSpeedPowerUp.class);
     public static final int NUM_POWER_UP_TYPES = POWER_UP_TYPES.size();
@@ -171,12 +171,7 @@ public class EnemyLevel extends Level {
                 boolean isCollision = handleProjectileCollisions(spaceshipProjectiles, enemy);
                 if (enemy.getLives() <= 0) {
                     enemiesToRemove.add(enemy);
-                    if (enemy.hasPowerUp()) {
-                        enemy.getPowerUp().setX(enemy.getX());
-                        enemy.getPowerUp().setY(enemy.getY());
-                        powerUps.add(enemy.getPowerUp());
-                        root.getChildren().add(enemy.getPowerUp());
-                    }
+                    attemptToAddPowerUp(enemy);
                 } else if (isCollision){
                     enemy.setImage(enemy.makeImage("enemy" + enemy.getLives() + ".png"));
                 }
@@ -252,6 +247,15 @@ public class EnemyLevel extends Level {
         powerUps.removeAll(powerUpsToRemoveFromGame);
     }
 
+    private void attemptToAddPowerUp(Enemy enemy) {
+        if (enemy.hasPowerUp()) {
+            enemy.getPowerUp().setX(enemy.getX());
+            enemy.getPowerUp().setY(enemy.getY());
+            powerUps.add(enemy.getPowerUp());
+            root.getChildren().add(enemy.getPowerUp());
+        }
+    }
+
     private void removeInactiveEnemies(List<Enemy> enemiesToRemove) {
         root.getChildren().removeAll(enemiesToRemove);
         for(List<Enemy> enemyRow : enemies) {
@@ -277,7 +281,7 @@ public class EnemyLevel extends Level {
                 enemiesLeft++;
             }
         }
-        double changedTime = Enemy.DEFAULT_TIME_BETWEEN_SHOTS * enemiesLeft * DECREASE_TIME_BETWEEN_SHOTS_FACTOR;
+        double changedTime = Enemy.DEFAULT_TIME_BETWEEN_SHOTS * enemiesLeft * DECREASE_TIME_BETWEEN_SHOTS_QUOTIENT;
         // adjust new time between shot so it is between bounds
         double newTime = Math.min(Math.max(changedTime, Enemy.MIN_TIME_BETWEEN_SHOTS), Enemy.DEFAULT_TIME_BETWEEN_SHOTS);
         enemy.setTimeBetweenShots(newTime);

@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.*;
 
-public class StatusDisplay {
+public final class StatusDisplay {
 
     public static final Paint MENU_BACKGROUND = Color.GRAY;
     public static final Paint INTERFACE_BACKGROUND = Color.GRAY;
@@ -47,12 +47,12 @@ public class StatusDisplay {
     public static final int BOSS_MENU_X_POS = 75;
     public static final int BOSS_MENU_Y_POS = 225;
     public static final int HIGHSCORE_TEXT_FIELD_WIDTH = 150;
+    public static final String DEFAULT_HIGHSCORE_TEXT_FIELD_TEXT = "Name";
     public static final String POINTS_FORMAT = "%06d";
     public static final String HIGHSCORES_FILE_PATH = "resources/highscores.txt";
     public static final int NUM_HIGHSCORES_STORED = 100;
     public static final int NUM_HIGHSCORES_DISPLAYED = 5;
     public static final String SCORE_DELIMITER = ":";
-
 
     private static Rectangle menuBackground;
     private static Rectangle userInterfaceArea;
@@ -69,6 +69,10 @@ public class StatusDisplay {
             .comparing((String entry) -> Integer.parseInt(entry.split(SCORE_DELIMITER)[1]))
             .reversed()
             .thenComparing((entry) -> entry.toLowerCase()));
+
+    private StatusDisplay() {
+        //not called
+    }
 
     public static void createInterfaceAndAddToRoot(Group root, int game_height, int scene_width, int scene_height) {
         createInterfaceBackground(root, game_height, scene_width, scene_height);
@@ -137,13 +141,13 @@ public class StatusDisplay {
     }
 
     public static void createHighScoreTextField(Group root) {
-        highScoreTextField = new TextField("Name");
+        highScoreTextField = new TextField(DEFAULT_HIGHSCORE_TEXT_FIELD_TEXT);
         highScoreTextField.setPrefWidth(HIGHSCORE_TEXT_FIELD_WIDTH);
         highScoreTextField.setLayoutX(Game.GAME_WIDTH/2 - HIGHSCORE_TEXT_FIELD_WIDTH/2);
         highScoreTextField.setLayoutY(Game.GAME_HEIGHT/2);
 
         System.out.println(highScoreTextField.getWidth());
-        highScoreTextField.setPromptText("Name");
+        highScoreTextField.setPromptText(DEFAULT_HIGHSCORE_TEXT_FIELD_TEXT);
         root.getChildren().add(highScoreTextField);
     }
 
