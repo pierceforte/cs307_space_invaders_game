@@ -15,12 +15,12 @@ public abstract class Projectile extends MovingObject {
     private boolean isEvil;
 
     public Projectile(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height,
-                 boolean isEvil, String imgName, double rotation, int idNumber) {
+                 boolean isEvil, String imgName, double rotation, int idNumber, String projectileType) {
         super(xPos,yPos,xSpeed,ySpeed * (isEvil ? -1 : 1), width, height, imgName);
         this.isEvil = isEvil;
         setRotate(rotation);
-        String idString = isEvil ? "enemy" : "spaceship";
-        this.setId(idString + "Projectile" + idNumber);
+        String idString = isEvil ? "evil" : "spaceship";
+        this.setId(idString + projectileType + "Projectile" + idNumber);
     }
 
     public void setDamage(int damage) {

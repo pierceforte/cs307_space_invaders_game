@@ -135,8 +135,9 @@ public class EnemyLevel extends Level {
     protected void handleEvilEntityLasers(double gameTimer) {
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                attemptProjectileFire(gameTimer, enemy, evilEntityProjectiles, Enemy.TIME_BETWEEN_SHOTS,
+                boolean fired = attemptProjectileFire(gameTimer, enemy, evilEntityProjectiles, Enemy.TIME_BETWEEN_SHOTS,
                         ENEMY_LASER_ROTATION, curEnemyProjectileIdNumber);
+                if (fired) curEnemyProjectileIdNumber++;
             }
         }
         handleProjectileCollisionWithSpaceship(evilEntityProjectiles, spaceship);

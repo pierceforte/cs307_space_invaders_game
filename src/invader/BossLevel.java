@@ -136,16 +136,16 @@ public class BossLevel extends Level { public static final int LEFT_LASER_ROTATI
     private void attemptBossFire(double gameTimer) {
         if (!boss.isVulnerable()) invulnerableTimer++;
         if (!boss.isVulnerable() && invulnerableTimer >= boss.getStartShootingTime()) {
-            shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, DEFAULT_LASER_ROTATION, curBossProjectileIdNumber);
+            shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, DEFAULT_LASER_ROTATION, curBossProjectileIdNumber++);
         }
     }
 
     private void bossBlastFire() {
         boss.setHasFireballBlast(true);
-        shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, DEFAULT_LASER_ROTATION, curBossProjectileIdNumber);
-        Projectile leftProjectile = shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, LEFT_LASER_ROTATION, curBossProjectileIdNumber);
+        shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, DEFAULT_LASER_ROTATION, curBossProjectileIdNumber++);
+        Projectile leftProjectile = shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, LEFT_LASER_ROTATION, curBossProjectileIdNumber++);
         leftProjectile.setXSpeed(LEFT_PROJECTILE_X_SPEED);
-        Projectile rightProjectile = shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, RIGHT_LASER_ROTATION, curBossProjectileIdNumber);
+        Projectile rightProjectile = shootProjectile(boss, evilEntityProjectiles, Boss.TIME_BETWEEN_SHOTS, RIGHT_LASER_ROTATION, curBossProjectileIdNumber++);
         rightProjectile.setXSpeed(RIGHT_PROJECTILE_X_SPEED);
         boss.setHasFireballBlast(false);
     }

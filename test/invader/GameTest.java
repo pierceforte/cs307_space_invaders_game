@@ -1,5 +1,6 @@
 package invader;
 
+import invader.entity.Boss;
 import invader.entity.Enemy;
 import invader.entity.Spaceship;
 import invader.powerup.PowerUp;
@@ -14,8 +15,10 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,10 +57,9 @@ public class GameTest extends DukeApplicationTest {
         myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
         press(myScene, KeyCode.SPACE);
         // need to wait for scene to update after key press in application thread
-        Platform.runLater(() -> mySpaceshipProjectile = lookup("#spaceshipProjectile0").query());
+        Platform.runLater(() -> mySpaceshipProjectile = lookup("#spaceshipLaserProjectile0").query());
     }
 
-    // FIXME
     @Test
     public void testSpaceshipSpeedUpPowerUpActivation() {
         // press cheat key to drop powerUp
@@ -153,7 +155,7 @@ public class GameTest extends DukeApplicationTest {
         step();
         // since all other enemies cannot fire until 1 second after game begins,
         // we know enemy31's laser is the 0th laser and can query it as such
-        Projectile myEnemy31Projectile = lookup("#enemyProjectile0").query();
+        Projectile myEnemy31Projectile = lookup("#evilLaserProjectile0").query();
         // position the laser one step prior to hitting spaceship
         myEnemy31Projectile.setY(mySpaceship.getY() - 6*Laser.Y_SPEED*Game.SECOND_DELAY);
         // assert that laser is in scene and spaceship has 3 (default) lives before collision
@@ -341,7 +343,7 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, KeyCode.SPACE);
         myLevel = myGame.getCurLevel();
         myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
-        mySpaceshipProjectile = lookup("#spaceshipProjectile0").query();
+        mySpaceshipProjectile = lookup("#spaceshipLaserProjectile0").query();
 
         // Check if image changed after getting hit
         Image imgBefore = myEnemy31.getImage();
@@ -356,7 +358,7 @@ public class GameTest extends DukeApplicationTest {
     }
 
     @Test
-    public void testBombPowerUp() {
+    public void testMissilePowerUp() {
         press(myScene, KeyCode.S);
         press(myScene, KeyCode.S);
         press(myScene, KeyCode.M);
@@ -370,7 +372,7 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, KeyCode.SPACE);
         myLevel = myGame.getCurLevel();
         myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
-        mySpaceshipProjectile = lookup("#spaceshipProjectile0").query();
+        mySpaceshipProjectile = lookup("#spaceshipMissileProjectile0").query();
 
         int lifeBefore = myEnemy31.getLives();
         assertEquals(3, lifeBefore);
@@ -384,5 +386,37 @@ public class GameTest extends DukeApplicationTest {
         assertEquals(lifeBefore - mySpaceshipProjectile.getDamage(), lifeAfter);
     }
 
+    @Test
+    public void testBossDeath() {
+        // go to boss level (level 4)
+        press(myScene, KeyCode.DIGIT4);
+        // get boss by id
+        Boss myBoss = lookup("#boss").query();
+        // set boss's lives to 1 life
+        myBoss.setLives(1);
+        // assert that boss does not lose life after collision because it is invulnerable
+        testBossCollision(myBoss, 0, 1);
+        // step until spaceship can shoot again (~1 second)
+        for (int i = 0; i < 1/myGame.SECOND_DELAY; i++) {
+            step();
+        }
+        // make boss vulnerable
+        myBoss.switchVulnerabilityStatus();
+        // assert that boss now loses life after collision
+        testBossCollision(myBoss, 1, 0);
+
+    }
+
+    private void testBossCollision(Boss myBoss, int projectileIdNumber, int expectedLives) {
+        // fire laser
+        press(myScene, KeyCode.SPACE);
+        mySpaceshipProjectile = lookup("#spaceshipLaserProjectile" + projectileIdNumber).query();
+        // reposition spaceship laser one step before hitting boss
+        mySpaceshipProjectile.setX(myBoss.getX() + myBoss.getFitWidth()/2);
+        mySpaceshipProjectile.setY(myBoss.getY() + myBoss.getFitHeight());
+        // step to initiate collision
+        step();
+        assertEquals(expectedLives, myBoss.getLives());
+    }
 
 }

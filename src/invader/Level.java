@@ -119,14 +119,18 @@ public abstract class Level {
     }
 
     protected void attemptSpaceshipFire(double gameTimer) {
-        attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, 1, SPACESHIP_LASER_ROTATION, curSpaceshipProjectileIdNumber);
+        boolean fired = attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, 1,
+                SPACESHIP_LASER_ROTATION, curSpaceshipProjectileIdNumber);
+        if (fired) curSpaceshipProjectileIdNumber++;
     }
 
-    protected void attemptProjectileFire(double gameTimer, Entity entity, List<Projectile> projectiles, double timeBeforeNextShot, double rotation,
+    protected boolean attemptProjectileFire(double gameTimer, Entity entity, List<Projectile> projectiles, double timeBeforeNextShot, double rotation,
                                          int idNumber) {
         if (gameTimer >= entity.getStartShootingTime()) {
             shootProjectile(entity, projectiles, timeBeforeNextShot, rotation, idNumber);
+            return true;
         }
+        return false;
     }
 
     protected Projectile shootProjectile(Entity entityShooting, List<Projectile> lasers, double timeBeforeNextShot, double rotation, int idNumber) {
