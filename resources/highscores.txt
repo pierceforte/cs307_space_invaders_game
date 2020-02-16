@@ -9,6 +9,7 @@ a:100
 Pierce2:100
 Pierce:100
 Pierce:75
+aName:50
 Pierce:25
 pName:25
 Abc:0
@@ -18,4 +19,5 @@ apple:0
 dafName:0
 Enter name:0
 Name:0
+pierce:0
 PName:0

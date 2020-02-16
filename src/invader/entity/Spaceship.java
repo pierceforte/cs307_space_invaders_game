@@ -20,7 +20,6 @@ public class Spaceship extends Entity {
 
     private double xSpeedOnKeyPress = DEFAULT_X_SPEED_ON_KEY_PRESS;
     private boolean hasMissilePowerUp = false;
-    private boolean hasBurstFirePowerUp = false;
 
     /**
      * Constructor

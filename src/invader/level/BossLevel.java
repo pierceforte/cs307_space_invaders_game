@@ -20,7 +20,6 @@ public class BossLevel extends Level {
 
     private Boss boss;
     private int bossLives;
-    private int curBossProjectileIdNumber = 0;
     private double invulnerableTimer = 0;
 
     public BossLevel(Group root, int levelNumber, Game myGame){

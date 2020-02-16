@@ -46,6 +46,7 @@ public class StatusDisplay {
     public static final int THANKS_MENU_Y_POS = 225;
     public static final int BOSS_MENU_X_POS = 75;
     public static final int BOSS_MENU_Y_POS = 225;
+    public static final int HIGHSCORE_TEXT_FIELD_WIDTH = 150;
     public static final String POINTS_FORMAT = "%06d";
     public static final String HIGHSCORES_FILE_PATH = "resources/highscores.txt";
     public static final int NUM_HIGHSCORES_STORED = 100;
@@ -137,8 +138,8 @@ public class StatusDisplay {
 
     public static void createHighScoreTextField(Group root) {
         highScoreTextField = new TextField("Name");
-        highScoreTextField.setPrefWidth(150);
-        highScoreTextField.setLayoutX(Game.GAME_WIDTH/2 - 100/2);
+        highScoreTextField.setPrefWidth(HIGHSCORE_TEXT_FIELD_WIDTH);
+        highScoreTextField.setLayoutX(Game.GAME_WIDTH/2 - HIGHSCORE_TEXT_FIELD_WIDTH/2);
         highScoreTextField.setLayoutY(Game.GAME_HEIGHT/2);
 
         System.out.println(highScoreTextField.getWidth());
