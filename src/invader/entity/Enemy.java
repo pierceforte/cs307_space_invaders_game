@@ -23,6 +23,16 @@ public class Enemy extends Entity {
     private PowerUp powerUp;
     private boolean hasPowerUp = false;
 
+    /**
+     * Constructor
+     * @param xPos
+     * @param yPos
+     * @param xSpeed
+     * @param ySpeed
+     * @param lives
+     * @param idNumber
+     * @param powerUp
+     */
     public Enemy(double xPos, double yPos, double xSpeed, double ySpeed, int lives, int idNumber, PowerUp powerUp) {
         super(xPos, yPos, xSpeed, ySpeed, WIDTH, HEIGHT, ENEMY_IMG_PREFIX + lives + ENEMY_IMG_EXTENSION);
         setLives(lives);
@@ -35,14 +45,26 @@ public class Enemy extends Entity {
         setPointsPerHit(POINTS_PER_HIT);
     }
 
+    /**
+     * @return Returns the power up that the enemy holds
+     */
     public PowerUp getPowerUp() {
         return powerUp;
     }
 
+    /**
+     * @return Returns if the enemy holds a powerup
+     */
     public boolean hasPowerUp() {
         return hasPowerUp;
     }
 
+    /**
+     * Creates a projectile/missile for the enemy
+     * @param rotation
+     * @param idNumber
+     * @return type of projectile that is made
+     */
     @Override
     public Projectile createProjectile(double rotation, int idNumber) {
         return normalEvilEntityLaserBlast(rotation, idNumber);

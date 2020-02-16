@@ -28,6 +28,14 @@ public class Boss extends Entity {
     private boolean isVulnerable = false;
     private int switchVulnerabilityTime = TIME_INVULNERABLE;
 
+    /**
+     * Constructor
+     * @param xPos
+     * @param yPos
+     * @param xSpeed
+     * @param ySpeed
+     * @param lives
+     */
     public Boss(double xPos, double yPos, double xSpeed, double ySpeed, int lives) {
         super(xPos, yPos, xSpeed, ySpeed, HIDDEN_WIDTH, HIDDEN_HEIGHT, BOSS_HIDING_IMG_NAME);
         setLives(lives);
