@@ -59,7 +59,8 @@ public class Game extends Application {
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(frame);
-        myAnimation.play();
+//        myAnimation.play();
+        StatusDisplay.createStartMenu(root);
     }
 
     // Create the game's "scene": what shapes will be in the game and their starting properties
@@ -129,7 +130,13 @@ public class Game extends Application {
     private void initializeKeyToActionMap() {
         keyToActionMap.put(KeyCode.RIGHT, () -> curLevel.moveSpaceship(true));
         keyToActionMap.put(KeyCode.LEFT, () -> curLevel.moveSpaceship(false));
-        keyToActionMap.put(KeyCode.SPACE, () -> curLevel.attemptSpaceshipFire(gameTimer));
+        keyToActionMap.put(KeyCode.SPACE, () -> {
+            if (myAnimation.getStatus() == Animation.Status.STOPPED) {
+                StatusDisplay.removeMenu(root);
+                myAnimation.play();
+            }
+            else curLevel.attemptSpaceshipFire(gameTimer);
+            });
         keyToActionMap.put(KeyCode.L, () -> curLevel.addLife());
         keyToActionMap.put(KeyCode.A, () -> curLevel.addPowerUpSpeed(gameTimer));
         keyToActionMap.put(KeyCode.M, () -> curLevel.addPowerUpMissile(gameTimer));
