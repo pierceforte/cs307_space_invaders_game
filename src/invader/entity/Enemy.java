@@ -14,9 +14,10 @@ public class Enemy extends Entity {
     public static final int WIDTH = 30;
     public static final String ENEMY_IMG_PREFIX = "enemy";
     public static final String ENEMY_IMG_EXTENSION = ".png";
-    public static final int DEFAULT_TIME_BETWEEN_SHOTS = 30;
+    public static final int DEFAULT_TIME_BETWEEN_SHOTS = 20;
+    public static final double MIN_TIME_BETWEEN_SHOTS = 0.5;
     public static final int EARLIEST_START_FIRING_TIME = 5;
-    public static final int LATEST_START_FIRING_TIME = 15;
+    public static final int LATEST_START_FIRING_TIME = 20;
     public static final int POINTS_PER_HIT = 25;
     public static final boolean IS_EVIL = true;
 

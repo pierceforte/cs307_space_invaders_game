@@ -194,12 +194,14 @@ public class EnemyLevel extends Level {
             double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
             for (int col = 0; col < enemyIdentifiers.get(0).size(); col++) {
                 PowerUp curPowerUp = null;
+                int lives = enemyIdentifiers.get(row).get(col);
                 if (powerUpGrid.get(row).get(col) != null) {
                     curPowerUp = createPowerUpFromClassName(powerUpGrid.get(row).get(col),
                             xPos + Enemy.WIDTH/2, yPos, "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
                 }
-                Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*enemyIdentifiers.get(row).get(col),
-                        0, enemyIdentifiers.get(row).get(col), col + row*ENEMIES_PER_ROW, curPowerUp);
+                Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*Math.abs(lives),
+                        0, Math.abs(lives), col + row*ENEMIES_PER_ROW, curPowerUp);
+                if (lives < 0) curEnemy.setHasBurstFire(true);
                 tempRow.add(curEnemy);
                 xPos += Enemy.WIDTH + ENEMY_SPACING;
             }
@@ -274,7 +276,8 @@ public class EnemyLevel extends Level {
             }
         }
         double changedTime = Enemy.DEFAULT_TIME_BETWEEN_SHOTS * enemiesLeft/30;
-        double newTime = (changedTime > Enemy.DEFAULT_TIME_BETWEEN_SHOTS) ? Enemy.DEFAULT_TIME_BETWEEN_SHOTS : changedTime;
+        // adjust new time between shot so it is between bounds
+        double newTime = Math.min(Math.max(changedTime, Enemy.MIN_TIME_BETWEEN_SHOTS), Enemy.DEFAULT_TIME_BETWEEN_SHOTS);
         enemy.setTimeBetweenShots(newTime);
     }
 
