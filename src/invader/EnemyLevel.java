@@ -3,6 +3,7 @@ package invader;
 
 import invader.entity.Enemy;
 import invader.entity.Spaceship;
+import invader.powerup.BurstFirePowerUp;
 import invader.powerup.MissilePowerUp;
 import invader.powerup.PowerUp;
 import invader.powerup.SpaceshipSpeedPowerUp;
@@ -19,7 +20,6 @@ public class EnemyLevel extends Level {
     public static final int ENEMY_SPEED_FACTOR_BY_LEVEL = 10;
     public static final int ENEMY_LASER_ROTATION = 0;
 
-    private int curEnemyProjectileIdNumber = 0;
     private int curCheatKeyPowerUpIdNumber = 0;
 
     private int rows;
@@ -127,9 +127,7 @@ public class EnemyLevel extends Level {
         //updateTimeBetweenEnemyShots();
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                boolean fired = attemptProjectileFire(gameTimer, enemy, evilEntityProjectiles, enemy.getTimeBetweenShots(),
-                        ENEMY_LASER_ROTATION, curEnemyProjectileIdNumber);
-                if (fired) curEnemyProjectileIdNumber++;
+                attemptProjectileFire(gameTimer, enemy, evilEntityProjectiles, enemy.getTimeBetweenShots(), ENEMY_LASER_ROTATION);
             }
         }
         handleProjectileCollisionWithSpaceship(evilEntityProjectiles, spaceship);
@@ -172,9 +170,12 @@ public class EnemyLevel extends Level {
             double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
             for (int col = 0; col < enemyIdentifiers.get(0).size(); col++) {
                 PowerUp curPowerUp = null;
-                //if ((col == 1 && row % 2 != 0) || (col == 4 && (row % 2 == 0)) || (col == 7 && row == 3)) {
+                if (col >= 0 && col <= 3) {
                     curPowerUp = new MissilePowerUp(xPos + Enemy.WIDTH/2, yPos, "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
-                //}
+                }
+                else {
+                    curPowerUp = new BurstFirePowerUp(xPos + Enemy.WIDTH/2, yPos, "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
+                }
                 Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*enemyIdentifiers.get(row).get(col),
                         0, enemyIdentifiers.get(row).get(col), col + row*ENEMIES_PER_ROW, curPowerUp);
                 /*

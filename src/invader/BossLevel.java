@@ -9,10 +9,7 @@ import javafx.scene.Group;
 import java.util.List;
 import java.util.Scanner;
 
-public class BossLevel extends Level { public static final int LEFT_LASER_ROTATION = 45;
-    public static final int LEFT_PROJECTILE_X_SPEED = -50;
-    public static final int RIGHT_LASER_ROTATION = -45;
-    public static final int RIGHT_PROJECTILE_X_SPEED = 50;
+public class BossLevel extends Level {
     public static final int DEFAULT_SPACESHIP_LIVES = 5;
 
     private Boss boss;
@@ -52,7 +49,7 @@ public class BossLevel extends Level { public static final int LEFT_LASER_ROTATI
         updateNodePositionsOnStep(elapsedTime);
         handleEvilEntitiesMovement();
         handleEvilEntityLasers(gameTimer);
-        attemptBossFire(gameTimer);
+        attemptBossFire();
         attemptVulnerabilitySwitch(gameTimer);
         handleSpaceshipProjectiles();
         attemptLevelVictory();
@@ -129,24 +126,19 @@ public class BossLevel extends Level { public static final int LEFT_LASER_ROTATI
     private void attemptVulnerabilitySwitch(double gameTimer) {
         if (gameTimer >= boss.getSwitchVulnerabilityTime()) {
             boss.switchVulnerabilityStatus();
-            if (boss.isVulnerable()) bossBlastFire();
+            if (boss.isVulnerable()) {
+                boss.setHasFireballBlast(true);
+                blastFire(boss, evilEntityProjectiles);
+                boss.setHasFireballBlast(false);
+            }
         }
     }
 
-    private void attemptBossFire(double gameTimer) {
+    private void attemptBossFire() {
         if (!boss.isVulnerable()) invulnerableTimer++;
         if (!boss.isVulnerable() && invulnerableTimer >= boss.getStartShootingTime()) {
-            shootProjectile(boss, evilEntityProjectiles, Boss.DEFAULT_TIME_BETWEEN_SHOTS, DEFAULT_LASER_ROTATION, curBossProjectileIdNumber++);
+            shootProjectile(boss, evilEntityProjectiles, Boss.DEFAULT_TIME_BETWEEN_SHOTS,
+                    Projectile.DEFAULT_PROJECTILE_ROTATION);
         }
-    }
-
-    private void bossBlastFire() {
-        boss.setHasFireballBlast(true);
-        shootProjectile(boss, evilEntityProjectiles, Boss.DEFAULT_TIME_BETWEEN_SHOTS, DEFAULT_LASER_ROTATION, curBossProjectileIdNumber++);
-        Projectile leftProjectile = shootProjectile(boss, evilEntityProjectiles, Boss.DEFAULT_TIME_BETWEEN_SHOTS, LEFT_LASER_ROTATION, curBossProjectileIdNumber++);
-        leftProjectile.setXSpeed(LEFT_PROJECTILE_X_SPEED);
-        Projectile rightProjectile = shootProjectile(boss, evilEntityProjectiles, Boss.DEFAULT_TIME_BETWEEN_SHOTS, RIGHT_LASER_ROTATION, curBossProjectileIdNumber++);
-        rightProjectile.setXSpeed(RIGHT_PROJECTILE_X_SPEED);
-        boss.setHasFireballBlast(false);
     }
 }

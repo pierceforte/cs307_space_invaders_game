@@ -19,9 +19,7 @@ public abstract class Level {
     public static final String LEVEL_FILE_PATH = "resources/level_files/level_";
     public static final String LEVEL_FILE_EXTENSION = ".txt";
     public static final int SPACESHIP_LASER_ROTATION = 0;
-    public static final int DEFAULT_LASER_ROTATION = 0;
 
-    protected int curSpaceshipProjectileIdNumber = 0;
     protected boolean levelLost = false;
     protected Game myGame;
     protected Group root;
@@ -118,33 +116,49 @@ public abstract class Level {
     }
 
     protected void attemptSpaceshipFire(double gameTimer) {
-        boolean fired = attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, Spaceship.DEFAULT_TIME_BETWEEN_SHOTS,
-                SPACESHIP_LASER_ROTATION, curSpaceshipProjectileIdNumber);
-        if (fired) curSpaceshipProjectileIdNumber++;
-    }
-
-    protected boolean attemptProjectileFire(double gameTimer, Entity entity, List<Projectile> projectiles, double timeBeforeNextShot, double rotation,
-                                         int idNumber) {
-        if (gameTimer >= entity.getStartShootingTime()) {
-            shootProjectile(entity, projectiles, timeBeforeNextShot, rotation, idNumber);
-            return true;
+        if (spaceship.hasBurstFirePowerUp()) {
+            if (gameTimer >= spaceship.getStartShootingTime()) {
+                blastFire(spaceship, spaceshipProjectiles);
+            }
         }
-        return false;
+        else {
+            attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, Spaceship.DEFAULT_TIME_BETWEEN_SHOTS,
+                    SPACESHIP_LASER_ROTATION);
+        }
     }
 
-    protected Projectile shootProjectile(Entity entityShooting, List<Projectile> lasers, double timeBeforeNextShot, double rotation, int idNumber) {
-        Projectile projectile = entityShooting.createProjectile(rotation, idNumber);
+    protected void attemptProjectileFire(double gameTimer, Entity entity, List<Projectile> projectiles,
+                                            double timeBeforeNextShot, double rotation) {
+        if (gameTimer >= entity.getStartShootingTime()) {
+            shootProjectile(entity, projectiles, timeBeforeNextShot, rotation);
+        }
+    }
+
+    protected Projectile shootProjectile(Entity entityShooting, List<Projectile> lasers, double timeBeforeNextShot,
+                                         double rotation) {
+        Projectile projectile = entityShooting.createProjectile(rotation, entityShooting.getCurProjectileIdNumber());
+        entityShooting.incrementCurProjectileIdNumber();
         lasers.add(projectile);
         root.getChildren().add(projectile);
         entityShooting.addToStartShootingTime(timeBeforeNextShot);
         return projectile;
     }
 
+    protected <T extends Entity> void blastFire(T entity, List<Projectile> projectiles) {
+        shootProjectile(entity, projectiles, entity.getTimeBetweenShots(), Projectile.DEFAULT_PROJECTILE_ROTATION);
+        Projectile leftProjectile = shootProjectile(entity, projectiles, entity.getTimeBetweenShots(),
+                Projectile.LEFT_PROJECTILE_ROTATION);
+        Projectile rightProjectile = shootProjectile(entity, projectiles, entity.getTimeBetweenShots(),
+                Projectile.RIGHT_PROJECTILE_ROTATION);
+        leftProjectile.setXSpeed(Projectile.LEFT_PROJECTILE_X_SPEED);
+        rightProjectile.setXSpeed(Projectile.RIGHT_PROJECTILE_X_SPEED);
+    }
+
     protected void handleProjectileBounds(List<Projectile> projectiles) {
         for (Projectile evilEntityProjectile : evilEntityProjectiles) {
             if (evilEntityProjectile.isOutOfXBounds()) {
                 double rotation = evilEntityProjectile.getRotate();
-                if (rotation != DEFAULT_LASER_ROTATION) {
+                if (rotation != Projectile.DEFAULT_PROJECTILE_ROTATION) {
                     evilEntityProjectile.setRotate(rotation*-1);
                 }
                 evilEntityProjectile.reverseXDirection();

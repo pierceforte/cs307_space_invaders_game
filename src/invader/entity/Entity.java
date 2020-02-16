@@ -18,6 +18,7 @@ public abstract class Entity extends MovingObject {
     private int pointsPerHit;
     private int lives;
     private double timeBetweenShots;
+    private int curProjectileIdNumber;
 
     /**
      * Constructor
@@ -121,6 +122,14 @@ public abstract class Entity extends MovingObject {
         return (this.getY() >= Game.GAME_HEIGHT - BOTTOM_OUT_OF_BOUNDS_LOCATION || this.getY() <= TOP_OUT_OF_BOUNDS_LOCATION);
     }
 
+    public int getCurProjectileIdNumber() {
+        return curProjectileIdNumber;
+    }
+
+    public void incrementCurProjectileIdNumber() {
+        curProjectileIdNumber++;
+    }
+
     /**
      * Create a projectile respective to the type of entity, which will be implemented in the subclasses
      * @param rotation
@@ -133,4 +142,6 @@ public abstract class Entity extends MovingObject {
                 this.getY(), true, rotation, idNumber++);
         return laser;
     }
+
+
 }
