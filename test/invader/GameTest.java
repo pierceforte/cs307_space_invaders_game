@@ -276,50 +276,18 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testClearPageWhenBeatGame() {
-        myLevel.setLevelNumber(3);
+        myLevel.setLevelNumber(Game.MAX_LEVEL);
         myLevel.setLevelLost(false);
         myLevel.getEvilEntities().clear();
         step();
 
-        assertEquals("YOU WIN!\n\n\n" +
+        assertEquals("YOU WIN!\n\n\nPRESS E TO SAVE YOUR SCORE\nAND RESET POINTS\n\n" +
                 "PRESS R TO RESTART LEVEL\n\n" +
                 "PRESS 1-9 TO CHANGE LEVEL", StatusDisplay.getMenuText().getText());
         assertEquals(0.0, StatusDisplay.getMenuBackground().getX());
         assertEquals(0.0, StatusDisplay.getMenuBackground().getY());
         assertEquals(400.0, StatusDisplay.getMenuBackground().getWidth());
         assertEquals(700.0, StatusDisplay.getMenuBackground().getHeight());
-    }
-
-    private void step() {
-        javafxRun(() -> myGame.step());
-    }
-
-    private boolean isNodeInMyScene(Node node) {
-        return myGame.getRoot().getChildren().contains(node);
-    }
-
-    private void testSpaceshipMove(KeyCode code, double expectedPosition, double startingXPos) {
-        // set initial position
-        mySpaceship.setX(startingXPos);
-        // move spaceship left or right one step by "pressing" the key
-        press(myScene, code);
-        // then check its position has changed properly
-        assertEquals(expectedPosition, mySpaceship.getX());
-    }
-
-    private void testEnemiesReverseXDirection(int enemyColumn, double startingXPos, boolean isStartingXSpeedPositive) {
-        // get first or last enemy in first row
-        Enemy curEnemy = myEnemies.get(0).get(enemyColumn);
-        // set enemy to xPos one step before colliding with wall
-        curEnemy.setX(startingXPos);
-        // if checking left bound, set enemy's direction to left
-        if (!isStartingXSpeedPositive) curEnemy.reverseXDirection();
-        // assert that the enemy's speed is in direction of wall before collision
-        assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) > 0);
-        // step so enemy collides with wall
-        step();
-        // assert that enemy's speed is in opposite direction of wall after collision
-        assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) < 0);
     }
 
     @Test
@@ -422,6 +390,38 @@ public class GameTest extends DukeApplicationTest {
         // step to initiate collision
         step();
         assertEquals(expectedLives, myBoss.getLives());
+    }
+
+    private void step() {
+        javafxRun(() -> myGame.step());
+    }
+
+    private boolean isNodeInMyScene(Node node) {
+        return myGame.getRoot().getChildren().contains(node);
+    }
+
+    private void testSpaceshipMove(KeyCode code, double expectedPosition, double startingXPos) {
+        // set initial position
+        mySpaceship.setX(startingXPos);
+        // move spaceship left or right one step by "pressing" the key
+        press(myScene, code);
+        // then check its position has changed properly
+        assertEquals(expectedPosition, mySpaceship.getX());
+    }
+
+    private void testEnemiesReverseXDirection(int enemyColumn, double startingXPos, boolean isStartingXSpeedPositive) {
+        // get first or last enemy in first row
+        Enemy curEnemy = myEnemies.get(0).get(enemyColumn);
+        // set enemy to xPos one step before colliding with wall
+        curEnemy.setX(startingXPos);
+        // if checking left bound, set enemy's direction to left
+        if (!isStartingXSpeedPositive) curEnemy.reverseXDirection();
+        // assert that the enemy's speed is in direction of wall before collision
+        assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) > 0);
+        // step so enemy collides with wall
+        step();
+        // assert that enemy's speed is in opposite direction of wall after collision
+        assertTrue(curEnemy.getXSpeed() * (isStartingXSpeedPositive ? 1 : -1) < 0);
     }
 
 }

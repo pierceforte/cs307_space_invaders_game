@@ -33,7 +33,10 @@ public class KeyHandler {
     }
 
     private boolean handleMenuKeyInput(KeyCode code) {
-        if (List.of(KeyCode.SPACE, KeyCode.ENTER, KeyCode.E, KeyCode.Q, KeyCode.E, KeyCode.W).contains(code)) {
+        if (myGame.isStartMenuActive() && code != KeyCode.SPACE) {
+           return false;
+        }
+        else if (List.of(KeyCode.SPACE, KeyCode.ENTER, KeyCode.E, KeyCode.Q, KeyCode.E, KeyCode.W).contains(code)) {
             return true;
         }
         else if (isKeyCodeADigit(code) || List.of(KeyCode.R, KeyCode.S).contains(code)) {

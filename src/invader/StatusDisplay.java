@@ -38,9 +38,13 @@ public class StatusDisplay {
     public static final int HIGHSCORE_Y_DIST_FROM_GAME_HEIGHT = 35;
     public static final int DEFAULT_MENU_X_POS = 85;
     public static final int DEFAULT_MENU_Y_POS = 275;
-    public static final int START_MENU_X_POS = 50;
-    public static final int START_MENU_Y_POS = 30;
+    public static final int START_MENU_X_POS = 40;
+    public static final int START_MENU_Y_POS = 70;
     public static final int VICTORY_MENU_Y_POS = 300;
+    public static final int THANKS_MENU_X_POS = 100;
+    public static final int THANKS_MENU_Y_POS = 300;
+    public static final int BOSS_MENU_X_POS = 75;
+    public static final int BOSS_MENU_Y_POS = 225;
     public static final String POINTS_FORMAT = "%06d";
     public static final String HIGHSCORES_FILE_PATH = "resources/highscores.txt";
 
@@ -85,10 +89,12 @@ public class StatusDisplay {
     }
 
     public static void createStartMenu(Group root) {
-        createMenu(root, START_MENU_X_POS, START_MENU_Y_POS, "SPACE INVADER \nBY PIERCE AND JEFF\n\n\nDIRECTIONS\n\nKILL ENEMIES TO EARN POINTS\n\nBE CAREFUL!\n" +
-                "YOU START WITH 3 LIVES\n\nMOVE THE PADDLES WITH\nTHE LEFT AND RIGHT KEYS\n\n" +
-                "COLLECT POWER UPS: \nSPEED UP\nSTRONGER MISSILES\nMULTIPLE MISSILES\n\nBEAT ALL 3 LEVELS + BOSS LEVEL TO WIN!\n\n\nCHEAT CODES\n\n1-9   SKIP TO LEVEL\n\nJ   SKIP " +
-                "TO NEXT LEVEL\n\nR   RESET LEVEL\n\nL   ADD 1 LIFE\n\nA,M      DROP POWER UP \n\nPRESS SPACE TO BEGIN");
+        createMenu(root, START_MENU_X_POS, START_MENU_Y_POS, "SPACE INVADERS\nBY PIERCE AND JEFF\n\n\nYOU START WITH 3 LIVES\n\n" +
+                "DESTROY ENEMIES TO EARN POINTS\n\nMOVE THE SPACESHIP WITH\nLEFT AND RIGHT KEYS\n\n" +
+                "COLLECT POWER UPS: \nSPEED UP\nSTRONGER MISSILES\nMULTIPLE MISSILES\n\nBEAT ALL 3 LEVELS + BOSS LEVEL TO WIN!\n\n\n" +
+                "CHEAT CODES:\n1-9   SKIP TO LEVEL\nA,M   DROP POWER UP\nD   DESTROY FIRST ENEMY\n" +
+                "L   ADD 1 LIFE\nP   PAUSE\nR   RESET LEVEL\nS   SKIP TO NEXT LEVEL\n\n\n" +
+                "PRESS SPACE TO BEGIN");
     }
 
     public static void removeMenu(Group root) {
@@ -106,7 +112,9 @@ public class StatusDisplay {
     }
 
     public static void createBossLevelMenu(Group root) {
-        createMenu(root, DEFAULT_MENU_X_POS, DEFAULT_MENU_Y_POS, "LEVEL COMPLETE!\n\n\nGET READY FOR THE BOSS ROUND\n\nRULES\n1. START WITH 5 LIVES \n\nBOSS HAS: VULNERABLE STATE\nINVINCIBLE STATE\n\n BOSS HAS 10 LIVES\n\n SHOOTS 2 TYPES OF MISSILES\n\n\n PRESS S TO START ");
+        createMenu(root, BOSS_MENU_X_POS, BOSS_MENU_Y_POS, "LEVEL COMPLETE!\n\n\nGET READY FOR THE BOSS ROUND\n\n" +
+                "RULES\nSTART WITH 5 LIVES \n\nBOSS HAS:\n10 LIVES\nVULNERABLE STATE\nINVINCIBLE STATE\n" +
+                "LASERS: SINGLE DAMAGE\nFIREBALLS: DOUBLE DAMAGE\n\n\nPRESS S TO START ");
     }
 
     public static void createVictoryMenu(Group root) {
@@ -115,7 +123,7 @@ public class StatusDisplay {
     }
 
     public static void createRestartOrEndMenu(Group root) {
-        createMenu(root, DEFAULT_MENU_X_POS, VICTORY_MENU_Y_POS, "THANKS FOR PLAYING!\n\n\n"
+        createMenu(root, THANKS_MENU_X_POS, THANKS_MENU_Y_POS, "THANKS FOR PLAYING!\n\n\n"
                 + "PRESS W TO PLAY AGAIN\n\nPRESS Q TO EXIT GAME");
     }
 
