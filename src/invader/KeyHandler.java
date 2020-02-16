@@ -75,7 +75,7 @@ public class KeyHandler {
         keyToActionMap.put(KeyCode.B, () -> myGame.getCurLevel().addBurstFirePowerUp((myGame.getGameTimer())));
         keyToActionMap.put(KeyCode.F, () -> myGame.getCurLevel().addSpeedPowerUp((myGame.getGameTimer())));
         keyToActionMap.put(KeyCode.M, () -> myGame.getCurLevel().addMissilePowerUp(myGame.getGameTimer()));
-        keyToActionMap.put(KeyCode.R, () -> goToLevel(myGame.getCurLevel().getLevelNumber()));
+        keyToActionMap.put(KeyCode.R, () -> resetLevel());
         keyToActionMap.put(KeyCode.D, () -> myGame.getCurLevel().destroyFirstEnemy());
         keyToActionMap.put(KeyCode.W, () -> resetGame());
         keyToActionMap.put(KeyCode.Q, () -> exitGame());
@@ -110,6 +110,11 @@ public class KeyHandler {
         else {
             myGame.playAnimation();
         }
+    }
+
+    private void resetLevel() {
+        StatusDisplay.resetPointsDisplay();
+        goToLevel(myGame.getCurLevel().getLevelNumber());
     }
 
     private void attemptLevelSkip() {

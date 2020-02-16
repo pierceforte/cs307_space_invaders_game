@@ -148,7 +148,7 @@ public abstract class Entity extends MovingObject {
      * @param idNumber
      */
     public abstract Projectile createProjectile(double rotation, int idNumber);
-    
+
     protected Projectile defaultProjectileFire(double rotation, int idNumber){
         Laser laser = new Laser(this.getX() + this.getFitWidth()/2,
                 this.getY(), isEvil, rotation, idNumber);
