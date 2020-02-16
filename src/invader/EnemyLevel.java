@@ -4,10 +4,10 @@ package invader;
 import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
-import invader.powerup.BombPowerUp;
 import invader.powerup.PowerUp;
 import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
+import invader.projectile.Projectile;
 import javafx.scene.Group;
 
 import java.util.ArrayList;
@@ -129,7 +129,7 @@ public class EnemyLevel extends Level {
     protected void handleEvilEntityLasers(double gameTimer) {
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                attemptLaserFire(gameTimer, enemy, evilEntityProjectiles, Enemy.TIME_BETWEEN_SHOTS,
+                attemptProjectileFire(gameTimer, enemy, evilEntityProjectiles, Enemy.TIME_BETWEEN_SHOTS,
                         ENEMY_LASER_ROTATION, curEnemyProjectileIdNumber);
             }
         }
@@ -141,7 +141,7 @@ public class EnemyLevel extends Level {
         List<Enemy> enemiesToRemove = new ArrayList<>();
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                handleProjectileCollisions(spaceshipProjectiles, enemy);
+                boolean isCollision = handleProjectileCollisions(spaceshipProjectiles, enemy);
                 if (enemy.getLives() <= 0) {
                     enemiesToRemove.add(enemy);
                     if (enemy.hasPowerUp()) {
@@ -150,7 +150,7 @@ public class EnemyLevel extends Level {
                         powerUps.add(enemy.getPowerUp());
                         root.getChildren().add(enemy.getPowerUp());
                     }
-                } else {
+                } else if (isCollision){
                     enemy.setImage(enemy.makeImage("enemy" + enemy.getLives() + ".png"));
                 }
             }
@@ -159,8 +159,8 @@ public class EnemyLevel extends Level {
     }
 
     @Override
-    protected Laser createEvilEntityLaser(Entity entityShooting, double rotation, int idNumber) {
-        Laser laser = new Laser(entityShooting.getX() + entityShooting.getFitWidth()/2,
+    protected Projectile createEvilEntityProjectile(Entity entityShooting, double rotation, int idNumber) {
+        Projectile laser = new Laser(entityShooting.getX() + entityShooting.getFitWidth()/2,
                 entityShooting.getY(), true, rotation, idNumber++);
         return laser;
     }
@@ -170,6 +170,11 @@ public class EnemyLevel extends Level {
         enemies = new ArrayList<>();
         // get height of first brick row to ensure they are centered
         double yPos = Game.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
+        /*
+        enemies.add(new ArrayList<>());
+        enemies.get(0).add(new Enemy(200, yPos, 10, 0, 3, 0, new BombPowerUp(200 + Enemy.WIDTH/2, yPos, "enemyPowerUp" + 0)));
+        enemies.get(0).add(new Enemy(100, yPos, 10, 0, 3, 0, new BombPowerUp(200 + Enemy.WIDTH/2, yPos, "enemyPowerUp" + 0)));
+         */
         for (int row = 0; row < enemyIdentifiers.size(); row++) {
             List<Enemy> tempRow = new ArrayList<>();
             double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;

@@ -16,8 +16,7 @@ public abstract class Projectile extends MovingObject {
 
     public Projectile(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height,
                  boolean isEvil, String imgName, double rotation, int idNumber) {
-        super(xPos,yPos,xSpeed,ySpeed * (isEvil ? -1 : 1), width, height,
-                imgName);
+        super(xPos,yPos,xSpeed,ySpeed * (isEvil ? -1 : 1), width, height, imgName);
         this.isEvil = isEvil;
         setRotate(rotation);
         String idString = isEvil ? "enemy" : "spaceship";

@@ -134,7 +134,7 @@ public class BossLevel extends Level {
     }
 
     @Override
-    protected Laser createEvilEntityLaser(Entity entityShooting, double rotation, int idNumber) {
+    protected Projectile createEvilEntityProjectile(Entity entityShooting, double rotation, int idNumber) {
         Laser laser = new Laser(entityShooting.getX() + entityShooting.getFitWidth()/2,
                 entityShooting.getY(), true, rotation, idNumber++);
         return laser;

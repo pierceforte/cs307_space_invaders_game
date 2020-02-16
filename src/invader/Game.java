@@ -72,7 +72,7 @@ public class Game extends Application {
 
         // create a level
         StatusDisplay.createInterfaceAndAddToRoot(root, GAME_HEIGHT, SCENE_WIDTH, SCENE_HEIGHT);
-        curLevel = new EnemyLevel(root,1, this);
+        curLevel = new BossLevel(root,4, this);
         // respond to input
         initializeKeyToActionMap();
         myScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));

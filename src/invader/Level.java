@@ -23,19 +23,13 @@ public abstract class Level {
     public static final int SPACESHIP_LASER_ROTATION = 0;
 
     protected int curSpaceshipProjectileIdNumber = 0;
-
     protected boolean levelLost = false;
-
     protected Game myGame;
     protected Group root;
-
     protected int levelNumber;
-
     protected Spaceship spaceship;
     protected List<Projectile> spaceshipProjectiles = new ArrayList<>();
     protected List<Projectile> evilEntityProjectiles = new ArrayList<>();
-
-    private List<Node> nodes = new ArrayList<>();
 
     public Level(Group root, int levelNumber, Game myGame){
         this.root = root;
@@ -49,14 +43,33 @@ public abstract class Level {
         StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
     }
 
-    public abstract void clearLevel();
-
-    public abstract void addEntitiesToScene();
+    public void moveSpaceship(boolean toRight) {
+        spaceship.setX(spaceship.getX() + spaceship.getXSpeedOnKeyPress() * (toRight ? 1 : -1));
+        spaceship.wrap();
+    }
 
     public void addLife() {
         spaceship.addLife();
         StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
     }
+
+    public int getLevelNumber() {
+        return levelNumber;
+    }
+
+    public void setLevelNumber(int levelNumber) {
+        this.levelNumber = levelNumber;
+    }
+
+    public void setLevelLost(boolean levelLost) {
+        this.levelLost = levelLost;
+    }
+
+    public abstract List<List<Enemy>> getEvilEntities();
+
+    public abstract void clearLevel();
+
+    public abstract void addEntitiesToScene();
 
     public abstract void handleEntitiesAndLasers(double gameTimer, double elapsedTime);
 
@@ -105,13 +118,13 @@ public abstract class Level {
     }
 
     protected void attemptSpaceshipFire(double gameTimer) {
-        attemptLaserFire(gameTimer, spaceship, spaceshipProjectiles, 1, SPACESHIP_LASER_ROTATION, curSpaceshipProjectileIdNumber);
+        attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, 1, SPACESHIP_LASER_ROTATION, curSpaceshipProjectileIdNumber);
     }
 
-    protected void attemptLaserFire(double gameTimer, Entity entity, List<Projectile> lasers, double timeBeforeNextShot, double rotation,
-                                    int idNumber) {
+    protected void attemptProjectileFire(double gameTimer, Entity entity, List<Projectile> projectiles, double timeBeforeNextShot, double rotation,
+                                         int idNumber) {
         if (gameTimer >= entity.getStartShootingTime()) {
-            shootLaser(entity, lasers, timeBeforeNextShot, rotation, idNumber);
+            shootLaser(entity, projectiles, timeBeforeNextShot, rotation, idNumber);
         }
     }
 
@@ -119,10 +132,10 @@ public abstract class Level {
         boolean isSpaceship = entityShooting.getClass() == Spaceship.class;
         Projectile projectile;
         if (isSpaceship) {
-            projectile = createSpaceshipLaser(spaceship, rotation, idNumber);
+            projectile = createSpaceshipProjectile(spaceship, rotation, idNumber);
         }
         else {
-            projectile = createEvilEntityLaser(entityShooting, rotation, idNumber);
+            projectile = createEvilEntityProjectile(entityShooting, rotation, idNumber);
         }
 
         lasers.add(projectile);
@@ -131,7 +144,7 @@ public abstract class Level {
         return projectile;
     }
 
-    protected Projectile createSpaceshipLaser(Spaceship spaceship, double rotation, int idNumber) {
+    protected Projectile createSpaceshipProjectile(Spaceship spaceship, double rotation, int idNumber) {
         Projectile projectile;
         if (spaceship.hasBombPowerUp()) {
             projectile = new Bomb(spaceship.getX() + spaceship.getFitWidth()/2,
@@ -144,7 +157,7 @@ public abstract class Level {
         return projectile;
     }
 
-    protected abstract Laser createEvilEntityLaser(Entity entityShooting, double rotation, int idNumber);
+    protected abstract Projectile createEvilEntityProjectile(Entity entityShooting, double rotation, int idNumber);
 
     protected <T extends Node> void clearNodesFromSceneAndLevel(T node) {
         root.getChildren().remove(node);
@@ -162,22 +175,6 @@ public abstract class Level {
         }
         nodes.clear();
     }
-
-    protected void clearNodesFromSceneAndLevel(List<Node> nodes, List<Object> list) {
-        root.getChildren().removeAll(nodes);
-        list.removeAll(nodes);
-    }
-
-    /*
-    protected void removeNodesFromSceneAndLevel(Node node, List<Object> list) {
-        root.getChildren().remove(node);
-        list.remove(node);
-    }
-
-    protected void removeNodesFromSceneAndLevel(List<Node> nodes, List<Object> list) {
-        root.getChildren().removeAll(nodes);
-        list.removeAll(nodes);
-    }*/
 
     protected void initiateLevelVictory() {
         myGame.setMenuActive();
@@ -197,10 +194,7 @@ public abstract class Level {
 
     protected abstract void createEvilEntities();
 
-    public void moveSpaceship(boolean toRight) {
-        spaceship.setX(spaceship.getX() + spaceship.getXSpeedOnKeyPress() * (toRight ? 1 : -1));
-        spaceship.wrap();
-    }
+    protected abstract void handleFileLines(Scanner myReader);
 
     private void readFile(String levelFile) {
         try {
@@ -212,21 +206,5 @@ public abstract class Level {
             System.out.println("An error occurred while reading level layout txt file: " + levelFile);
             e.printStackTrace();
         }
-    }
-
-    protected abstract void handleFileLines(Scanner myReader);
-
-    public int getLevelNumber() {
-        return levelNumber;
-    }
-
-    public void setLevelNumber(int levelNumber) {
-        this.levelNumber = levelNumber;
-    }
-
-    public abstract List<List<Enemy>> getEvilEntities();
-
-    public void setLevelLost(boolean levelLost) {
-        this.levelLost = levelLost;
     }
 }
