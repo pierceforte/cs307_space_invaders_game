@@ -1,0 +1,15 @@
+PierName:300
+Pie:150
+a:100
+Pierce2:100
+Pierce:100
+Pierce:25
+pName:25
+Abc:0
+akdEnter name:0
+apple:0
+Enter name:0
+Enter name:0
+Name:0
+Name:0
+PName:0

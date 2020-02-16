@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -43,6 +44,9 @@ public class Game extends Application {
     private Level curLevel;
     private Group root;
     private boolean isMenuActive = false;
+    private boolean isGameOverMenuActive = false;
+    private boolean isHighScoreTextFieldActive = false;
+    private boolean isQuitGameMenuActive = false;
 
     /**
      * Initialize what will be displayed and how it will be updated.
@@ -91,6 +95,10 @@ public class Game extends Application {
         isMenuActive = true;
     }
 
+    public void setGameOverMenuActive() {
+        isGameOverMenuActive = true;
+    }
+
     public boolean isMenuActive() {
         return isMenuActive;
     }
@@ -106,7 +114,10 @@ public class Game extends Application {
     // What to do each time a key is pressed
     private void handleKeyInput (KeyCode code) {
         if (isMenuActive) {
-            if (isKeyCodeADigit(code) || code == KeyCode.R || code == KeyCode.S) {
+            if (code == KeyCode.ENTER || code == KeyCode.E || code == KeyCode.Q || code == KeyCode.W) {
+
+            }
+            else if (isKeyCodeADigit(code) || code == KeyCode.R || code == KeyCode.S) {
                 isMenuActive = false;
                 StatusDisplay.removeMenu(root);
             }
@@ -135,6 +146,37 @@ public class Game extends Application {
         keyToActionMap.put(KeyCode.M, () -> curLevel.addPowerUpMissile(gameTimer));
         keyToActionMap.put(KeyCode.R, () -> goToLevel(curLevel.getLevelNumber()));
         keyToActionMap.put(KeyCode.D, () -> curLevel.destroyFirstEnemy());
+        keyToActionMap.put(KeyCode.D, () -> curLevel.destroyFirstEnemy());
+        keyToActionMap.put(KeyCode.W, () -> { if (isQuitGameMenuActive) {
+            StatusDisplay.removeMenu(root);
+            isGameOverMenuActive = false;
+            isMenuActive = false;
+            isGameOverMenuActive = false;
+            StatusDisplay.updateHighScoreDisplay();
+            goToLevel(1);
+        }
+        });
+        keyToActionMap.put(KeyCode.Q, () -> { if (isQuitGameMenuActive) {
+            Platform.exit(); System.exit(0);}
+                });
+        keyToActionMap.put(KeyCode.E, () -> {
+            if (isGameOverMenuActive) {
+                System.out.println("here");
+                isHighScoreTextFieldActive = true;
+                StatusDisplay.removeMenu(root);
+                StatusDisplay.createHighScoreTextField(root);
+            }
+        }
+
+                );
+        keyToActionMap.put(KeyCode.ENTER, () -> {
+            if (isHighScoreTextFieldActive) {
+                StatusDisplay.storeHighScore(root);
+                StatusDisplay.createRestartOrEndMenu(root);
+                isHighScoreTextFieldActive = false;
+                isQuitGameMenuActive = true;
+            }
+        });
         keyToActionMap.put(KeyCode.P, () -> {
             if (myAnimation.getStatus() == Animation.Status.RUNNING) myAnimation.pause();
             else myAnimation.play();
