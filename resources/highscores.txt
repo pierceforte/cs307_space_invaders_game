@@ -1,3 +1,4 @@
+PierceFull:6650
 Pierce:550
 PierceName:500
 Pieee:450

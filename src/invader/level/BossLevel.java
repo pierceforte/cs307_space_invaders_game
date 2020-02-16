@@ -153,8 +153,7 @@ public class BossLevel extends Level {
     private void attemptBossFire() {
         if (!boss.isVulnerable()) invulnerableTimer++;
         if (!boss.isVulnerable() && invulnerableTimer >= boss.getStartShootingTime()) {
-            shootProjectile(boss, evilEntityProjectiles, Boss.DEFAULT_TIME_BETWEEN_SHOTS,
-                    Projectile.DEFAULT_PROJECTILE_ROTATION);
+            shootProjectile(boss, evilEntityProjectiles, Projectile.DEFAULT_PROJECTILE_ROTATION);
         }
     }
 }

@@ -143,6 +143,7 @@ public class KeyHandler {
             StatusDisplay.updateHighScoreDisplay();
             myGame.setStartMenuActive();
             myGame.setGameTimer(0);
+            StatusDisplay.resetPointsDisplay();
             StatusDisplay.createStartMenu(myGame.getRoot());
         }
     }

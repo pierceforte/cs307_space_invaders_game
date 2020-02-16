@@ -151,13 +151,36 @@ public class StatusDisplay {
         name = String.join("", name.split(SCORE_DELIMITER));
         root.getChildren().remove(highScoreTextField);
         highscores.add(name + SCORE_DELIMITER + points);
-        resetPointsDisplay();
         updateHighScoreList(highscores);
     }
 
     public static void updatePointsDisplay(int pointsEarned) {
         points += pointsEarned;
         pointsDisplay.setText("POINTS\n" + formatPoints(points));
+    }
+
+    public static void updateHighScoreDisplay() {
+        File file = new File(HIGHSCORES_FILE_PATH);
+        try {
+            Scanner myReader = new Scanner(file);
+            if (myReader.hasNextLine()) {
+                int highScore = Integer.parseInt(myReader.nextLine().split(SCORE_DELIMITER)[1]);
+                highScoreDisplay.setText("HIGHSCORE\n" + formatPoints(highScore));
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred while reading high scores txt file.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void resetPointsDisplay() {
+        points = 0;
+        pointsDisplay.setText("POINTS\n" + formatPoints(0));
+    }
+
+    public static Rectangle getMenuBackground() {
+        return menuBackground;
     }
 
     private static void createInterfaceBackground(Group root, int game_height, int scene_width, int scene_height) {
@@ -242,30 +265,6 @@ public class StatusDisplay {
         highScoreDisplay = createTextDisplayAndAddToRoot(root, "HIGHSCORE\n" + formatPoints(0), scene_width -
                 HIGHSCORE_X_DIST_FROM_SCENE_WIDTH, game_height + HIGHSCORE_Y_DIST_FROM_GAME_HEIGHT, TEXT_COLOR);
         updateHighScoreDisplay();
-    }
-
-    public static void updateHighScoreDisplay() {
-        File file = new File(HIGHSCORES_FILE_PATH);
-        try {
-            Scanner myReader = new Scanner(file);
-            if (myReader.hasNextLine()) {
-                int highScore = Integer.parseInt(myReader.nextLine().split(SCORE_DELIMITER)[1]);
-                highScoreDisplay.setText("HIGHSCORE\n" + formatPoints(highScore));
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred while reading high scores txt file.");
-            e.printStackTrace();
-        }
-    }
-
-    private static void resetPointsDisplay() {
-        points = 0;
-        pointsDisplay.setText("POINTS\n" + formatPoints(0));
-    }
-
-    public static Rectangle getMenuBackground() {
-        return menuBackground;
     }
 
     private static void updateHighScoreList(Set<String> highscores) {

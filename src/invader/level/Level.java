@@ -128,34 +128,29 @@ public abstract class Level {
             }
         }
         else {
-            attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, Spaceship.DEFAULT_TIME_BETWEEN_SHOTS,
-                    SPACESHIP_LASER_ROTATION);
+            attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, SPACESHIP_LASER_ROTATION);
         }
     }
 
-    protected void attemptProjectileFire(double gameTimer, Entity entity, List<Projectile> projectiles,
-                                            double timeBeforeNextShot, double rotation) {
+    protected void attemptProjectileFire(double gameTimer, Entity entity, List<Projectile> projectiles, double rotation) {
         if (gameTimer >= entity.getStartShootingTime()) {
-            shootProjectile(entity, projectiles, timeBeforeNextShot, rotation);
+            shootProjectile(entity, projectiles, rotation);
         }
     }
 
-    protected Projectile shootProjectile(Entity entityShooting, List<Projectile> lasers, double timeBeforeNextShot,
-                                         double rotation) {
+    protected Projectile shootProjectile(Entity entityShooting, List<Projectile> lasers, double rotation) {
         Projectile projectile = entityShooting.createProjectile(rotation, entityShooting.getCurProjectileIdNumber());
         entityShooting.incrementCurProjectileIdNumber();
         lasers.add(projectile);
         root.getChildren().add(projectile);
-        entityShooting.addToStartShootingTime(timeBeforeNextShot);
+        entityShooting.addToStartShootingTime(entityShooting.getTimeBetweenShots());
         return projectile;
     }
 
     protected <T extends Entity> void blastFire(T entity, List<Projectile> projectiles) {
-        shootProjectile(entity, projectiles, entity.getTimeBetweenShots(), Projectile.DEFAULT_PROJECTILE_ROTATION);
-        Projectile leftProjectile = shootProjectile(entity, projectiles, entity.getTimeBetweenShots(),
-                Projectile.LEFT_PROJECTILE_ROTATION);
-        Projectile rightProjectile = shootProjectile(entity, projectiles, entity.getTimeBetweenShots(),
-                Projectile.RIGHT_PROJECTILE_ROTATION);
+        shootProjectile(entity, projectiles, Projectile.DEFAULT_PROJECTILE_ROTATION);
+        Projectile leftProjectile = shootProjectile(entity, projectiles, Projectile.LEFT_PROJECTILE_ROTATION);
+        Projectile rightProjectile = shootProjectile(entity, projectiles, Projectile.RIGHT_PROJECTILE_ROTATION);
         leftProjectile.setXSpeed(Projectile.LEFT_PROJECTILE_X_SPEED);
         rightProjectile.setXSpeed(Projectile.RIGHT_PROJECTILE_X_SPEED);
     }

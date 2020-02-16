@@ -34,6 +34,7 @@ public class EnemyLevel extends Level {
     private int curCheatKeyPowerUpIdNumber = 0;
 
     private int rows;
+    private int numEnemies;
 
     private List<List<Integer>> enemyIdentifiers = new ArrayList<>();
     private List<List<Enemy>> enemies;
@@ -151,10 +152,10 @@ public class EnemyLevel extends Level {
 
     @Override
     protected void handleEvilEntityLasers(double gameTimer) {
-        //updateTimeBetweenEnemyShots();
         for (List<Enemy> enemyRow : enemies) {
             for (Enemy enemy : enemyRow) {
-                attemptProjectileFire(gameTimer, enemy, evilEntityProjectiles, enemy.getTimeBetweenShots(), ENEMY_LASER_ROTATION);
+                attemptProjectileFire(gameTimer, enemy, evilEntityProjectiles, ENEMY_LASER_ROTATION);
+                updateTimeBetweenEnemyShots(enemy);
             }
         }
         handleProjectileCollisionWithSpaceship(evilEntityProjectiles, spaceship);
@@ -220,6 +221,7 @@ public class EnemyLevel extends Level {
             enemyIdentifiers.add(row);
         }
         rows = this.enemyIdentifiers.size();
+        numEnemies = rows * ENEMIES_PER_ROW;
     }
 
     private void handlePowerUps(double gameTimer) {
@@ -264,20 +266,16 @@ public class EnemyLevel extends Level {
         root.getChildren().add(powerUp);
     }
 
-    private void updateTimeBetweenEnemyShots() {
-        int numEnemies = 0;
+    private void updateTimeBetweenEnemyShots(Enemy enemy) {
+        int enemiesLeft = 0;
         for (List<Enemy> enemyRow : enemies) {
-            for (Enemy enemy : enemyRow) {
-                numEnemies++;
+            for (Enemy e : enemyRow) {
+                enemiesLeft++;
             }
         }
-        for (List<Enemy> enemyRow : enemies) {
-            for (Enemy enemy : enemyRow) {
-                double changedTime = Enemy.DEFAULT_TIME_BETWEEN_SHOTS * numEnemies/25;
-                double newTime = (changedTime < Enemy.DEFAULT_TIME_BETWEEN_SHOTS) ? Enemy.DEFAULT_TIME_BETWEEN_SHOTS : changedTime;
-                enemy.setTimeBetweenShots(newTime);
-            }
-        }
+        double changedTime = Enemy.DEFAULT_TIME_BETWEEN_SHOTS * enemiesLeft/30;
+        double newTime = (changedTime > Enemy.DEFAULT_TIME_BETWEEN_SHOTS) ? Enemy.DEFAULT_TIME_BETWEEN_SHOTS : changedTime;
+        enemy.setTimeBetweenShots(newTime);
     }
 
     private void createPowerUpGrid() {
@@ -288,7 +286,6 @@ public class EnemyLevel extends Level {
                 powerUpGrid.get(row).add(null);
             }
         }
-        int numEnemies = rows * ENEMIES_PER_ROW;
         List<Integer> enemyIndexes = IntStream.range(0, numEnemies).boxed().collect(Collectors.toList());
         int numOfEachPowerUpType = (int) (numEnemies * PERCENT_ENEMIES_WITH_EACH_POWERUP);
         Collections.shuffle(enemyIndexes);
