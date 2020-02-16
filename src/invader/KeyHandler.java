@@ -138,11 +138,12 @@ public class KeyHandler {
     private void resetGame() {
         if (myGame.isQuitGameMenuActive()) {
             StatusDisplay.removeMenu(myGame.getRoot());
-            myGame.setMenuInactive();
             myGame.setGameOverMenuInactive();
             myGame.setQuitGameMenuInactive();
             StatusDisplay.updateHighScoreDisplay();
-            goToLevel(1);
+            myGame.setStartMenuActive();
+            myGame.setGameTimer(0);
+            StatusDisplay.createStartMenu(myGame.getRoot());
         }
     }
 

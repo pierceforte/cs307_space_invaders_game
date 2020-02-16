@@ -14,9 +14,12 @@ import javafx.scene.Group;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class EnemyLevel extends Level {
     public static final double ENEMY_SPACING = 10;
@@ -24,6 +27,7 @@ public class EnemyLevel extends Level {
     public static final int POINTS_PER_ENEMY_HIT = 25;
     public static final int ENEMY_SPEED_FACTOR_BY_LEVEL = 10;
     public static final int ENEMY_LASER_ROTATION = 0;
+    public static final double PERCENT_ENEMIES_WITH_EACH_POWERUP = 0.10;
     public static final List<Class> POWER_UP_TYPES = List.of(BurstFirePowerUp.class, MissilePowerUp.class, SpaceshipSpeedPowerUp.class);
     public static final int NUM_POWER_UP_TYPES = POWER_UP_TYPES.size();
 
@@ -34,7 +38,7 @@ public class EnemyLevel extends Level {
     private List<List<Integer>> enemyIdentifiers = new ArrayList<>();
     private List<List<Enemy>> enemies;
     private List<PowerUp> powerUps = new ArrayList<>();
-    private List<List<Integer>> powerUpGrid = new ArrayList<>();
+    private List<List<Class>> powerUpGrid;
     //private Map<Integer, PowerUp> powerUpIntegerToType = Map.of(1, SpaceshipSpeedPowerUp);
 
     public EnemyLevel(Group root, int levelNumber, Game myGame){
@@ -78,21 +82,9 @@ public class EnemyLevel extends Level {
     public void addRandomPowerUp(double gameTimer) {
         int randomIndex = ThreadLocalRandom.current().nextInt(0, NUM_POWER_UP_TYPES);
         Class powerUpClass = POWER_UP_TYPES.get(randomIndex);
-        try {
-            Constructor<?> constructor = powerUpClass.getConstructor(double.class, double.class, String.class);
-            PowerUp powerUp = (PowerUp) constructor.newInstance(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                    "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
-            addPowerUp(gameTimer, powerUp);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        PowerUp powerUp = createPowerUpFromClassName(powerUpClass, Game.GAME_WIDTH/2,Game.GAME_HEIGHT/2,
+                "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
+        addPowerUp(gameTimer, powerUp);
     }
 
     @Override
@@ -192,32 +184,21 @@ public class EnemyLevel extends Level {
 
     @Override
     protected void createEvilEntities() {
+        createPowerUpGrid();
         enemies = new ArrayList<>();
-        // get height of first brick row to ensure they are centered
+        // get height of first enemy row to ensure they are centered
         double yPos = Game.GAME_HEIGHT/2.0 - Enemy.HEIGHT*rows/2.0;
-        /*
-        enemies.add(new ArrayList<>());
-        enemies.get(0).add(new Enemy(200, yPos, 10, 0, 3, 0, new BombPowerUp(200 + Enemy.WIDTH/2, yPos, "enemyPowerUp" + 0)));
-        enemies.get(0).add(new Enemy(100, yPos, 10, 0, 3, 0, new BombPowerUp(200 + Enemy.WIDTH/2, yPos, "enemyPowerUp" + 0)));
-         */
         for (int row = 0; row < enemyIdentifiers.size(); row++) {
             List<Enemy> tempRow = new ArrayList<>();
             double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
             for (int col = 0; col < enemyIdentifiers.get(0).size(); col++) {
                 PowerUp curPowerUp = null;
-                if (col >= 0 && col <= 3) {
-                    curPowerUp = new MissilePowerUp(xPos + Enemy.WIDTH/2, yPos, "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
-                }
-                else {
-                    curPowerUp = new BurstFirePowerUp(xPos + Enemy.WIDTH/2, yPos, "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
+                if (powerUpGrid.get(row).get(col) != null) {
+                    curPowerUp = createPowerUpFromClassName(powerUpGrid.get(row).get(col),
+                            xPos + Enemy.WIDTH/2, yPos, "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
                 }
                 Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*enemyIdentifiers.get(row).get(col),
                         0, enemyIdentifiers.get(row).get(col), col + row*ENEMIES_PER_ROW, curPowerUp);
-                /*
-                if (!powerUpGrid.get(i*BRICKS_PER_ROW + j).equals("none")) {
-                    curBrick.setPowerUp(powerUpGrid.get(i*BRICKS_PER_ROW + j));
-                }
-                */
                 tempRow.add(curEnemy);
                 xPos += Enemy.WIDTH + ENEMY_SPACING;
             }
@@ -297,5 +278,45 @@ public class EnemyLevel extends Level {
                 enemy.setTimeBetweenShots(newTime);
             }
         }
+    }
+
+    private void createPowerUpGrid() {
+        powerUpGrid = new ArrayList<>();
+        for (int row = 0; row < rows; row++) {
+            powerUpGrid.add(new ArrayList<>());
+            for (int col = 0; col < ENEMIES_PER_ROW; col++) {
+                powerUpGrid.get(row).add(null);
+            }
+        }
+        int numEnemies = rows * ENEMIES_PER_ROW;
+        List<Integer> enemyIndexes = IntStream.range(0, numEnemies).boxed().collect(Collectors.toList());
+        int numOfEachPowerUpType = (int) (numEnemies * PERCENT_ENEMIES_WITH_EACH_POWERUP);
+        Collections.shuffle(enemyIndexes);
+        int curPowerUpIndex = 0;
+        for (Class powerUpClass : POWER_UP_TYPES) {
+            for (int numOfCurPowerUpType = 0; numOfCurPowerUpType < numOfEachPowerUpType; numOfCurPowerUpType++) {
+                int curEnemyIndex = enemyIndexes.get(curPowerUpIndex);
+                curPowerUpIndex++;
+                powerUpGrid.get(curEnemyIndex / ENEMIES_PER_ROW).set(curEnemyIndex%ENEMIES_PER_ROW, powerUpClass);
+            }
+        }
+    }
+
+    private PowerUp createPowerUpFromClassName(Class powerUpClass, double xPos, double yPos, String idName) {
+        try {
+            Constructor<?> constructor = powerUpClass.getConstructor(double.class, double.class, String.class);
+            PowerUp powerUp = (PowerUp) constructor.newInstance(xPos, yPos, idName);
+            return powerUp;
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
