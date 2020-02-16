@@ -3,6 +3,8 @@ package invader;
 import invader.entity.Boss;
 import invader.entity.Enemy;
 import invader.entity.Spaceship;
+import invader.level.EnemyLevel;
+import invader.level.Level;
 import invader.powerup.PowerUp;
 import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Laser;
@@ -15,10 +17,8 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,7 +68,7 @@ public class GameTest extends DukeApplicationTest {
     @Test
     public void testSpaceshipSpeedUpPowerUpActivation() {
         // press cheat key to drop powerUp
-        press(myScene, KeyCode.A);
+        press(myScene, KeyCode.F);
         // we say cheatPowerUp0 because it is the 0th power up added to the game with the cheat key "A"
         PowerUp myPowerUp = lookup("#cheatPowerUp0").query();
         // position the powerUp one step prior to hitting spaceship
@@ -104,7 +104,7 @@ public class GameTest extends DukeApplicationTest {
     }
 
     @Test
-    public void testPowerUpCheatKey() {
+    public void testRandomPowerUpCheatKey() {
         // assert that an exception is thrown when querying power up before it is created;
         // we say cheatPowerUp0 because it is the 0th power up added to the game with the cheat key "A"
         assertThrows(org.testfx.service.query.EmptyNodeQueryException.class, () -> lookup("#cheatPowerUp0").query());

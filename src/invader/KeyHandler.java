@@ -1,5 +1,8 @@
 package invader;
 
+import invader.level.BossLevel;
+import invader.level.EnemyLevel;
+import invader.level.Level;
 import javafx.animation.Animation;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
@@ -68,8 +71,10 @@ public class KeyHandler {
         keyToActionMap.put(KeyCode.LEFT, () -> myGame.getCurLevel().moveSpaceship(false));
         keyToActionMap.put(KeyCode.SPACE, () -> handleSpaceKeyPress());
         keyToActionMap.put(KeyCode.L, () -> myGame.getCurLevel().addLife());
-        keyToActionMap.put(KeyCode.A, () -> myGame.getCurLevel().addPowerUpSpeed(myGame.getGameTimer()));
-        keyToActionMap.put(KeyCode.M, () -> myGame.getCurLevel().addPowerUpMissile(myGame.getGameTimer()));
+        keyToActionMap.put(KeyCode.A, () -> myGame.getCurLevel().addRandomPowerUp(myGame.getGameTimer()));
+        keyToActionMap.put(KeyCode.B, () -> myGame.getCurLevel().addBurstFirePowerUp((myGame.getGameTimer())));
+        keyToActionMap.put(KeyCode.F, () -> myGame.getCurLevel().addSpeedPowerUp((myGame.getGameTimer())));
+        keyToActionMap.put(KeyCode.M, () -> myGame.getCurLevel().addMissilePowerUp(myGame.getGameTimer()));
         keyToActionMap.put(KeyCode.R, () -> goToLevel(myGame.getCurLevel().getLevelNumber()));
         keyToActionMap.put(KeyCode.D, () -> myGame.getCurLevel().destroyFirstEnemy());
         keyToActionMap.put(KeyCode.W, () -> resetGame());

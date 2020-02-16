@@ -1,17 +1,22 @@
-package invader;
+package invader.level;
 
 
+import invader.Game;
 import invader.entity.Enemy;
 import invader.entity.Spaceship;
 import invader.powerup.BurstFirePowerUp;
 import invader.powerup.MissilePowerUp;
 import invader.powerup.PowerUp;
 import invader.powerup.SpaceshipSpeedPowerUp;
+import invader.projectile.Missile;
 import javafx.scene.Group;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class EnemyLevel extends Level {
     public static final double ENEMY_SPACING = 10;
@@ -19,6 +24,8 @@ public class EnemyLevel extends Level {
     public static final int POINTS_PER_ENEMY_HIT = 25;
     public static final int ENEMY_SPEED_FACTOR_BY_LEVEL = 10;
     public static final int ENEMY_LASER_ROTATION = 0;
+    public static final List<Class> POWER_UP_TYPES = List.of(BurstFirePowerUp.class, MissilePowerUp.class, SpaceshipSpeedPowerUp.class);
+    public static final int NUM_POWER_UP_TYPES = POWER_UP_TYPES.size();
 
     private int curCheatKeyPowerUpIdNumber = 0;
 
@@ -68,15 +75,43 @@ public class EnemyLevel extends Level {
     }
 
     @Override
-    public void addPowerUpSpeed(double gameTimer) {
+    public void addRandomPowerUp(double gameTimer) {
+        int randomIndex = ThreadLocalRandom.current().nextInt(0, NUM_POWER_UP_TYPES);
+        Class powerUpClass = POWER_UP_TYPES.get(randomIndex);
+        try {
+            Constructor<?> constructor = powerUpClass.getConstructor(double.class, double.class, String.class);
+            PowerUp powerUp = (PowerUp) constructor.newInstance(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
+                    "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
+            addPowerUp(gameTimer, powerUp);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addSpeedPowerUp(double gameTimer) {
         PowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
                 "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
         addPowerUp(gameTimer, powerUp);
     }
 
     @Override
-    public void addPowerUpMissile(double gameTimer) {
+    public void addMissilePowerUp(double gameTimer) {
         PowerUp powerUp = new MissilePowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
+                "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
+        addPowerUp(gameTimer, powerUp);
+    }
+
+    @Override
+    public void addBurstFirePowerUp(double gameTimer) {
+        PowerUp powerUp = new BurstFirePowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
                 "cheatPowerUp" + curCheatKeyPowerUpIdNumber++);
         addPowerUp(gameTimer, powerUp);
     }

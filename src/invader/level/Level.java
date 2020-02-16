@@ -1,5 +1,7 @@
-package invader;
+package invader.level;
 
+import invader.Game;
+import invader.StatusDisplay;
 import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
@@ -72,9 +74,13 @@ public abstract class Level {
 
     public abstract void attemptLevelVictory();
 
-    public abstract void addPowerUpSpeed(double gameTimer);
+    public abstract void addRandomPowerUp(double gameTimer);
 
-    public abstract void addPowerUpMissile(double gameTimer);
+    public abstract void addSpeedPowerUp(double gameTimer);
+
+    public abstract void addMissilePowerUp(double gameTimer);
+
+    public abstract void addBurstFirePowerUp(double gameTimer);
 
     public abstract void destroyFirstEnemy();
 
@@ -115,7 +121,7 @@ public abstract class Level {
         return isCollision;
     }
 
-    protected void attemptSpaceshipFire(double gameTimer) {
+    public void attemptSpaceshipFire(double gameTimer) {
         if (spaceship.hasBurstFirePowerUp()) {
             if (gameTimer >= spaceship.getStartShootingTime()) {
                 blastFire(spaceship, spaceshipProjectiles);
