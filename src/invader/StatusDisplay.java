@@ -85,10 +85,10 @@ public class StatusDisplay {
     }
 
     public static void createStartMenu(Group root) {
-        createMenu(root, START_MENU_X_POS, START_MENU_Y_POS, "SPACE INVADERS BY PIERCE FORTE AND JEFF KIM\n\n\nDIRECTIONS\n\nBREAK BRICKS TO EARN POINTS\n\nBE CAREFUL!\n" +
-                "YOU START WITH 3 LIVES\n\nRELEASE THE BALL WITH THE SPACE BAR\n\nMOVE THE PADDLES WITH\nTHE LEFT AND RIGHT KEYS\n\n" +
-                "COLLECT POWER UPS TO HELP\n(OR HURT!) YOU\n\nBEAT ALL 4 LEVELS TO WIN!\n\n\nCHEAT CODES\n\n1-9   SKIP TO LEVEL\n\nJ   SKIP " +
-                "TO NEXT LEVEL\n\nR   RESET LEVEL\n\nL   ADD 1 LIFE\n\nC   RESET BALL AND PADDLE\n(HELPFUL WHEN ENCOUNTERING BUGS)\n\n\nPRESS SPACE TO BEGIN");
+        createMenu(root, START_MENU_X_POS, START_MENU_Y_POS, "SPACE INVADER \nBY PIERCE AND JEFF\n\n\nDIRECTIONS\n\nKILL ENEMIES TO EARN POINTS\n\nBE CAREFUL!\n" +
+                "YOU START WITH 3 LIVES\n\nMOVE THE PADDLES WITH\nTHE LEFT AND RIGHT KEYS\n\n" +
+                "COLLECT POWER UPS: \nSPEED UP\nSTRONGER MISSILES\nMULTIPLE MISSILES\n\nBEAT ALL 3 LEVELS + BOSS LEVEL TO WIN!\n\n\nCHEAT CODES\n\n1-9   SKIP TO LEVEL\n\nJ   SKIP " +
+                "TO NEXT LEVEL\n\nR   RESET LEVEL\n\nL   ADD 1 LIFE\n\nA,M      DROP POWER UP \n\nPRESS SPACE TO BEGIN");
     }
 
     public static void removeMenu(Group root) {
@@ -103,6 +103,10 @@ public class StatusDisplay {
 
     public static void createLevelIntermissionMenu(Group root) {
         createMenu(root, DEFAULT_MENU_X_POS, DEFAULT_MENU_Y_POS, "LEVEL COMPLETE!\n\n\nPRESS S TO ADVANCE" + RESTART_AND_CHANGE_LEVEL);
+    }
+
+    public static void createBossLevelMenu(Group root) {
+        createMenu(root, DEFAULT_MENU_X_POS, DEFAULT_MENU_Y_POS, "LEVEL COMPLETE!\n\n\nGET READY FOR THE BOSS ROUND\n\nRULES\n1. START WITH 5 LIVES \n\nBOSS HAS: VULNERABLE STATE\nINVINCIBLE STATE\n\n BOSS HAS 10 LIVES\n\n SHOOTS 2 TYPES OF MISSILES\n\n\n PRESS S TO START ");
     }
 
     public static void createVictoryMenu(Group root) {

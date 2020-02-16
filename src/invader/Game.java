@@ -52,6 +52,7 @@ public class Game extends Application {
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(frame);
         myAnimation.play();
+        //StatusDisplay.createStartMenu(root);
     }
 
     // Create the game's "scene": what shapes will be in the game and their starting properties

@@ -4,7 +4,7 @@ import invader.MovingObject;
 
 public class Laser extends Projectile {
     public static final double X_SPEED = 0;
-    public static final double Y_SPEED = 200;
+    public static final double Y_SPEED = 250;
     public static final String ENEMY_LASER_IMG_NAME = "enemylaser.png";
     public static final String SPACESHIP_LASER_IMG_NAME = "spaceshiplaser.png";
     public static final String TYPE = "Laser";

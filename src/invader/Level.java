@@ -173,6 +173,8 @@ public abstract class Level {
         endLevel();
         if (getLevelNumber() == Game.MAX_LEVEL) {
             StatusDisplay.createVictoryMenu(root);
+        } else if (getLevelNumber() == Game.MAX_LEVEL - 1){
+            StatusDisplay.createBossLevelMenu(root);
         } else {
             StatusDisplay.createLevelIntermissionMenu(root);
         }
