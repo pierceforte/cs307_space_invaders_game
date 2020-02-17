@@ -9,7 +9,6 @@ import invader.powerup.BurstFirePowerUp;
 import invader.powerup.MissilePowerUp;
 import invader.powerup.PowerUp;
 import invader.powerup.SpaceshipSpeedPowerUp;
-import invader.projectile.Missile;
 import javafx.scene.Group;
 
 import java.lang.reflect.Constructor;

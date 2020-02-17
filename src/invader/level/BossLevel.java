@@ -5,10 +5,6 @@ import invader.StatusDisplay;
 import invader.entity.Boss;
 import invader.entity.Enemy;
 import invader.entity.Spaceship;
-import invader.powerup.BurstFirePowerUp;
-import invader.powerup.MissilePowerUp;
-import invader.powerup.PowerUp;
-import invader.powerup.SpaceshipSpeedPowerUp;
 import invader.projectile.Projectile;
 import javafx.scene.Group;
 

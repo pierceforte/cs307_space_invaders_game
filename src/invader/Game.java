@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URISyntaxException;
-import java.util.logging.Logger;
 
 public class Game extends Application {
     public static final String TITLE = "Space Invaders";

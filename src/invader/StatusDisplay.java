@@ -13,7 +13,6 @@ import javafx.scene.text.TextAlignment;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Logger;
 
 public final class StatusDisplay {
 

@@ -1,7 +1,5 @@
 package invader.projectile;
 
-import invader.MovingObject;
-
 public class Laser extends Projectile {
     public static final double X_SPEED = 0;
     public static final double Y_SPEED = 200;

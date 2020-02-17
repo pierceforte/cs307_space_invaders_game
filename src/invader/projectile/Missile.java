@@ -1,9 +1,5 @@
 package invader.projectile;
 
-import invader.MovingObject;
-import invader.entity.Enemy;
-import javafx.scene.image.Image;
-
 public class Missile extends Projectile{// extends Laser {
     public static final double WIDTH = 10;
     public static final double HEIGHT = 20;
