@@ -214,8 +214,7 @@ public abstract class Level {
             handleFileLines(myReader);
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred while reading level layout txt file: " + levelFile);
-            e.printStackTrace();
+            StatusDisplay.logError(e);
         }
     }
 }

@@ -16,10 +16,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URISyntaxException;
+import java.util.logging.Logger;
 
 public class Game extends Application {
     public static final String TITLE = "Space Invaders";
-    public static final String WINNING_MESSAGE = "WINNER!";
     public static final int GAME_WIDTH = 400;
     public static final int GAME_HEIGHT = 600;
     public static final int SCENE_WIDTH = 400;

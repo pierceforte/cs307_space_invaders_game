@@ -2,6 +2,7 @@ package invader.level;
 
 
 import invader.Game;
+import invader.StatusDisplay;
 import invader.entity.Enemy;
 import invader.entity.Spaceship;
 import invader.powerup.BurstFirePowerUp;
@@ -314,14 +315,14 @@ public class EnemyLevel extends Level {
             PowerUp powerUp = (PowerUp) constructor.newInstance(xPos, yPos, idName);
             return powerUp;
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            StatusDisplay.logError(e);
         }
         catch (InstantiationException e) {
-            e.printStackTrace();
+            StatusDisplay.logError(e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            StatusDisplay.logError(e);
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            StatusDisplay.logError(e);
         }
         return null;
     }

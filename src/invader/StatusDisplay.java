@@ -11,13 +11,13 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 public final class StatusDisplay {
 
+    public static final String ERROR_LOG = "error_log.txt";
     public static final Paint MENU_BACKGROUND = Color.GRAY;
     public static final Paint INTERFACE_BACKGROUND = Color.GRAY;
     public static final Paint TEXT_COLOR = Color.MAROON;
@@ -72,6 +72,19 @@ public final class StatusDisplay {
 
     private StatusDisplay() {
         //not called
+    }
+
+    public static void logError(Exception e) {
+        try {
+            FileWriter fStream = new FileWriter(ERROR_LOG, true);
+            BufferedWriter out = new BufferedWriter(fStream);
+            PrintWriter pw = new PrintWriter(out, true);
+            e.printStackTrace(pw);
+            fStream.close();
+        }
+        catch (Exception ie) {
+            throw new RuntimeException("Could not write Exception to file", ie);
+        }
     }
 
     public static void createInterfaceAndAddToRoot(Group root, int game_height, int scene_width, int scene_height) {
@@ -174,8 +187,7 @@ public final class StatusDisplay {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred while reading high scores txt file.");
-            e.printStackTrace();
+            logError(e);
         }
     }
 
@@ -248,8 +260,7 @@ public final class StatusDisplay {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred while reading high scores txt file.");
-            e.printStackTrace();
+            logError(e);
         }
         return highscores;
     }
@@ -285,8 +296,7 @@ public final class StatusDisplay {
             }
             pw.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred while writing to high scores txt file.");
-            e.printStackTrace();
+            logError(e);
         }
     }
 }
