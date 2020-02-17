@@ -76,7 +76,7 @@ public class EnemyLevel extends Level {
 
     @Override
     public void attemptLevelVictory() {
-        if(!levelLost && enemies.size() == 0) {
+        if(!levelLost && enemies.isEmpty()) {
             initiateLevelVictory();
         }
     }
@@ -86,29 +86,29 @@ public class EnemyLevel extends Level {
         int randomIndex = ThreadLocalRandom.current().nextInt(0, NUM_POWER_UP_TYPES);
         Class powerUpClass = POWER_UP_TYPES.get(randomIndex);
         PowerUp powerUp = createPowerUpFromClassName(powerUpClass, Game.GAME_WIDTH/2,Game.GAME_HEIGHT/2,
-                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber++);
-        addPowerUp(gameTimer, powerUp);
+                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber);
+        addCheatPowerUp(gameTimer, powerUp);
     }
 
     @Override
     public void addSpeedPowerUp(double gameTimer) {
         PowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber++);
-        addPowerUp(gameTimer, powerUp);
+                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber);
+        addCheatPowerUp(gameTimer, powerUp);
     }
 
     @Override
     public void addMissilePowerUp(double gameTimer) {
         PowerUp powerUp = new MissilePowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber++);
-        addPowerUp(gameTimer, powerUp);
+                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber);
+        addCheatPowerUp(gameTimer, powerUp);
     }
 
     @Override
     public void addBurstFirePowerUp(double gameTimer) {
         PowerUp powerUp = new BurstFirePowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber++);
-        addPowerUp(gameTimer, powerUp);
+                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber);
+        addCheatPowerUp(gameTimer, powerUp);
     }
 
     @Override
@@ -263,12 +263,13 @@ public class EnemyLevel extends Level {
         }
         List<List<Enemy>> enemyRowsToRemove = new ArrayList<>();
         for(List<Enemy> enemyRow : enemies) {
-            if (enemyRow.size() == 0) enemyRowsToRemove.add(enemyRow);
+            if (enemyRow.isEmpty()) enemyRowsToRemove.add(enemyRow);
         }
         enemies.removeAll(enemyRowsToRemove);
     }
 
-    private void addPowerUp(double gameTimer, PowerUp powerUp) {
+    private void addCheatPowerUp(double gameTimer, PowerUp powerUp) {
+        curCheatKeyPowerUpIdNumber++;
         powerUp.setTimeActive(gameTimer);
         powerUps.add(powerUp);
         root.getChildren().add(powerUp);
@@ -313,14 +314,7 @@ public class EnemyLevel extends Level {
             Constructor<?> constructor = powerUpClass.getConstructor(double.class, double.class, String.class);
             PowerUp powerUp = (PowerUp) constructor.newInstance(xPos, yPos, idName);
             return powerUp;
-        } catch (NoSuchMethodException e) {
-            StatusDisplay.logError(e);
-        }
-        catch (InstantiationException e) {
-            StatusDisplay.logError(e);
-        } catch (IllegalAccessException e) {
-            StatusDisplay.logError(e);
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             StatusDisplay.logError(e);
         }
         return null;

@@ -265,7 +265,7 @@ public final class StatusDisplay {
     }
 
     private static String collectTopHighScores(int maxNumberOfHighScores) {
-        if (highscores.size() == 0) return "";
+        if (highscores.isEmpty()) return "";
         String highscoresChart = "\n\n\nHIGH SCORES:";
         int scoresCharted = 0;
         for (String highscore : highscores) {

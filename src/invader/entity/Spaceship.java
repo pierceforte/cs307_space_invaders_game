@@ -15,6 +15,7 @@ public class Spaceship extends Entity {
     public static final int DEFAULT_LIVES = 3;
     public static final int POINTS_PER_HIT = 0;
     public static final int DEFAULT_TIME_BETWEEN_SHOTS = 1;
+    public static final String IDENTIFIER = "spaceship";
     public static final String SPACESHIP_IMG_NAME = "spaceship.png";
     public static final boolean IS_EVIL = false;
 
@@ -30,7 +31,7 @@ public class Spaceship extends Entity {
         super(xPos, yPos, DEFAULT_X_SPEED, DEFAULT_Y_SPEED, HEIGHT, WIDTH, DEFAULT_TIME_BETWEEN_SHOTS, IS_EVIL, SPACESHIP_IMG_NAME);
         setLives(DEFAULT_LIVES);
         setPointsPerHit(POINTS_PER_HIT);
-        this.setId("spaceship");
+        this.setId(IDENTIFIER);
         setStartShootingTime(0);
     }
 

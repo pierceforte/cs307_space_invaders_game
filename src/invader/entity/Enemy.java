@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Enemy extends Entity {
     public static final int HEIGHT = 30;
     public static final int WIDTH = 30;
+    public static final String IDENTIFIER = "enemy";
     public static final String ENEMY_IMG_PREFIX = "enemy";
     public static final String ENEMY_IMG_EXTENSION = ".png";
     public static final int DEFAULT_TIME_BETWEEN_SHOTS = 20;
@@ -38,7 +39,7 @@ public class Enemy extends Entity {
         super(xPos, yPos, xSpeed, ySpeed, WIDTH, HEIGHT, DEFAULT_TIME_BETWEEN_SHOTS,
                 IS_EVIL, ENEMY_IMG_PREFIX + lives + ENEMY_IMG_EXTENSION);
         setLives(lives);
-        this.setId("enemy" + idNumber);
+        this.setId(IDENTIFIER + idNumber);
         addToStartShootingTime(ThreadLocalRandom.current().nextInt(EARLIEST_START_FIRING_TIME, LATEST_START_FIRING_TIME));
         if (powerUp != null) {
             this.powerUp = powerUp;

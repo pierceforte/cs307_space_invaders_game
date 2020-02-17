@@ -13,8 +13,9 @@ public abstract class Projectile extends MovingObject {
     public static final int RIGHT_PROJECTILE_ROTATION = -45;
     public static final int RIGHT_PROJECTILE_X_SPEED = 50;
     public static final int DEFAULT_PROJECTILE_ROTATION = 0;
-    public static final String ENEMY_LASER_IMG_NAME = "enemylaser.png";
-    public static final String SPACESHIP_LASER_IMG_NAME = "spaceshiplaser.png";
+    public static final String EVIL_IDENTIFIER = "evil";
+    public static final String NOT_EVIL_IDENTIFIER = "spaceship";
+    public static final String IDENTIFIER = "Projectile";
 
     private int damage;
     private boolean isEvil;
@@ -37,8 +38,8 @@ public abstract class Projectile extends MovingObject {
         super(xPos,yPos,xSpeed,ySpeed * (isEvil ? -1 : 1), width, height, imgName);
         this.isEvil = isEvil;
         setRotate(rotation * (isEvil ? 1 : -1));
-        String idString = isEvil ? "evil" : "spaceship";
-        this.setId(idString + projectileType + "Projectile" + idNumber);
+        String idString = isEvil ? EVIL_IDENTIFIER : NOT_EVIL_IDENTIFIER;
+        this.setId(idString + projectileType + IDENTIFIER + idNumber);
     }
 
     /**
