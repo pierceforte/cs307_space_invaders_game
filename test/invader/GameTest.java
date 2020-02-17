@@ -68,6 +68,9 @@ public class GameTest extends DukeApplicationTest {
         });
     }
 
+    /**
+     * Test activation of spaceship speedup powerup
+     */
     @Test
     public void testSpaceshipSpeedUpPowerUpActivation() {
         // press cheat key to drop powerUp
@@ -94,10 +97,13 @@ public class GameTest extends DukeApplicationTest {
         assertFalse(myPowerUp.isActive());
     }
 
+    /**
+     * Test destroy first enemy cheat key destroys leftmost enemy in bottom row
+     */
     @Test
     public void testDestroyFirstEnemyCheatKey() {
-        // first enemy is defined as leftmost enemy in the bottom row. this enemy's id is enemy27
-
+        // first enemy is defined as leftmost enemy in the bottom row.
+        // In level 1, this enemy's id is enemy27
         // check if enemy is on scene before key press
         assertTrue(isNodeInMyScene(myEnemy27));
         // press D, which is the cheat code to destroy first enemy
@@ -106,6 +112,9 @@ public class GameTest extends DukeApplicationTest {
         assertFalse(isNodeInMyScene(myEnemy27));
     }
 
+    /**
+     * Test random power up cheat key creates powerup
+     */
     @Test
     public void testRandomPowerUpCheatKey() {
         // assert that an exception is thrown when querying power up before it is created;
@@ -117,6 +126,9 @@ public class GameTest extends DukeApplicationTest {
         assertTrue(isNodeInMyScene(lookup("#cheatPowerUp0").query()));
     }
 
+    /**
+     * Test jump to level cheat key moves game to correct level
+     */
     @Test
     public void testJumpToLevelCheatKeys() {
         // the first expected level is level 1
@@ -133,6 +145,9 @@ public class GameTest extends DukeApplicationTest {
         }
     }
 
+    /**
+     * Test skip level cheat key moves game to next level
+     */
     @Test
     public void testSkipLevelCheatKey() {
         // assert that level is level 1 at start
@@ -145,6 +160,9 @@ public class GameTest extends DukeApplicationTest {
         assertEquals(2, myLevel.getLevelNumber());
     }
 
+    /**
+     * Test add life cheat key gives spaceship an additional life
+     */
     @Test
     public void testAddLifeCheatKey() {
         // assert that spaceship has 3 (default) lives
@@ -155,6 +173,9 @@ public class GameTest extends DukeApplicationTest {
         assertEquals(4, mySpaceship.getLives());
     }
 
+    /**
+     * Test spaceship collision with laser removes one life from spaceship
+     */
     @Test
     public void testSpaceshipLifeLoss() {
         // set enemy's start shooting time to 0 so it shoots immediately
@@ -175,6 +196,9 @@ public class GameTest extends DukeApplicationTest {
         assertEquals(2, mySpaceship.getLives());
     }
 
+    /**
+     * Test enemies bounce off right wall when rightmost enemy collides with right wall
+     */
     @Test
     public void testEnemiesBounceOffRightWall() {
         // check collision off right wall
@@ -182,6 +206,9 @@ public class GameTest extends DukeApplicationTest {
                 Game.GAME_WIDTH - Enemy.WIDTH - Game.SECOND_DELAY, true);
     }
 
+    /**
+     * Test enemies bounce off left wall when leftmost enemy collides with left wall
+     */
     @Test
     public void testEnemiesBounceOffLeftWall() {
         // check collision off left wall
@@ -189,6 +216,9 @@ public class GameTest extends DukeApplicationTest {
                 false);
     }
 
+    /**
+     * Test laser disappears when out of game's bounds
+     */
     @Test
     public void testLaserDisappearsIfOutOfBounds() {
         // check if laser is on scene before being out of bounds
@@ -201,6 +231,9 @@ public class GameTest extends DukeApplicationTest {
         assertFalse(isNodeInMyScene(mySpaceshipProjectile));
     }
 
+    /**
+     * Test laser collision with enemy destroys enemy if enemy has 1 life
+     */
     @Test
     public void testLaserCollisionWithEnemy() {
         // check if laser and enemy are on scene before collision
@@ -216,6 +249,9 @@ public class GameTest extends DukeApplicationTest {
         assertFalse(isNodeInMyScene(mySpaceshipProjectile));
     }
 
+    /**
+     * Test spaceship starts in correct initial position with the correct properties
+     */
     @Test
     public void testSpaceshipInitialPosition () {
         assertEquals(Spaceship.DEFAULT_X_POS, mySpaceship.getX());
@@ -224,6 +260,9 @@ public class GameTest extends DukeApplicationTest {
         assertEquals(Spaceship.HEIGHT, mySpaceship.getFitHeight());
     }
 
+    /**
+     * Test spaceship moves left and right on key press
+     */
     @Test
     public void testSpaceshipMoveLeftAndRight () {
         // test movement to right
@@ -234,6 +273,9 @@ public class GameTest extends DukeApplicationTest {
                 mySpaceship.getXSpeedOnKeyPress(), Spaceship.DEFAULT_X_POS);
     }
 
+    /**
+     * Test spaceship moves to other side of screen when out of x bounds
+     */
     @Test
     public void testSpaceshipWrap () {
         // test wrap from right to left side of screen
@@ -242,6 +284,9 @@ public class GameTest extends DukeApplicationTest {
        testSpaceshipMove(KeyCode.LEFT, Game.GAME_WIDTH - mySpaceship.WIDTH, 0);
     }
 
+    /**
+     * Test enemies are added to scene in correct position
+     */
     @Test
     public void testEnemiesInitialPosition() {
         int rows = 4;
@@ -260,33 +305,11 @@ public class GameTest extends DukeApplicationTest {
         }
     }
 
+    /**
+     * Test scene is cleared when level complete, and menu is presented
+     */
     @Test
     public void testClearPageWhenBeatLevel() {
-        myLevel.setLevelNumber(1);
-        clearEnemies();
-        step();
-
-        assertEquals("LEVEL COMPLETE!\n\n\n" +
-                "PRESS S TO ADVANCE\n\n" +
-                "PRESS R TO RESTART LEVEL\n\n" +
-                "PRESS 1-9 TO CHANGE LEVEL", StatusDisplay.getMenuText().getText());
-        assertEquals(0.0, StatusDisplay.getMenuBackground().getX());
-        assertEquals(0.0, StatusDisplay.getMenuBackground().getY());
-        assertEquals(400.0, StatusDisplay.getMenuBackground().getWidth());
-        assertEquals(700.0, StatusDisplay.getMenuBackground().getHeight());
-    }
-
-    private void clearEnemies() {
-        // press D to delete each enemy
-        for (List<Enemy> enemyRow : myEnemies) {
-            for (Enemy enemy : enemyRow) {
-                press(myScene, KeyCode.D);
-            }
-        }
-    }
-    @Test
-    public void testClearPageWhenBeatGame() {
-        myLevel.setLevelNumber(Game.MAX_LEVEL);
         clearEnemies();
         step();
 
@@ -297,6 +320,24 @@ public class GameTest extends DukeApplicationTest {
         assertEquals(700.0, StatusDisplay.getMenuBackground().getHeight());
     }
 
+    /**
+     * Test scene is cleared when game won, and menu is presented
+     */
+    @Test
+    public void testClearPageWhenBeatGame() {
+        clearEnemies();
+        step();
+
+        assertTrue(isNodeInMyScene(StatusDisplay.getMenuBackground()));
+        assertEquals(0.0, StatusDisplay.getMenuBackground().getX());
+        assertEquals(0.0, StatusDisplay.getMenuBackground().getY());
+        assertEquals(400.0, StatusDisplay.getMenuBackground().getWidth());
+        assertEquals(700.0, StatusDisplay.getMenuBackground().getHeight());
+    }
+
+    /**
+     * Test enemy images change appropriately from level 1 to 2
+     */
     @Test
     public void testEnemyImageChangingLevel1To2() {
         Image level1Img = myEnemies.get(0).get(0).getImage();
@@ -306,6 +347,9 @@ public class GameTest extends DukeApplicationTest {
         assertFalse(level1Img == level2Img);
     }
 
+    /**
+     * Test enemy images change appropriately from level 2 to 3
+     */
     @Test
     public void testEnemyImageChangingLevel2To3() {
         press(myScene, KeyCode.S);
@@ -317,6 +361,9 @@ public class GameTest extends DukeApplicationTest {
         assertFalse(level2Img == level3Img);
     }
 
+    /**
+     * Test enemy images change appropriately when life lost
+     */
     @Test
     public void testEnemyImageChangeWhenHit() {
         press(myScene, KeyCode.S);
@@ -337,6 +384,9 @@ public class GameTest extends DukeApplicationTest {
         assertFalse(imgBefore == imgAfter);
     }
 
+    /**
+     * Test missile power up activation and influence
+     */
     @Test
     public void testMissilePowerUp() {
         press(myScene, KeyCode.S);
@@ -365,6 +415,9 @@ public class GameTest extends DukeApplicationTest {
         assertEquals(lifeBefore - mySpaceshipProjectile.getDamage(), lifeAfter);
     }
 
+    /**
+     * Test boss dies/loses life only when vulnerable
+     */
     @Test
     public void testBossDeath() {
         // go to boss level (level 4)
@@ -384,6 +437,28 @@ public class GameTest extends DukeApplicationTest {
         // assert that boss now loses life after collision
         testBossCollision(myBoss, 1, 0);
 
+    }
+
+    /**
+     * Test enemy speed on each level
+     */
+    @Test
+    public void testEnemySpeedLevels1Through3() {
+        for (int level = Game.MIN_LEVEL; level < Game.MAX_LEVEL; level++) {
+            Enemy myEnemy = lookup("#enemy0").query();
+            assertEquals(EnemyLevel.ENEMY_SPEED_FACTOR_BY_LEVEL * level, myEnemy.getXSpeed());
+            clearEnemies();
+            press(myScene, KeyCode.S);
+        }
+    }
+
+    private void clearEnemies() {
+        // press D to delete each enemy
+        for (List<Enemy> enemyRow : myEnemies) {
+            for (Enemy enemy : enemyRow) {
+                press(myScene, KeyCode.D);
+            }
+        }
     }
 
     private void testBossCollision(Boss myBoss, int projectileIdNumber, int expectedLives) {
