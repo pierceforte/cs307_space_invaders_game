@@ -2,12 +2,15 @@ package invader.entity;
 
 import invader.projectile.Fireball;
 import invader.projectile.Projectile;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- *
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Inherits the abstract entity class, which is used to create a boss object.
+ * It has multiple features that only the boss possesses, such as vulnerability and missile type
  */
+
 public class Boss extends Entity {
 
     public static final double DEFAULT_WIDTH = 150;

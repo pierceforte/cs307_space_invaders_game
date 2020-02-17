@@ -14,8 +14,15 @@ import javafx.scene.text.TextAlignment;
 import java.io.*;
 import java.util.*;
 
-public final class StatusDisplay {
 
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Class that is used to display all messages on the screen, It deals with the splash screens before, between, and after each level and
+ * the current status for that level. All variables and methods are static because it could be used anytime during the game and only need one object of it.
+ */
+
+public final class StatusDisplay {
     public static final String ERROR_LOG = "error_log.txt";
     public static final Paint MENU_BACKGROUND = Color.GRAY;
     public static final Paint INTERFACE_BACKGROUND = Color.GRAY;

@@ -2,6 +2,13 @@ package invader.powerup;
 
 import invader.entity.Spaceship;
 
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Specific Missile power up class that inherits the abstract class Powerup
+ * Increases the number of missile on the screen
+ */
+
 public class MissilePowerUp extends PowerUp {
     public static final String IMG_NAME = "laserpower.gif";
     public static final int TIME_ACTIVE = 6;

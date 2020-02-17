@@ -6,9 +6,11 @@ import invader.projectile.Projectile;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
+ * @author Pierce Forte
  * @author Jeff Kim
- * started 2/4/20
+ * Inherits the abstract entity class, which is used to create an enemy object.
  */
+
 public class Enemy extends Entity {
     public static final int HEIGHT = 30;
     public static final int WIDTH = 30;

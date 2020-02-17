@@ -17,6 +17,14 @@ import javafx.util.Duration;
 
 import java.net.URISyntaxException;
 
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Main class that runs the entire game.
+ * It initializes all the basic scene, key, and music setup.
+ * Runs the animation and calls the step function for each frame
+ */
+
 public class Game extends Application {
     public static final String TITLE = "Space Invaders";
     public static final int GAME_WIDTH = 400;

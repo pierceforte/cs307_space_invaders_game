@@ -5,9 +5,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
+ * @author Pierce Forte
  * @author Jeff Kim
- * started 2/4/20
+ * Abstract class that is used for all moving objects on the screen, including the enemy, boss, spaceship, lasers, missiles
+ * Has common methods like setting x, y speed, position, checking out of bounds, to reduce duplicate code in all the subclasses.
+ * It inherits the ImageView class, which is one of the design decision we made.
  */
+
 public abstract class MovingObject extends ImageView {
     public static final int OUT_OF_BOUNDS_LOCATION = 20;
 

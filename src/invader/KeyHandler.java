@@ -11,6 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Initializes the key setup for the game.
+ * Made it into a separate class because the Game class was becoming too long
+ */
+
 public class KeyHandler {
     public static final int KEY_CODE_1 = 49;
     public static final int KEY_CODE_3 = 51;

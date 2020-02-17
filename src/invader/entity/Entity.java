@@ -6,9 +6,15 @@ import invader.projectile.Laser;
 import invader.projectile.Projectile;
 
 /**
+ * @author Pierce Forte
  * @author Jeff Kim
- * started 2/4/20
+ * Abstract class that is used to create all types of entities used in this game.
+ * Spaceship, boss, enemy, all belongs to this abstract class
+ * This class is necessary and efficient because there are many features that the boss, enemy, and spaceship shares
+ * The projectile is an abstract method because different entities have different missile types.
+ * It has methods like getting lives, setting lives, getting points, seeking out of bounds, etc
  */
+
 public abstract class Entity extends MovingObject {
     public static final int NON_BOSS_WIDTH = 30;
     public static final int TOP_OUT_OF_BOUNDS_LOCATION = 150;
@@ -144,6 +150,7 @@ public abstract class Entity extends MovingObject {
 
     /**
      * Create a projectile respective to the type of entity, which will be implemented in the subclasses
+     * The projectile is an abstract method because different entities have different missile types.
      * @param rotation
      * @param idNumber
      */

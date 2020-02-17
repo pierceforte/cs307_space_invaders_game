@@ -1,6 +1,5 @@
 package invader.level;
 
-
 import invader.Game;
 import invader.StatusDisplay;
 import invader.entity.Enemy;
@@ -21,6 +20,13 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Specific class that inherits from the abstract class Level
+ * Sets up the game settings for an enemy level.
+ */
 
 public class EnemyLevel extends Level {
     public static final double ENEMY_SPACING = 10;

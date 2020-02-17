@@ -1,5 +1,11 @@
 package invader.projectile;
 
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Specific Fireball class which is used in the missile for the boss
+ */
+
 public class Fireball extends Projectile {
     public static final double WIDTH = 20;
     public static final double HEIGHT = 1.5*WIDTH;

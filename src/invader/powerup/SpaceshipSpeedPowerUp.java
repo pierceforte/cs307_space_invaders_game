@@ -2,6 +2,13 @@ package invader.powerup;
 
 import invader.entity.Spaceship;
 
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Specific Speed power up class that inherits the abstract class Powerup
+ * Increases the speed of the spaceship on the screen
+ */
+
 public class SpaceshipSpeedPowerUp extends PowerUp {
     public static final String IMG_NAME = "fastpower.gif";
     public static final int INCREASED_SPEED = 25;
