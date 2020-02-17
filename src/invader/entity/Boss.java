@@ -5,6 +5,9 @@ import invader.projectile.Projectile;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ *
+ */
 public class Boss extends Entity {
 
     public static final double DEFAULT_WIDTH = 150;
@@ -45,18 +48,21 @@ public class Boss extends Entity {
     }
 
     public void switchVulnerabilityStatus() {
-        if (isVulnerable) setInvulnerable();
-        else setVulnerable();
+        if (isVulnerable) setVulnerable(false);
+        else setVulnerable(true);
     }
 
+    // Get if the boss is currently vulnerable
     public boolean isVulnerable() {
         return isVulnerable;
     }
 
+    // add time for the boss' vulnerability time
     public void addToSwitchVulnerabilityTime(int timeToAdd) {
         switchVulnerabilityTime += timeToAdd;
     }
 
+    //Switch vulnerability time
     public int getSwitchVulnerabilityTime() {
         return switchVulnerabilityTime;
     }
@@ -66,18 +72,17 @@ public class Boss extends Entity {
         setRandomYSpeed();
     }
 
-    private void setVulnerable() {
-        isVulnerable = true;
-        switchBossImage(BOSS_IMG_NAME, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        addToSwitchVulnerabilityTime(TIME_VULNERABLE);
-        setPointsPerHit(POINTS_PER_HIT);
-    }
-
-    private void setInvulnerable() {
-        isVulnerable = false;
-        switchBossImage(BOSS_HIDING_IMG_NAME, HIDDEN_WIDTH, HIDDEN_HEIGHT);
-        addToSwitchVulnerabilityTime(TIME_INVULNERABLE);
-        setPointsPerHit(POINTS_PER_HIT_WHEN_INVULNERABLE);
+    private void setVulnerable(boolean isVulnerable) {
+        this.isVulnerable = isVulnerable;
+        if (isVulnerable) {
+            switchBossImage(BOSS_IMG_NAME, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            addToSwitchVulnerabilityTime(TIME_VULNERABLE);
+            setPointsPerHit(POINTS_PER_HIT);
+        } else {
+            switchBossImage(BOSS_HIDING_IMG_NAME, HIDDEN_WIDTH, HIDDEN_HEIGHT);
+            addToSwitchVulnerabilityTime(TIME_INVULNERABLE);
+            setPointsPerHit(POINTS_PER_HIT_WHEN_INVULNERABLE);
+        }
     }
 
     private void switchBossImage(String imgName, double width, double height) {

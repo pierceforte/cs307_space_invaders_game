@@ -57,6 +57,8 @@ Extra credit:
     - Boss has vulnerable and invincible mode
     - Only damaged during vulnerable mode, which is shown by the change in image of the boss
     - Shoots different types of missiles 
+- Background Music
+    - Added a background music that gives a real arcade feeling
 
 ### Notes/Assumptions
 - We assumed that optimization in the logic is not our primary concern. For example, when setting up the enemy, instead of loading 
