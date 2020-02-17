@@ -48,16 +48,19 @@ public class GameTest extends DukeApplicationTest {
             myLevel = myGame.getCurLevel();
             // find individual items within game by ID (must have been set in your code using setID())
             mySpaceship = lookup("#spaceship").query();
-            for (int row = 0; row < 4; row++) {
-                myEnemies.add(new ArrayList<>());
-                for (int col = 0; col < EnemyLevel.ENEMIES_PER_ROW; col++) {
-                    myEnemies.get(row).add(lookup("#enemy" + (col + row*EnemyLevel.ENEMIES_PER_ROW)).query());
+            // only gather enemies if this is an enemy level
+            if (myLevel.getClass() == EnemyLevel.class) {
+                for (int row = 0; row < 4; row++) {
+                    myEnemies.add(new ArrayList<>());
+                    for (int col = 0; col < EnemyLevel.ENEMIES_PER_ROW; col++) {
+                        myEnemies.get(row).add(lookup("#enemy" + (col + row*EnemyLevel.ENEMIES_PER_ROW)).query());
+                    }
                 }
+                // leftmost enemy in bottom row is enemy27, such that when "D" is pressed it will be destroyed
+                myEnemy27 = lookup(LEFTMOST_BOTTOM_ENEMY).query();
+                // when a projectile is fired from the spaceship's default position, it will hit enemy31
+                myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
             }
-            // leftmost enemy in bottom row is enemy27, such that when "D" is pressed it will be destroyed
-            myEnemy27 = lookup(LEFTMOST_BOTTOM_ENEMY).query();
-            // when a projectile is fired from the spaceship's default position, it will hit enemy31
-            myEnemy31 = lookup(ENEMY_ABOVE_SPACESHIP).query();
             // fire laser from spaceship
             press(myScene, KeyCode.SPACE);
             // need to wait for scene to update after key press in application thread
@@ -260,8 +263,7 @@ public class GameTest extends DukeApplicationTest {
     @Test
     public void testClearPageWhenBeatLevel() {
         myLevel.setLevelNumber(1);
-        myLevel.setLevelLost(false);
-        myLevel.getEvilEntities().clear();
+        clearEnemies();
         step();
 
         assertEquals("LEVEL COMPLETE!\n\n\n" +
@@ -274,11 +276,18 @@ public class GameTest extends DukeApplicationTest {
         assertEquals(700.0, StatusDisplay.getMenuBackground().getHeight());
     }
 
+    private void clearEnemies() {
+        // press D to delete each enemy
+        for (List<Enemy> enemyRow : myEnemies) {
+            for (Enemy enemy : enemyRow) {
+                press(myScene, KeyCode.D);
+            }
+        }
+    }
     @Test
     public void testClearPageWhenBeatGame() {
         myLevel.setLevelNumber(Game.MAX_LEVEL);
-        myLevel.setLevelLost(false);
-        myLevel.getEvilEntities().clear();
+        clearEnemies();
         step();
 
         assertEquals("YOU WIN!\n\n\nPRESS E TO SAVE YOUR SCORE\nAND RESET POINTS\n\n" +
@@ -292,10 +301,10 @@ public class GameTest extends DukeApplicationTest {
 
     @Test
     public void testEnemyImageChangingLevel1To2() {
-        Image level1Img = myLevel.getEvilEntities().get(0).get(0).getImage();
+        Image level1Img = myEnemies.get(0).get(0).getImage();
         press(myScene, KeyCode.S);
         myLevel = myGame.getCurLevel();
-        Image level2Img = myLevel.getEvilEntities().get(0).get(0).getImage();
+        Image level2Img = myEnemies.get(0).get(0).getImage();
         assertFalse(level1Img == level2Img);
     }
 
@@ -303,10 +312,10 @@ public class GameTest extends DukeApplicationTest {
     public void testEnemyImageChangingLevel2To3() {
         press(myScene, KeyCode.S);
         myLevel = myGame.getCurLevel();
-        Image level2Img = myLevel.getEvilEntities().get(0).get(0).getImage();
+        Image level2Img = myEnemies.get(0).get(0).getImage();
         press(myScene, KeyCode.S);
         myLevel = myGame.getCurLevel();
-        Image level3Img = myLevel.getEvilEntities().get(0).get(0).getImage();
+        Image level3Img = myEnemies.get(0).get(0).getImage();
         assertFalse(level2Img == level3Img);
     }
 

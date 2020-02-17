@@ -64,8 +64,6 @@ public abstract class Level {
         this.levelLost = levelLost;
     }
 
-    public abstract List<List<Enemy>> getEvilEntities();
-
     public abstract void clearLevel();
 
     public abstract void addEntitiesToScene();
@@ -151,7 +149,7 @@ public abstract class Level {
         rightProjectile.setXSpeed(Projectile.RIGHT_PROJECTILE_X_SPEED);
     }
 
-    protected void handleProjectileBounds(List<Projectile> projectiles) {
+    protected void handleEvilEntityProjectileBounds() {
         for (Projectile evilEntityProjectile : evilEntityProjectiles) {
             if (evilEntityProjectile.isOutOfXBounds()) {
                 double rotation = evilEntityProjectile.getRotate();
@@ -165,7 +163,6 @@ public abstract class Level {
 
     protected <T extends Node> void clearNodesFromSceneAndLevel(T node) {
         root.getChildren().remove(node);
-        node = null;
     }
 
     protected <T extends Node> void clearNodesFromSceneAndLevel(List<T> nodes) {

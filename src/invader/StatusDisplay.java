@@ -56,7 +56,6 @@ public final class StatusDisplay {
     private static Rectangle menuBackground;
     private static Rectangle userInterfaceArea;
     private static ImageView heartImageDisplay;
-
     private static TextField highScoreTextField;
     private static Text menuText;
     private static Text lifeCountText;
