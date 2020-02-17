@@ -290,9 +290,7 @@ public class GameTest extends DukeApplicationTest {
         clearEnemies();
         step();
 
-        assertEquals("YOU WIN!\n\n\nPRESS E TO SAVE YOUR SCORE\nAND RESET POINTS\n\n" +
-                "PRESS R TO RESTART LEVEL\n\n" +
-                "PRESS 1-9 TO CHANGE LEVEL", StatusDisplay.getMenuText().getText());
+        assertTrue(isNodeInMyScene(StatusDisplay.getMenuBackground()));
         assertEquals(0.0, StatusDisplay.getMenuBackground().getX());
         assertEquals(0.0, StatusDisplay.getMenuBackground().getY());
         assertEquals(400.0, StatusDisplay.getMenuBackground().getWidth());
