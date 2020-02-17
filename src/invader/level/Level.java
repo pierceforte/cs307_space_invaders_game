@@ -2,10 +2,8 @@ package invader.level;
 
 import invader.Game;
 import invader.StatusDisplay;
-import invader.entity.Enemy;
 import invader.entity.Entity;
 import invader.entity.Spaceship;
-
 import invader.projectile.Projectile;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -15,6 +13,16 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Abstract class that is used to create all types of entities used in this game.
+ * This class is necessary because the levels share a lot of similar methods and properties, but also have unique features for each class.
+ * The basic set up of the game and handling the user spaceship would be the similar, so all of them are defined as public methods.
+ * The level specific methods like cheat codes or handling the missiles are abstract methods because it should be reimplemented in its
+ * subclass, EnemyLevel and BossLevel. Level specific methods have a protected access level.
+ */
 
 public abstract class Level {
 
@@ -30,6 +38,12 @@ public abstract class Level {
     protected List<Projectile> spaceshipProjectiles = new ArrayList<>();
     protected List<Projectile> evilEntityProjectiles = new ArrayList<>();
 
+    /**
+     * Constructor
+     * @param root
+     * @param levelNumber
+     * @param myGame
+     */
     public Level(Group root, int levelNumber, Game myGame){
         this.root = root;
         String levelFile = LEVEL_FILE_PATH + levelNumber + LEVEL_FILE_EXTENSION;
@@ -42,46 +56,64 @@ public abstract class Level {
         StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
     }
 
+    /**
+     * Move the spaceship to the right
+     * @param toRight
+     */
     public void moveSpaceship(boolean toRight) {
         spaceship.setX(spaceship.getX() + spaceship.getXSpeedOnKeyPress() * (toRight ? 1 : -1));
         spaceship.wrap();
     }
 
+    // Add life to the spaceship and increase on status display
     public void addLife() {
         spaceship.addLife();
         StatusDisplay.updateLifeCountDisplay(spaceship.getLives());
     }
 
+    // get current level number
     public int getLevelNumber() {
         return levelNumber;
     }
 
+    // set current level number
     public void setLevelNumber(int levelNumber) {
         this.levelNumber = levelNumber;
     }
 
-    public void setLevelLost(boolean levelLost) {
+
+    private void setLevelLost(boolean levelLost) {
         this.levelLost = levelLost;
     }
 
+    // Clears everything on the current level
     public abstract void clearLevel();
 
+    // Add enemies or boss to the scene
     public abstract void addEntitiesToScene();
 
+    // Handle the entities and lasers (collision)
     public abstract void handleEntitiesAndLasers(double gameTimer, double elapsedTime);
 
+    // Check if the victory condition is met
     public abstract void attemptLevelVictory();
 
+    // Add random power ups
     public abstract void addRandomPowerUp(double gameTimer);
 
+    // Add speed power ups
     public abstract void addSpeedPowerUp(double gameTimer);
 
+    // Add missile power ups
     public abstract void addMissilePowerUp(double gameTimer);
 
+    // Add burst power ups
     public abstract void addBurstFirePowerUp(double gameTimer);
 
+    // Destroy the enemy on the screen
     public abstract void destroyFirstEnemy();
 
+    // Update the node position
     protected abstract void updateNodePositionsOnStep(double elapsedTime);
 
     protected void updateProjectilePositionsOnStep(double elapsedTime, List<Projectile> projectiles) {
@@ -119,6 +151,7 @@ public abstract class Level {
         return isCollision;
     }
 
+    // Handle spaceship firing
     public void attemptSpaceshipFire(double gameTimer) {
         attemptProjectileFire(gameTimer, spaceship, spaceshipProjectiles, SPACESHIP_LASER_ROTATION);
     }
@@ -189,17 +222,21 @@ public abstract class Level {
     }
 
     private void endLevel() {
-        myGame.setMenuActive();
-        myGame.setGameOverMenuActive();
+        myGame.setMenuActive(true);
+        myGame.setGameOverMenuActive(true);
         clearLevel();
     }
 
+    // Handle evil entities movement
     protected abstract void handleEvilEntitiesMovement();
 
+    // Handle evil entity lasers
     protected abstract void handleEvilEntityLasers(double gameTimer);
 
+    // Handle spaceship projectiles
     protected abstract void handleSpaceshipProjectiles();
 
+    // Create evil entities
     protected abstract void createEvilEntities();
 
     protected abstract void handleFileLines(Scanner myReader);

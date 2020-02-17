@@ -1,5 +1,11 @@
 package invader.projectile;
 
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Specific Laser class which is used in the missile for both the regular enemy and spaceship
+ */
+
 public class Laser extends Projectile {
     public static final double X_SPEED = 0;
     public static final double Y_SPEED = 200;

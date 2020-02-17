@@ -3,6 +3,13 @@ package invader.powerup;
 import invader.MovingObject;
 import invader.entity.Spaceship;
 
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Abstract class that is used for BurstFire, Missile, and Speed powerups.
+ * Has common methods like setting activation status
+ */
+
 public abstract class PowerUp extends MovingObject {
     public static final int WIDTH = 10;
     public static final int HEIGHT = 10;

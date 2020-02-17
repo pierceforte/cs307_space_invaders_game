@@ -5,9 +5,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
+ * @author Pierce Forte
  * @author Jeff Kim
- * started 2/4/20
+ * Abstract class that is used for all moving objects on the screen, including the enemy, boss, spaceship, lasers, missiles
+ * Has common methods like setting x, y speed, position, checking out of bounds, to reduce duplicate code in all the subclasses.
+ * It inherits the ImageView class, which is one of the design decision we made.
  */
+
 public abstract class MovingObject extends ImageView {
     public static final int OUT_OF_BOUNDS_LOCATION = 20;
 
@@ -15,6 +19,16 @@ public abstract class MovingObject extends ImageView {
     private double ySpeed;
     private Image image;
 
+    /**
+     * Constructor for all moving objects
+     * @param xPos
+     * @param yPos
+     * @param xSpeed
+     * @param ySpeed
+     * @param width
+     * @param height
+     * @param imgName
+     */
     public MovingObject(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height, String imgName) {
         this.setX(xPos);
         this.setY(yPos);
@@ -26,47 +40,75 @@ public abstract class MovingObject extends ImageView {
         this.setFitHeight(height);
     }
 
+    /**
+     * Reads an image file from the resource folder
+     * @param imgName
+     * @return Image file that corresponds to the string
+     */
     public Image makeImage (String imgName) {
         return new Image(this.getClass().getClassLoader().getResource(imgName).toExternalForm());
     }
 
+    // Get x speed of the moving object
     public double getXSpeed() {
         return xSpeed;
     }
 
+    // Set x speed of the moving object
     public void setXSpeed(double xSpeed) {
         this.xSpeed = xSpeed;
     }
 
+    // Get y speed of the moving object
     public double getYSpeed() {
         return ySpeed;
     }
 
+    // Set y speed of the moving object
     public void setYSpeed(double ySpeed) {
         this.ySpeed = ySpeed;
     }
 
+    /**
+     * Update the position of the moving object for each step
+     * @param elapsedTime
+     */
     public void updatePositionOnStep(double elapsedTime) {
         this.setX(this.getX() + this.getXSpeed() * elapsedTime);
         this.setY(this.getY() - this.getYSpeed() * elapsedTime);
     }
 
+    /**
+     * Check if the moving object is out of bounds in the x direction
+     * @return Boolean value
+     */
     public boolean isOutOfXBounds() {
         return (this.getX() >= Game.GAME_WIDTH - this.getFitWidth()|| this.getX() <= 0);
     }
 
+    /**
+     * Check if the moving object is out of bounds in the y direction
+     * @return Boolean value
+     */
     public boolean isOutOfYBounds() {
         return (this.getY() >= Game.GAME_HEIGHT - OUT_OF_BOUNDS_LOCATION || this.getY() <= OUT_OF_BOUNDS_LOCATION);
     }
 
+    // Reverse the x direction
     public void reverseXDirection() {
         this.xSpeed *= -1;
     }
 
+    // Reverse the y direction
     public void reverseYDirection() {
         this.ySpeed *= -1;
     }
 
+    /**
+     * Check whether the two nodes on the screen intersects with each other
+     * @param node
+     * @return
+     */
     public boolean intersects(Node node) {
         return this.getBoundsInParent().intersects(node.getBoundsInLocal());
     }

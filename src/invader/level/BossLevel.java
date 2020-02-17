@@ -11,6 +11,14 @@ import javafx.scene.Group;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Specific class that inherits from the abstract class Level
+ * Sets up the game settings for a boss level.
+ */
+
+
 public class BossLevel extends Level {
     public static final int DEFAULT_SPACESHIP_LIVES = 5;
 

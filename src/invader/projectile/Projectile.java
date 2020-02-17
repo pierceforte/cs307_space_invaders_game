@@ -2,8 +2,14 @@ package invader.projectile;
 
 import invader.MovingObject;
 
-public abstract class Projectile extends MovingObject {
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Class that is used for Fireball, laser, and missile
+ * All subclasses inherits this class and has the common method of setting and getting the damage of that specific projectile
+ */
 
+public class Projectile extends MovingObject {
     public static final double DEFAULT_X_SPEED = 0;
     public static final double DEFAULT_Y_SPEED = 200;
     public static final double DEFAULT_WIDTH = 10;
@@ -55,12 +61,5 @@ public abstract class Projectile extends MovingObject {
      */
     public int getDamage() {
         return damage;
-    }
-
-    /**
-     * @return Check whether the missile belongs to an enemy or user
-     */
-    public boolean isEvil() {
-        return isEvil;
     }
 }

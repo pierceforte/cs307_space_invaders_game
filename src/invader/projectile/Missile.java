@@ -1,5 +1,11 @@
 package invader.projectile;
 
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Specific Missile class which is used for the spaceship when powerup is activated
+ */
+
 public class Missile extends Projectile{// extends Laser {
     public static final double WIDTH = 10;
     public static final double HEIGHT = 20;

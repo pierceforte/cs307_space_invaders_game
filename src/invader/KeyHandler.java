@@ -13,6 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Initializes the key setup for the game.
+ * Made it into a separate class because the Game class was becoming too long
+ */
+
 public class KeyHandler {
     public static final int KEY_CODE_1 = 49;
     public static final int KEY_CODE_3 = 51;
@@ -24,11 +32,19 @@ public class KeyHandler {
     private Map<KeyCode, Runnable> keyToActionMap = new HashMap<>();
     private Game myGame;
 
+    /**
+     * Constructor for KeyHandler, initializes the keymap
+     * @param game
+     */
     public KeyHandler(Game game) {
         myGame = game;
         initializeKeyToActionMap();
     }
 
+    /**
+     * Handles the input of the code only when the menu is active
+     * @param code
+     */
     public void handleInput(KeyCode code) {
         boolean takeInput = true;
         if (myGame.isMenuActive()) {
@@ -45,7 +61,7 @@ public class KeyHandler {
             return true;
         }
         else if (isKeyCodeADigit(code) || List.of(KeyCode.R, KeyCode.S).contains(code)) {
-            myGame.setMenuInactive();
+            myGame.setMenuActive(false);
             StatusDisplay.removeMenu(myGame.getRoot());
             return true;
         }
@@ -94,8 +110,8 @@ public class KeyHandler {
 
     private void handleSpaceKeyPress() {
         if (myGame.isStartMenuActive()) {
-            myGame.setMenuInactive();
-            myGame.setStartMenuInactive();
+            myGame.setMenuActive(false);
+            myGame.setStartMenuActive(false);
             StatusDisplay.removeMenu(myGame.getRoot());
             StatusDisplay.createInterfaceAndAddToRoot(myGame.getRoot(), Game.GAME_HEIGHT, Game.SCENE_WIDTH, Game.SCENE_HEIGHT);
             createFirstLevel();
@@ -126,7 +142,7 @@ public class KeyHandler {
 
     private void createHighScoreTextField() {
         if (myGame.isGameOverMenuActive()) {
-            myGame.setHighScoreTextFieldActive();
+            myGame.setHighScoreTextFieldActive(true);
             StatusDisplay.removeMenu(myGame.getRoot());
             StatusDisplay.createHighScoreTextField(myGame.getRoot());
         }
@@ -136,19 +152,19 @@ public class KeyHandler {
         if (myGame.isHighScoreTextFieldActive()) {
             StatusDisplay.storeHighScore(myGame.getRoot());
             StatusDisplay.createRestartOrEndMenu(myGame.getRoot());
-            myGame.setHighScoreTextFieldInactive();
-            myGame.setHighScoreTextFieldInactive();
-            myGame.setQuitGameMenuActive();
+            myGame.setHighScoreTextFieldActive(false);
+            myGame.setHighScoreTextFieldActive(false);
+            myGame.setQuitGameMenuActive(true);
         }
     }
 
     private void resetGame() {
         if (myGame.isQuitGameMenuActive()) {
             StatusDisplay.removeMenu(myGame.getRoot());
-            myGame.setGameOverMenuInactive();
-            myGame.setQuitGameMenuInactive();
+            myGame.setGameOverMenuActive(false);
+            myGame.setQuitGameMenuActive(false);
             StatusDisplay.updateHighScoreDisplay();
-            myGame.setStartMenuActive();
+            myGame.setStartMenuActive(true);
             myGame.setGameTimer(0);
             StatusDisplay.resetPointsDisplay();
             StatusDisplay.createStartMenu(myGame.getRoot());
