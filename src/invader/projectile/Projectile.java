@@ -2,6 +2,9 @@ package invader.projectile;
 
 import invader.MovingObject;
 
+/**
+ * Extends
+ */
 public abstract class Projectile extends MovingObject {
 
     public static final double DEFAULT_X_SPEED = 0;
