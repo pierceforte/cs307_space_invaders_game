@@ -452,6 +452,24 @@ public class GameTest extends DukeApplicationTest {
         }
     }
 
+    /**
+     * Test number of enemies in each level
+     */
+    @Test
+    public void testEnemyNumberInLevels1Through3() {
+        for (int level = Game.MIN_LEVEL; level < Game.MAX_LEVEL; level++) {
+            int numEnemies = 0;
+            for (Node node : myGame.getRoot().getChildren()) {
+                if (node.getClass() == Enemy.class) {
+                    numEnemies++;
+                }
+            }
+            assertEquals(EnemyLevel.ENEMIES_PER_ROW*3 + EnemyLevel.ENEMIES_PER_ROW * level, numEnemies);
+            clearEnemies();
+            press(myScene, KeyCode.S);
+        }
+    }
+
     private void clearEnemies() {
         // press D to delete each enemy
         for (List<Enemy> enemyRow : myEnemies) {
