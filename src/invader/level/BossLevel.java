@@ -71,11 +71,6 @@ public class BossLevel extends Level {
     }
 
     @Override
-    public List<List<Enemy>> getEvilEntities() {
-        return null;
-    }
-
-    @Override
     protected void handleEvilEntitiesMovement() {
         updateBossPosition();
     }
@@ -83,7 +78,7 @@ public class BossLevel extends Level {
     @Override
     protected void handleEvilEntityLasers(double gameTimer) {
         handleProjectileCollisionWithSpaceship(evilEntityProjectiles, spaceship);
-        handleProjectileBounds(evilEntityProjectiles);
+        handleEvilEntityProjectileBounds();
     }
 
     @Override

@@ -4,6 +4,7 @@ package invader.level;
 import invader.Game;
 import invader.StatusDisplay;
 import invader.entity.Enemy;
+import invader.entity.Entity;
 import invader.entity.Spaceship;
 import invader.powerup.BurstFirePowerUp;
 import invader.powerup.MissilePowerUp;
@@ -124,11 +125,6 @@ public class EnemyLevel extends Level {
         for (PowerUp powerUp: powerUps) powerUp.updatePositionOnStep(elapsedTime);
         updateProjectilePositionsOnStep(elapsedTime, evilEntityProjectiles);
         updateProjectilePositionsOnStep(elapsedTime, spaceshipProjectiles);
-    }
-
-    @Override
-    public List<List<Enemy>> getEvilEntities() {
-        return enemies;
     }
 
     @Override
