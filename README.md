@@ -86,6 +86,8 @@ Extra credit:
 - We assumed that the optimization of code was not our primary concern. For example, when creating the enemy nodes, instead of loading the image file for each enemy, we could have loaded one image and copied that to create the other enemies. While this would have been faster, we prioritized our program's functionality and design.
 
 - We were a little unsure about the difference between the cheat keys and key/mouse inputs above, which is why some are listed twice. In general, we made a strong effort to include a wide range of functionality that will both make our game more enjoyable to play and, of course, easier to grade.
+
+- Levels become more difficult because more enemies are present, the number of lives each enemy has is higher, and each enemy moves to the left and right faster. Overall, this makes the game harder because these more difficult elements are added while others stay constant, like the spaceship's lives and the powerups available. However, with more enemies, there are more powerups, which presents an opportunity for the player to better attack the level.
  
 
 ### Impressions
