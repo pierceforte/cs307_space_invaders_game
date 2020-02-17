@@ -34,6 +34,7 @@ public class Game extends Application {
     public static final int FRAMES_PER_SECOND = 60;
     public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
     public static final Paint BACKGROUND = Color.BLACK;
+    public static final int MIN_LEVEL = 1;
     public static final int MAX_LEVEL = 4;
 
     // some things we need to remember during our game
@@ -74,7 +75,13 @@ public class Game extends Application {
         myAnimation.play();
     }
 
-    // Create the game's "scene": what shapes will be in the game and their starting properties
+    /**
+     * Create the game's "scene": what shapes will be in the game and their starting properties
+     * @param width width of scene
+     * @param height height of scene
+     * @param background color of background
+     * @return
+     */
     public Scene setupScene(int width, int height, Paint background) {
         // create one top level collection to organize the things in the scene
         root = new Group();
@@ -90,97 +97,151 @@ public class Game extends Application {
         return myScene;
     }
 
-    // get the root
+    /**
+     * Get the root
+     * @return root the Group to which nodes are added for the game
+     */
     public Group getRoot() {
         return root;
     }
 
-    // get the current game level
+    /**
+     * Get the current game level
+     * @return current level
+     */
     public Level getCurLevel() {
         return curLevel;
     }
 
-    // set the current game lvel
+    /**
+     * Set the current game level
+     * @param curLevel current level
+     */
     public void setCurLevel(Level curLevel) {
         this.curLevel = curLevel;
     }
 
-    // get the game timer
+    /**
+     * Get the game timer
+     * @return gameTimer how long the game has run since its timer was reset
+     */
     public double getGameTimer() {
         return gameTimer;
     }
 
-    // Set the game time
+    /**
+     * Set the game time
+     * @param time what the timer should be set to
+     */
     public void setGameTimer(double time) {
         gameTimer = time;
     }
 
-    // set the menu active status
+    /**
+     * Set the menu active status
+     * @param isMenuActive
+     */
     public void setMenuActive(boolean isMenuActive) {
         this.isMenuActive = isMenuActive;
     }
 
-    // get whether the menu is active
+    /**
+     * Get whether the menu is active
+     * @return
+     */
     public boolean isMenuActive() {
         return isMenuActive;
     }
 
-    // get the status of game over menu status
+    /**
+     * Get the status of game over menu status
+     * @return
+     */
     public boolean isGameOverMenuActive() {
         return isGameOverMenuActive;
     }
 
-//    set the game over menu to active or inactive
+    /**
+     * Set the game over menu to active or inactive
+     * @param isGameOverMenuActive
+     */
     public void setGameOverMenuActive(boolean isGameOverMenuActive) {
         this.isGameOverMenuActive = isGameOverMenuActive;
     }
 
-    // get whether the start menu status is active
+    /**
+     * Get whether the start menu status is active
+     * @return
+     */
     public boolean isStartMenuActive() {
         return isStartMenuActive;
     }
 
-    // set the start menu active status
+    /**
+     * Set the start menu active status
+     * @param isStartMenuActive
+     */
     public void setStartMenuActive(boolean isStartMenuActive) {
         this.isStartMenuActive = isStartMenuActive;
     }
 
-    // get the active status of the quit game menu
+    /**
+     * Get the active status of the quit game menu
+     * @return
+     */
     public boolean isQuitGameMenuActive() {
         return isQuitGameMenuActive;
     }
 
-    // set the quit menu active status
+    /**
+     * Set the quit menu active status
+     * @param isQuitGameMenuActive
+     */
     public void setQuitGameMenuActive(boolean isQuitGameMenuActive) {
         this.isQuitGameMenuActive = isQuitGameMenuActive;
     }
 
-    // get whether the text field is active
+    /**
+     * Get whether the text field is active
+     * @return
+     */
     public boolean isHighScoreTextFieldActive() {
         return isHighScoreTextFieldActive;
     }
 
-    // Set the high score text field either active or inactive
+    /**
+     * Set the high score text field either active or inactive
+     * @param isHighScoreTextFieldActive
+     */
     public void setHighScoreTextFieldActive(boolean isHighScoreTextFieldActive) {
         this.isHighScoreTextFieldActive = isHighScoreTextFieldActive;
     }
 
-    // Get the animation status
+    /**
+     * Get the animation status
+     * @return
+     */
     public Animation.Status getAnimationStatus() {
         return myAnimation.getStatus();
     }
 
-    // Pause the animation
+    /**
+     * Get the animation status
+     */
     public void pauseAnimation() {
         myAnimation.pause();
     }
 
-    // Play the animation
+    /**
+     * Play the animation
+     */
     public void playAnimation() {
         myAnimation.play();
     }
 
-    // Change properties of shapes to animate them
+    /**
+     * Change properties of shapes to animate them
+     */
     void step() {
         if (!isMenuActive) {
             gameTimer += Game.SECOND_DELAY;
@@ -188,7 +249,10 @@ public class Game extends Application {
         }
     }
 
-    // What to do each time a key is pressed
+    /**
+     * Handles a given key press
+     * @param code signifies the key that was pressed
+     */
     private void handleKeyInput (KeyCode code) {
         myKeyHandler.handleInput(code);
     }
@@ -206,7 +270,7 @@ public class Game extends Application {
     }
 
     /**
-     * Start the program.x
+     * Start the program.
      */
     public static void main (String[] args) {
         launch(args);

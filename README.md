@@ -53,6 +53,8 @@ Key/Mouse inputs:
 - W: Reset game after high score entry
 - P: Pause game
 - Q: Exit game after high score entry
+- ENTER: enter high score when prompted
+- High score text field takes all input, except it cuts out the character ":" if present in given name
 
 Cheat keys:
 - 1-9: Jump to level

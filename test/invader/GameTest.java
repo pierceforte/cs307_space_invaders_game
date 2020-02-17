@@ -342,7 +342,6 @@ public class GameTest extends DukeApplicationTest {
         press(myScene, KeyCode.S);
         press(myScene, KeyCode.S);
         press(myScene, KeyCode.M);
-        for (Node node : myGame.getRoot().getChildren()) System.out.println(node.getId());
         PowerUp myPowerUp = lookup("#cheatPowerUp0").query();
         myPowerUp.setY(mySpaceship.getY() - 10);
         myPowerUp.setTimeActive(Game.SECOND_DELAY);

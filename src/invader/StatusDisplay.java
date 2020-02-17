@@ -1,5 +1,6 @@
 package invader;
 
+import invader.entity.Spaceship;
 import javafx.scene.Group;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -19,7 +20,9 @@ import java.util.*;
  * @author Pierce Forte
  * @author Jeff Kim
  * Class that is used to display all messages on the screen, It deals with the splash screens before, between, and after each level and
- * the current status for that level. All variables and methods are static because it could be used anytime during the game and only need one object of it.
+ * the current status for that level. All variables and methods are static because it could be used anytime during the game and do not need
+ * multiple instances. As such, the class is a final class. This class, if time had allowed, would have been a focus for refactoring given its length.
+ * While the number of constants is high, we wanted to focus on flexibility and eliminate duplication/magic values.
  */
 
 public final class StatusDisplay {
@@ -27,7 +30,13 @@ public final class StatusDisplay {
     public static final Paint MENU_BACKGROUND = Color.GRAY;
     public static final Paint INTERFACE_BACKGROUND = Color.GRAY;
     public static final Paint TEXT_COLOR = Color.MAROON;
+    public static final String GAMEOVER_TEXT = "GAME OVER!\n\n\n";
+    public static final String THANKS_TEXT = "THANKS FOR PLAYING!\n\n\n";
+    public static final String WINNER_TEXT = "YOU WIN!\n\n\n";
+    public static final String LEVEL_COMPLETE_TEXT = "LEVEL COMPLETE!\n\n\nPRESS S TO ADVANCE";
     public static final String RESTART_AND_CHANGE_LEVEL = "\n\nPRESS R TO RESTART LEVEL\n\nPRESS 1-9 TO CHANGE LEVEL";
+    public static final String RESTART_OR_EXIT_INSTRUCTIONS = "PRESS W TO PLAY AGAIN\n\nPRESS Q TO EXIT GAME";
+    public static final String HIGHSCORE_INSTRUCTION = "PRESS E TO SAVE YOUR SCORE\nAND RESET POINTS";
     public static final String FONT = "Verdana";
     public static final int DEFAULT_TEXT_SIZE = 15;
     public static final String HEART_IMAGE = "heart.png";
@@ -36,12 +45,18 @@ public final class StatusDisplay {
     public static final int HEART_IMAGE_SCALE_DOWN_FACTOR = 75;
     public static final int LIFE_COUNT_X_DIST_FROM_HEART = 35;
     public static final int LIFE_COUNT_Y_DIST_FROM_GAME_HEIGHT = 65;
+    public static final String CHARACTER_BETWEEN_HEART_AND_LIVES = " * ";
     public static final int LEVEL_NUM_X_POS = 22;
     public static final int LEVEL_NUM_Y_DIST_FROM_GAME_HEIGHT = 30;
+    public static final String LEVEL_TEXT = "LEVEL ";
     public static final int POINTS_X_DIST_FROM_SCENE_CENTER = -35;
     public static final int POINTS_Y_DIST_FROM_GAME_HEIGHT = 35;
+    public static final String POINTS_TEXT = "POINTS\n";
     public static final int HIGHSCORE_X_DIST_FROM_SCENE_WIDTH = 110;
     public static final int HIGHSCORE_Y_DIST_FROM_GAME_HEIGHT = 35;
+    public static final String HIGHSCORE_TEXT = "HIGHSCORE\n";
+    public static final String YOUR_SCORE_TEXT ="YOUR SCORE\n";
+    public static final String HIGHSCORE_CHART_TEXT = "\n\n\nHIGH SCORES:";
     public static final int DEFAULT_MENU_X_POS = 85;
     public static final int DEFAULT_MENU_Y_POS = 275;
     public static final int GAMEOVER_MENU_Y_POS = 200;
@@ -107,11 +122,11 @@ public final class StatusDisplay {
         createInterfaceBackground(root, game_height, scene_width, scene_height);
         heartImageDisplay = createImageDisplay(root, HEART_IMAGE_X_POS, game_height +
                 HEART_IMAGE_Y_DIST_FROM_GAME_HEIGHT, HEART_IMAGE, HEART_IMAGE_SCALE_DOWN_FACTOR);
-        lifeCountText = createTextDisplayAndAddToRoot(root, " * 3", heartImageDisplay.getX() +
+        lifeCountText = createTextDisplayAndAddToRoot(root, CHARACTER_BETWEEN_HEART_AND_LIVES + Spaceship.DEFAULT_LIVES, heartImageDisplay.getX() +
                 LIFE_COUNT_X_DIST_FROM_HEART, game_height + LIFE_COUNT_Y_DIST_FROM_GAME_HEIGHT, TEXT_COLOR);
-        levelNumberDisplay = createTextDisplayAndAddToRoot(root, "LEVEL 1", LEVEL_NUM_X_POS,
+        levelNumberDisplay = createTextDisplayAndAddToRoot(root, LEVEL_TEXT + Game.MIN_LEVEL, LEVEL_NUM_X_POS,
                 game_height + LEVEL_NUM_Y_DIST_FROM_GAME_HEIGHT, TEXT_COLOR);
-        pointsDisplay = createTextDisplayAndAddToRoot(root, "POINTS\n" + formatPoints(points), scene_width/2 +
+        pointsDisplay = createTextDisplayAndAddToRoot(root, POINTS_TEXT + formatPoints(points), scene_width/2 +
                 POINTS_X_DIST_FROM_SCENE_CENTER, game_height + POINTS_Y_DIST_FROM_GAME_HEIGHT, TEXT_COLOR);
         points = 0;
         addHighScoreDisplay(root, game_height, scene_width);
@@ -119,24 +134,24 @@ public final class StatusDisplay {
     }
 
     /**
-     * Update the life cound on the display
-     * @param lives
+     * Update the life count on the display
+     * @param lives number of lives to display on screen
      */
     public static void updateLifeCountDisplay(int lives) {
-        lifeCountText.setText(" * " + lives);
+        lifeCountText.setText(CHARACTER_BETWEEN_HEART_AND_LIVES + lives);
     }
 
     /**
-     * update the level number on display
-     * @param levelNumber
+     * Update the level number on display
+     * @param levelNumber level number to display
      */
     public static void updateLevelNumberDisplay(int levelNumber) {
-        levelNumberDisplay.setText("LEVEL " + levelNumber);
+        levelNumberDisplay.setText(LEVEL_TEXT + levelNumber);
     }
 
     /**
      * Get the menu text
-     * @return
+     * @return menuText
      */
     public static Text getMenuText() {
         return menuText;
@@ -144,20 +159,20 @@ public final class StatusDisplay {
 
     /**
      * Create starting splash screen
-     * @param root
+     * @param root the Group to which nodes are added for the game
      */
     public static void createStartMenu(Group root) {
         createMenu(root, START_MENU_X_POS, START_MENU_Y_POS, "SPACE INVADERS\nBY PIERCE AND JEFF\n\n\nYOU START WITH 3 LIVES\n\n" +
                 "DESTROY ENEMIES TO EARN POINTS\n\nMOVE THE SPACESHIP WITH\nLEFT AND RIGHT KEYS\n\n" +
                 "COLLECT POWER UPS: \nSPEED UP\nSTRONGER MISSILES\nMULTIPLE MISSILES\n\nBEAT ALL 3 LEVELS + BOSS LEVEL TO WIN!\n\n\n" +
-                "CHEAT CODES:\n1-9   SKIP TO LEVEL\nA,M   DROP POWER UP\nD   DESTROY FIRST ENEMY\n" +
+                "CHEAT CODES:\n1-9   SKIP TO LEVEL\nA,B,F,M   DROP POWER UP\nD   DESTROY FIRST ENEMY\n" +
                 "L   ADD 1 LIFE\nP   PAUSE\nR   RESET LEVEL\nS   SKIP TO NEXT LEVEL\n\n\n" +
                 "PRESS SPACE TO BEGIN");
     }
 
     /**
      * Removes the splash screen
-     * @param root
+     * @param root the Group to which nodes are added for the game
      */
     public static void removeMenu(Group root) {
         root.getChildren().remove(menuBackground);
@@ -166,52 +181,52 @@ public final class StatusDisplay {
 
     /**
      * Create the game over splash screen
-     * @param root
+     * @param root the Group to which nodes are added for the game
      */
     public static void createGameOverMenu(Group root) {
-        createMenu(root, DEFAULT_MENU_X_POS, GAMEOVER_MENU_Y_POS, "GAME OVER!\n\n\n" + getYourScoreText() + "PRESS E TO SAVE YOUR SCORE\nAND RESET POINTS"
+        createMenu(root, DEFAULT_MENU_X_POS, GAMEOVER_MENU_Y_POS, GAMEOVER_TEXT + getYourScoreText() + HIGHSCORE_INSTRUCTION
                 + RESTART_AND_CHANGE_LEVEL + collectTopHighScores(NUM_HIGHSCORES_DISPLAYED));
     }
 
     /**
      * Create the level intermission level splash screen
-     * @param root
+     * @param root the Group to which nodes are added for the game
      */
     public static void createLevelIntermissionMenu(Group root) {
-        createMenu(root, DEFAULT_MENU_X_POS, DEFAULT_MENU_Y_POS, "LEVEL COMPLETE!\n\n\nPRESS S TO ADVANCE" + RESTART_AND_CHANGE_LEVEL);
+        createMenu(root, DEFAULT_MENU_X_POS, DEFAULT_MENU_Y_POS, LEVEL_COMPLETE_TEXT + RESTART_AND_CHANGE_LEVEL);
     }
 
     /**
-     * Create the boss level intermession menu
-     * @param root
+     * Create the boss level intermission menu
+     * @param root the Group to which nodes are added for the game
      */
     public static void createBossLevelMenu(Group root) {
         createMenu(root, BOSS_MENU_X_POS, BOSS_MENU_Y_POS, "LEVEL COMPLETE!\n\n\nGET READY FOR THE BOSS ROUND\n\n" +
                 "RULES\nSTART WITH 5 LIVES \n\nBOSS HAS:\n10 LIVES\nVULNERABLE STATE\nINVINCIBLE STATE\n" +
-                "LASERS: SINGLE DAMAGE\nFIREBALLS: DOUBLE DAMAGE\n\n\nPRESS S TO START ");
+                "LASERS: SINGLE DAMAGE\nFIREBALLS: DOUBLE DAMAGE\n\n\nPRESS S TO START");
     }
 
     /**
      * Create the splash screen for victory condition
-     * @param root
+     * @param root the Group to which nodes are added for the game
      */
     public static void createVictoryMenu(Group root) {
-        createMenu(root, DEFAULT_MENU_X_POS, VICTORY_MENU_Y_POS, "YOU WIN!\n\n\n" + getYourScoreText() + "PRESS E TO SAVE YOUR SCORE\nAND RESET POINTS"
+        createMenu(root, DEFAULT_MENU_X_POS, VICTORY_MENU_Y_POS, WINNER_TEXT + getYourScoreText() + HIGHSCORE_INSTRUCTION
                 + RESTART_AND_CHANGE_LEVEL + collectTopHighScores(NUM_HIGHSCORES_DISPLAYED));
     }
 
     /**
      * Create restart or end splash screen
-     * @param root
+     * @param root the Group to which nodes are added for the game
      */
     public static void createRestartOrEndMenu(Group root) {
-        createMenu(root, THANKS_MENU_X_POS, THANKS_MENU_Y_POS, "THANKS FOR PLAYING!\n\n\n" + getYourScoreText()
-                + "PRESS W TO PLAY AGAIN\n\nPRESS Q TO EXIT GAME" + collectTopHighScores(NUM_HIGHSCORES_DISPLAYED));
+        createMenu(root, THANKS_MENU_X_POS, THANKS_MENU_Y_POS, THANKS_TEXT + getYourScoreText()
+                + RESTART_OR_EXIT_INSTRUCTIONS + collectTopHighScores(NUM_HIGHSCORES_DISPLAYED));
     }
 
     /**
      * Create the high score text field on the status display
-     * @param root
+     * @param root the Group to which nodes are added for the game
      */
     public static void createHighScoreTextField(Group root) {
         highScoreTextField = new TextField(DEFAULT_HIGHSCORE_TEXT_FIELD_TEXT);
@@ -219,14 +234,13 @@ public final class StatusDisplay {
         highScoreTextField.setLayoutX(Game.GAME_WIDTH/2 - HIGHSCORE_TEXT_FIELD_WIDTH/2);
         highScoreTextField.setLayoutY(Game.GAME_HEIGHT/2);
 
-        System.out.println(highScoreTextField.getWidth());
         highScoreTextField.setPromptText(DEFAULT_HIGHSCORE_TEXT_FIELD_TEXT);
         root.getChildren().add(highScoreTextField);
     }
 
     /**
      * Keep track of the high score of the game
-     * @param root
+     * @param root the Group to which nodes are added for the game
      */
     public static void storeHighScore(Group root) {
         String name = highScoreTextField.getText();
@@ -237,12 +251,12 @@ public final class StatusDisplay {
     }
 
     /**
-     * Update the point on the display
-     * @param pointsEarned
+     * Update the points on the display
+     * @param pointsEarned the number of points to be added to the points on display
      */
     public static void updatePointsDisplay(int pointsEarned) {
         points += pointsEarned;
-        pointsDisplay.setText("POINTS\n" + formatPoints(points));
+        pointsDisplay.setText(POINTS_TEXT + formatPoints(points));
     }
 
     /**
@@ -254,7 +268,7 @@ public final class StatusDisplay {
             Scanner myReader = new Scanner(file);
             if (myReader.hasNextLine()) {
                 int highScore = Integer.parseInt(myReader.nextLine().split(SCORE_DELIMITER)[1]);
-                highScoreDisplay.setText("HIGHSCORE\n" + formatPoints(highScore));
+                highScoreDisplay.setText(HIGHSCORE_TEXT + formatPoints(highScore));
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -267,10 +281,12 @@ public final class StatusDisplay {
      */
     public static void resetPointsDisplay() {
         points = 0;
-        pointsDisplay.setText("POINTS\n" + formatPoints(0));
+        updatePointsDisplay(0);
     }
 
-    // Get menu background
+    /**
+     * Get menu background
+     */
     public static Rectangle getMenuBackground() {
         return menuBackground;
     }
@@ -294,7 +310,7 @@ public final class StatusDisplay {
     }
 
     private static String getYourScoreText() {
-        return "YOUR SCORE\n" + points + "\n\n";
+        return YOUR_SCORE_TEXT + points + "\n\n";
     }
 
     private static Text createTextDisplayAndAddToRoot(Group root, String text, double xPos, double yPos, Paint color) {
@@ -342,7 +358,7 @@ public final class StatusDisplay {
 
     private static String collectTopHighScores(int maxNumberOfHighScores) {
         if (highscores.isEmpty()) return "";
-        String highscoresChart = "\n\n\nHIGH SCORES:";
+        String highscoresChart = HIGHSCORE_CHART_TEXT;
         int scoresCharted = 0;
         for (String highscore : highscores) {
             if (scoresCharted >= maxNumberOfHighScores) break;
@@ -353,7 +369,7 @@ public final class StatusDisplay {
     }
 
     private static void addHighScoreDisplay(Group root, double game_height, double scene_width) {
-        highScoreDisplay = createTextDisplayAndAddToRoot(root, "HIGHSCORE\n" + formatPoints(0), scene_width -
+        highScoreDisplay = createTextDisplayAndAddToRoot(root, HIGHSCORE_TEXT + formatPoints(0), scene_width -
                 HIGHSCORE_X_DIST_FROM_SCENE_WIDTH, game_height + HIGHSCORE_Y_DIST_FROM_GAME_HEIGHT, TEXT_COLOR);
         updateHighScoreDisplay();
     }
