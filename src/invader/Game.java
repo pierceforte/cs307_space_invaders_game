@@ -27,6 +27,7 @@ import java.net.URISyntaxException;
 
 public class Game extends Application {
     public static final String TITLE = "Space Invaders";
+    public static final String GAME_MUSIC_FILE = "game_music.wav";
     public static final int GAME_WIDTH = 400;
     public static final int GAME_HEIGHT = 600;
     public static final int SCENE_WIDTH = 400;
@@ -60,7 +61,7 @@ public class Game extends Application {
     @Override
     public void start (Stage stage) throws URISyntaxException {
         // add music. NOTE: due to issues with garbage collection, the following two methods could not be combined into one
-        backgroundMusicMediaPlayer = createMediaPlayer("game_music.mp3");
+        backgroundMusicMediaPlayer = createMediaPlayer(GAME_MUSIC_FILE);
         playMusic(MediaPlayer.INDEFINITE, true, backgroundMusicMediaPlayer);
         // attach scene to the stage and display it
         myScene = setupScene(SCENE_WIDTH, SCENE_HEIGHT, BACKGROUND);
