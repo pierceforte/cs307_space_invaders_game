@@ -22,6 +22,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Pierce Forte
+ * @author Jeff Kim
+ * Class that inherits from Professor Duvall's DukeApplicationTest and implements each of our game's tests. This class is extremely
+ * important due to its ability to gage program's functionality and level of confidence in this functionality.
+ */
 public class GameTest extends DukeApplicationTest {
     private final String LEFTMOST_BOTTOM_ENEMY = "#enemy27";
     private final String ENEMY_ABOVE_SPACESHIP = "#enemy31";
