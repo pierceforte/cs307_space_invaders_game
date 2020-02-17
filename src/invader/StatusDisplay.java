@@ -72,6 +72,10 @@ public final class StatusDisplay {
         //not called
     }
 
+    /**
+     * Logs the error if it ever happens
+     * @param e
+     */
     public static void logError(Exception e) {
         try {
             FileWriter fStream = new FileWriter(ERROR_LOG, true);
@@ -85,6 +89,13 @@ public final class StatusDisplay {
         }
     }
 
+    /**
+     * Create the interface of the status display
+     * @param root
+     * @param game_height
+     * @param scene_width
+     * @param scene_height
+     */
     public static void createInterfaceAndAddToRoot(Group root, int game_height, int scene_width, int scene_height) {
         createInterfaceBackground(root, game_height, scene_width, scene_height);
         heartImageDisplay = createImageDisplay(root, HEART_IMAGE_X_POS, game_height +
@@ -100,18 +111,34 @@ public final class StatusDisplay {
         highscores.addAll(readInHighScores());
     }
 
+    /**
+     * Update the life cound on the display
+     * @param lives
+     */
     public static void updateLifeCountDisplay(int lives) {
         lifeCountText.setText(" * " + lives);
     }
 
+    /**
+     * update the level number on display
+     * @param levelNumber
+     */
     public static void updateLevelNumberDisplay(int levelNumber) {
         levelNumberDisplay.setText("LEVEL " + levelNumber);
     }
 
+    /**
+     * Get the menu text
+     * @return
+     */
     public static Text getMenuText() {
         return menuText;
     }
 
+    /**
+     * Create starting splash screen
+     * @param root
+     */
     public static void createStartMenu(Group root) {
         createMenu(root, START_MENU_X_POS, START_MENU_Y_POS, "SPACE INVADERS\nBY PIERCE AND JEFF\n\n\nYOU START WITH 3 LIVES\n\n" +
                 "DESTROY ENEMIES TO EARN POINTS\n\nMOVE THE SPACESHIP WITH\nLEFT AND RIGHT KEYS\n\n" +
@@ -121,36 +148,64 @@ public final class StatusDisplay {
                 "PRESS SPACE TO BEGIN");
     }
 
+    /**
+     * Removes the splash screen
+     * @param root
+     */
     public static void removeMenu(Group root) {
         root.getChildren().remove(menuBackground);
         root.getChildren().remove(menuText);
     }
 
+    /**
+     * Create the game over splash screen
+     * @param root
+     */
     public static void createGameOverMenu(Group root) {
         createMenu(root, DEFAULT_MENU_X_POS, GAMEOVER_MENU_Y_POS, "GAME OVER!\n\n\n" + getYourScoreText() + "PRESS E TO SAVE YOUR SCORE\nAND RESET POINTS"
                 + RESTART_AND_CHANGE_LEVEL + collectTopHighScores(NUM_HIGHSCORES_DISPLAYED));
     }
 
+    /**
+     * Create the level intermission level splash screen
+     * @param root
+     */
     public static void createLevelIntermissionMenu(Group root) {
         createMenu(root, DEFAULT_MENU_X_POS, DEFAULT_MENU_Y_POS, "LEVEL COMPLETE!\n\n\nPRESS S TO ADVANCE" + RESTART_AND_CHANGE_LEVEL);
     }
 
+    /**
+     * Create the boss level intermession menu
+     * @param root
+     */
     public static void createBossLevelMenu(Group root) {
         createMenu(root, BOSS_MENU_X_POS, BOSS_MENU_Y_POS, "LEVEL COMPLETE!\n\n\nGET READY FOR THE BOSS ROUND\n\n" +
                 "RULES\nSTART WITH 5 LIVES \n\nBOSS HAS:\n10 LIVES\nVULNERABLE STATE\nINVINCIBLE STATE\n" +
                 "LASERS: SINGLE DAMAGE\nFIREBALLS: DOUBLE DAMAGE\n\n\nPRESS S TO START ");
     }
 
+    /**
+     * Create the splash screen for victory condition
+     * @param root
+     */
     public static void createVictoryMenu(Group root) {
         createMenu(root, DEFAULT_MENU_X_POS, VICTORY_MENU_Y_POS, "YOU WIN!\n\n\n" + getYourScoreText() + "PRESS E TO SAVE YOUR SCORE\nAND RESET POINTS"
                 + RESTART_AND_CHANGE_LEVEL + collectTopHighScores(NUM_HIGHSCORES_DISPLAYED));
     }
 
+    /**
+     * Create restart or end splash screen
+     * @param root
+     */
     public static void createRestartOrEndMenu(Group root) {
         createMenu(root, THANKS_MENU_X_POS, THANKS_MENU_Y_POS, "THANKS FOR PLAYING!\n\n\n" + getYourScoreText()
                 + "PRESS W TO PLAY AGAIN\n\nPRESS Q TO EXIT GAME" + collectTopHighScores(NUM_HIGHSCORES_DISPLAYED));
     }
 
+    /**
+     * Create the high score text field on the status display
+     * @param root
+     */
     public static void createHighScoreTextField(Group root) {
         highScoreTextField = new TextField(DEFAULT_HIGHSCORE_TEXT_FIELD_TEXT);
         highScoreTextField.setPrefWidth(HIGHSCORE_TEXT_FIELD_WIDTH);
@@ -162,6 +217,10 @@ public final class StatusDisplay {
         root.getChildren().add(highScoreTextField);
     }
 
+    /**
+     * Keep track of the high score of the game
+     * @param root
+     */
     public static void storeHighScore(Group root) {
         String name = highScoreTextField.getText();
         name = String.join("", name.split(SCORE_DELIMITER));
@@ -170,11 +229,18 @@ public final class StatusDisplay {
         updateHighScoreList(highscores);
     }
 
+    /**
+     * Update the point on the display
+     * @param pointsEarned
+     */
     public static void updatePointsDisplay(int pointsEarned) {
         points += pointsEarned;
         pointsDisplay.setText("POINTS\n" + formatPoints(points));
     }
 
+    /**
+     * Update the high score on the display
+     */
     public static void updateHighScoreDisplay() {
         File file = new File(HIGHSCORES_FILE_PATH);
         try {
@@ -189,11 +255,15 @@ public final class StatusDisplay {
         }
     }
 
+    /**
+     * Reset the total points on display
+     */
     public static void resetPointsDisplay() {
         points = 0;
         pointsDisplay.setText("POINTS\n" + formatPoints(0));
     }
 
+    // Get menu background
     public static Rectangle getMenuBackground() {
         return menuBackground;
     }

@@ -22,11 +22,19 @@ public class KeyHandler {
     private Map<KeyCode, Runnable> keyToActionMap = new HashMap<>();
     private Game myGame;
 
+    /**
+     * Constructor for KeyHandler, initializes the keymap
+     * @param game
+     */
     public KeyHandler(Game game) {
         myGame = game;
         initializeKeyToActionMap();
     }
 
+    /**
+     * Handles the input of the code only when the menu is active
+     * @param code
+     */
     public void handleInput(KeyCode code) {
         boolean takeInput = true;
         if (myGame.isMenuActive()) {
