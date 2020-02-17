@@ -15,6 +15,7 @@ public class Enemy extends Entity {
     public static final String IDENTIFIER = "enemy";
     public static final String ENEMY_IMG_PREFIX = "enemy";
     public static final String ENEMY_IMG_EXTENSION = ".png";
+    public static final int DEFAULT_Y_SPEED = 0;
     public static final int DEFAULT_TIME_BETWEEN_SHOTS = 20;
     public static final double MIN_TIME_BETWEEN_SHOTS = 0.5;
     public static final int EARLIEST_START_FIRING_TIME = 5;

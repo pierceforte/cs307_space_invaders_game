@@ -24,14 +24,12 @@ import java.util.stream.IntStream;
 public class EnemyLevel extends Level {
     public static final double ENEMY_SPACING = 10;
     public static final int ENEMIES_PER_ROW = 9;
-    public static final int POINTS_PER_ENEMY_HIT = 25;
     public static final int ENEMY_SPEED_FACTOR_BY_LEVEL = 10;
     public static final int ENEMY_LASER_ROTATION = 0;
     public static final double DECREASE_TIME_BETWEEN_SHOTS_QUOTIENT = 30;
     public static final double PERCENT_ENEMIES_WITH_EACH_POWERUP = 0.10;
     public static final List<Class> POWER_UP_TYPES = List.of(BurstFirePowerUp.class, MissilePowerUp.class, SpaceshipSpeedPowerUp.class);
     public static final int NUM_POWER_UP_TYPES = POWER_UP_TYPES.size();
-    public static final String CHEAT_POWER_UP_ID_PREFIX = "cheatPowerUp";
 
     private int curCheatKeyPowerUpIdNumber = 0;
 
@@ -42,7 +40,6 @@ public class EnemyLevel extends Level {
     private List<List<Enemy>> enemies;
     private List<PowerUp> powerUps = new ArrayList<>();
     private List<List<Class>> powerUpGrid;
-    //private Map<Integer, PowerUp> powerUpIntegerToType = Map.of(1, SpaceshipSpeedPowerUp);
 
     public EnemyLevel(Group root, int levelNumber, Game myGame){
         super(root, levelNumber, myGame);
@@ -86,28 +83,28 @@ public class EnemyLevel extends Level {
         int randomIndex = ThreadLocalRandom.current().nextInt(0, NUM_POWER_UP_TYPES);
         Class powerUpClass = POWER_UP_TYPES.get(randomIndex);
         PowerUp powerUp = createPowerUpFromClassName(powerUpClass, Game.GAME_WIDTH/2,Game.GAME_HEIGHT/2,
-                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber);
+                PowerUp.CHEAT_POWER_UP_IDENTIFIER + curCheatKeyPowerUpIdNumber);
         addCheatPowerUp(gameTimer, powerUp);
     }
 
     @Override
     public void addSpeedPowerUp(double gameTimer) {
         PowerUp powerUp = new SpaceshipSpeedPowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber);
+                PowerUp.CHEAT_POWER_UP_IDENTIFIER + curCheatKeyPowerUpIdNumber);
         addCheatPowerUp(gameTimer, powerUp);
     }
 
     @Override
     public void addMissilePowerUp(double gameTimer) {
         PowerUp powerUp = new MissilePowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber);
+                PowerUp.CHEAT_POWER_UP_IDENTIFIER + curCheatKeyPowerUpIdNumber);
         addCheatPowerUp(gameTimer, powerUp);
     }
 
     @Override
     public void addBurstFirePowerUp(double gameTimer) {
         PowerUp powerUp = new BurstFirePowerUp(Game.GAME_WIDTH/2, Game.GAME_HEIGHT/2,
-                CHEAT_POWER_UP_ID_PREFIX + curCheatKeyPowerUpIdNumber);
+                PowerUp.CHEAT_POWER_UP_IDENTIFIER + curCheatKeyPowerUpIdNumber);
         addCheatPowerUp(gameTimer, powerUp);
     }
 
@@ -190,15 +187,7 @@ public class EnemyLevel extends Level {
             List<Enemy> tempRow = new ArrayList<>();
             double xPos = (Game.GAME_WIDTH - enemyIdentifiers.get(0).size() * (ENEMY_SPACING + Enemy.WIDTH) - ENEMY_SPACING)/2;
             for (int col = 0; col < enemyIdentifiers.get(0).size(); col++) {
-                PowerUp curPowerUp = null;
-                int lives = enemyIdentifiers.get(row).get(col);
-                if (powerUpGrid.get(row).get(col) != null) {
-                    curPowerUp = createPowerUpFromClassName(powerUpGrid.get(row).get(col),
-                            xPos + Enemy.WIDTH/2, yPos, "enemyPowerUp" + col + row*ENEMIES_PER_ROW);
-                }
-                Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*Math.abs(lives),
-                        0, Math.abs(lives), col + row*ENEMIES_PER_ROW, curPowerUp);
-                if (lives < 0) curEnemy.setHasBurstFire(true);
+                Enemy curEnemy = createEnemy(row, col, xPos, yPos);
                 tempRow.add(curEnemy);
                 xPos += Enemy.WIDTH + ENEMY_SPACING;
             }
@@ -221,6 +210,19 @@ public class EnemyLevel extends Level {
         }
         rows = this.enemyIdentifiers.size();
         numEnemies = rows * ENEMIES_PER_ROW;
+    }
+
+    private Enemy createEnemy(int row, int col, double xPos, double yPos) {
+        PowerUp curPowerUp = null;
+        int lives = enemyIdentifiers.get(row).get(col);
+        if (powerUpGrid.get(row).get(col) != null) {
+            curPowerUp = createPowerUpFromClassName(powerUpGrid.get(row).get(col),
+                    xPos + Enemy.WIDTH/2, yPos, PowerUp.ENEMY_POWERUP_IDENTIFIER + col + row*ENEMIES_PER_ROW);
+        }
+        Enemy curEnemy = new Enemy(xPos, yPos, ENEMY_SPEED_FACTOR_BY_LEVEL*levelNumber,
+                Enemy.DEFAULT_Y_SPEED, Math.abs(lives), col + row*ENEMIES_PER_ROW, curPowerUp);
+        if (lives < 0) curEnemy.setHasBurstFire(true);
+        return curEnemy;
     }
 
     private void handlePowerUps(double gameTimer) {

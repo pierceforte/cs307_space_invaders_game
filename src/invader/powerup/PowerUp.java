@@ -8,6 +8,8 @@ public abstract class PowerUp extends MovingObject {
     public static final int HEIGHT = 10;
     public static final int X_SPEED = 0;
     public static final int Y_SPEED = -100;
+    public static final String ENEMY_POWERUP_IDENTIFIER = "enemyPowerUp";
+    public static final String CHEAT_POWER_UP_IDENTIFIER = "cheatPowerUp";
 
     private boolean hasBeenActivated = false;
     private boolean isActive = false;

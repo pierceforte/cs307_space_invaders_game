@@ -5,7 +5,7 @@ import invader.entity.Spaceship;
 public class BurstFirePowerUp extends PowerUp {
 
     public static final String IMG_NAME = "burstpower.gif";
-    public static final int TIME_ACTIVE = 6;
+    public static final int TIME_ACTIVE = 8;
 
     /**
      * Constructor
