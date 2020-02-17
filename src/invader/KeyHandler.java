@@ -43,7 +43,7 @@ public class KeyHandler {
             return true;
         }
         else if (isKeyCodeADigit(code) || List.of(KeyCode.R, KeyCode.S).contains(code)) {
-            myGame.setMenuInactive();
+            myGame.setMenuActive(false);
             StatusDisplay.removeMenu(myGame.getRoot());
             return true;
         }
@@ -92,8 +92,8 @@ public class KeyHandler {
 
     private void handleSpaceKeyPress() {
         if (myGame.isStartMenuActive()) {
-            myGame.setMenuInactive();
-            myGame.setStartMenuInactive();
+            myGame.setMenuActive(false);
+            myGame.setStartMenuActive(false);
             StatusDisplay.removeMenu(myGame.getRoot());
             StatusDisplay.createInterfaceAndAddToRoot(myGame.getRoot(), Game.GAME_HEIGHT, Game.SCENE_WIDTH, Game.SCENE_HEIGHT);
             createFirstLevel();
@@ -124,7 +124,7 @@ public class KeyHandler {
 
     private void createHighScoreTextField() {
         if (myGame.isGameOverMenuActive()) {
-            myGame.setHighScoreTextFieldActive();
+            myGame.setHighScoreTextFieldActive(true);
             StatusDisplay.removeMenu(myGame.getRoot());
             StatusDisplay.createHighScoreTextField(myGame.getRoot());
         }
@@ -134,19 +134,19 @@ public class KeyHandler {
         if (myGame.isHighScoreTextFieldActive()) {
             StatusDisplay.storeHighScore(myGame.getRoot());
             StatusDisplay.createRestartOrEndMenu(myGame.getRoot());
-            myGame.setHighScoreTextFieldInactive();
-            myGame.setHighScoreTextFieldInactive();
-            myGame.setQuitGameMenuActive();
+            myGame.setHighScoreTextFieldActive(false);
+            myGame.setHighScoreTextFieldActive(false);
+            myGame.setQuitGameMenuActive(true);
         }
     }
 
     private void resetGame() {
         if (myGame.isQuitGameMenuActive()) {
             StatusDisplay.removeMenu(myGame.getRoot());
-            myGame.setGameOverMenuInactive();
-            myGame.setQuitGameMenuInactive();
+            myGame.setGameOverMenuActive(false);
+            myGame.setQuitGameMenuActive(false);
             StatusDisplay.updateHighScoreDisplay();
-            myGame.setStartMenuActive();
+            myGame.setStartMenuActive(true);
             myGame.setGameTimer(0);
             StatusDisplay.resetPointsDisplay();
             StatusDisplay.createStartMenu(myGame.getRoot());

@@ -8,6 +8,9 @@ public class MissilePowerUp extends PowerUp {
 
     /**
      * Constructor
+     * @param xPos
+     * @param yPos
+     * @param id
      */
     public MissilePowerUp(double xPos, double yPos, String id) {
         super(xPos, yPos, IMG_NAME, id);

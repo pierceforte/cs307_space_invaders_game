@@ -192,8 +192,8 @@ public abstract class Level {
     }
 
     private void endLevel() {
-        myGame.setMenuActive();
-        myGame.setGameOverMenuActive();
+        myGame.setMenuActive(true);
+        myGame.setGameOverMenuActive(true);
         clearLevel();
     }
 

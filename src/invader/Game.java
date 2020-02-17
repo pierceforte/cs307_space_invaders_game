@@ -82,94 +82,92 @@ public class Game extends Application {
         return myScene;
     }
 
+    // get the root
     public Group getRoot() {
         return root;
     }
 
+    // get the current game level
     public Level getCurLevel() {
         return curLevel;
     }
 
+    // set the current game lvel
     public void setCurLevel(Level curLevel) {
         this.curLevel = curLevel;
     }
 
+    // get the game timer
     public double getGameTimer() {
         return gameTimer;
     }
 
+    // Set the game time
     public void setGameTimer(double time) {
         gameTimer = time;
     }
 
-    public void setMenuActive() {
-        isMenuActive = true;
+    // set the menu active status
+    public void setMenuActive(boolean isMenuActive) {
+        this.isMenuActive = isMenuActive;
     }
 
-    public void setMenuInactive() {
-        isMenuActive = false;
-    }
-
+    // get whether the menu is active
     public boolean isMenuActive() {
         return isMenuActive;
     }
 
+    // get the status of game over menu status
     public boolean isGameOverMenuActive() {
         return isGameOverMenuActive;
     }
 
-    public void setGameOverMenuActive() {
-        isGameOverMenuActive = true;
+//    set the game over menu to active or inactive
+    public void setGameOverMenuActive(boolean isGameOverMenuActive) {
+        this.isGameOverMenuActive = isGameOverMenuActive;
     }
 
-    public void setGameOverMenuInactive() {
-        isGameOverMenuActive = false;
-    }
-
+    // get whether the start menu status is active
     public boolean isStartMenuActive() {
         return isStartMenuActive;
     }
 
-    public void setStartMenuActive() {
-        isStartMenuActive = true;
+    // set the start menu active status
+    public void setStartMenuActive(boolean isStartMenuActive) {
+        this.isStartMenuActive = isStartMenuActive;
     }
 
-    public void setStartMenuInactive() {
-        isStartMenuActive = false;
-    }
-
+    // get the active status of the quit game menu
     public boolean isQuitGameMenuActive() {
         return isQuitGameMenuActive;
     }
 
-    public void setQuitGameMenuActive() {
-        isQuitGameMenuActive = true;
+    // set the quit menu active status
+    public void setQuitGameMenuActive(boolean isQuitGameMenuActive) {
+        this.isQuitGameMenuActive = isQuitGameMenuActive;
     }
 
-    public void setQuitGameMenuInactive() {
-        isQuitGameMenuActive = false;
-    }
-
+    // get whether the text field is active
     public boolean isHighScoreTextFieldActive() {
         return isHighScoreTextFieldActive;
     }
 
-    public void setHighScoreTextFieldActive() {
-        isHighScoreTextFieldActive = true;
+    // Set the high score text field either active or inactive
+    public void setHighScoreTextFieldActive(boolean isHighScoreTextFieldActive) {
+        this.isHighScoreTextFieldActive = isHighScoreTextFieldActive;
     }
 
-    public void setHighScoreTextFieldInactive() {
-        isHighScoreTextFieldActive = false;
-    }
-
+    // Get the animation status
     public Animation.Status getAnimationStatus() {
         return myAnimation.getStatus();
     }
 
+    // Pause the animation
     public void pauseAnimation() {
         myAnimation.pause();
     }
 
+    // Play the animation
     public void playAnimation() {
         myAnimation.play();
     }
