@@ -3,8 +3,10 @@ package invader;
 import invader.level.BossLevel;
 import invader.level.EnemyLevel;
 import invader.level.Level;
+import invader.projectile.Projectile;
 import javafx.animation.Animation;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
