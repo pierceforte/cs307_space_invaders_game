@@ -1,9 +1,12 @@
 package invader.projectile;
 
 /**
+ * This class inherits the abstract Projectile class, implementing a more powerful projectile that does two damage.
+ *
+ * Used by the Spaceship when the MissilePowerUp is active.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Specific Missile class which is used for the spaceship when powerup is activated
  */
 
 public class Missile extends Projectile{// extends Laser {

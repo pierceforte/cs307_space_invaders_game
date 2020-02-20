@@ -3,11 +3,16 @@ package invader.projectile;
 import invader.MovingObject;
 
 /**
+ * This is an abstract class used by its subclasses to create Projectiles that can collide with Entities in the game and do damage.
+ *
+ * This class is used for the Fireball, Laser, and Missile classes.
+ *
+ * The class is abstract so that it cannot be instantiated.
+ *
+ * All subclasses inherits this class have the common methods of setting and getting the damage of that specific projectile.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Class that is used for Fireball, laser, and missile
- * The class is abstract so that it's not accidentally instantiated
- * All subclasses inherits this class and has the common method of setting and getting the damage of that specific projectile
  */
 
 public abstract class Projectile extends MovingObject {
@@ -39,6 +44,7 @@ public abstract class Projectile extends MovingObject {
      * @param imgName: name of the image file
      * @param rotation: Rotation of the image
      * @param idNumber: id number of the projectile for testing
+     * @param projectileType: implementation of projectile, used in id name for testing
      */
     public Projectile(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height,
                  boolean isEvil, String imgName, double rotation, int idNumber, String projectileType) {

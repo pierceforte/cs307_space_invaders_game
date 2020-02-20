@@ -3,10 +3,10 @@ package invader.powerup;
 import invader.entity.Spaceship;
 
 /**
+ * This class inherits the abstract PowerUp class, implementing the ability for the spaceship to shoot three lasers in different directions.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Specific Burst power up class that inherits the abstract class Powerup
- * Increases the power of missile on the screen
  */
 
 public class BurstFirePowerUp extends PowerUp {

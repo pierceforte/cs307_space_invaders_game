@@ -4,10 +4,12 @@ import invader.MovingObject;
 import invader.entity.Spaceship;
 
 /**
+ * This is an abstract class that is used for the BurstFire, Missile, and SpaceshipSpeed PowerUps.
+ *
+ * Has common methods like setting activation status
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Abstract class that is used for BurstFire, Missile, and Speed powerups.
- * Has common methods like setting activation status
  */
 
 public abstract class PowerUp extends MovingObject {

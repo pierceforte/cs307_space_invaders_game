@@ -6,13 +6,18 @@ import invader.projectile.Laser;
 import invader.projectile.Projectile;
 
 /**
+ * This is an abstract class that is used to create all types of entities used in this game.
+ *
+ * Spaceship, boss, enemy, all belongs to this abstract class
+ *
+ * This class is necessary and efficient because there are many features that the boss, enemy, and spaceship share.
+ *
+ * The projectile creation is an abstract method because different entities have different rules for creating projectiles.
+ *
+ * This class has methods like getting lives, setting lives, getting points, seeking out of bounds, etc
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Abstract class that is used to create all types of entities used in this game.
- * Spaceship, boss, enemy, all belongs to this abstract class
- * This class is necessary and efficient because there are many features that the boss, enemy, and spaceship shares
- * The projectile is an abstract method because different entities have different missile types.
- * It has methods like getting lives, setting lives, getting points, seeking out of bounds, etc
  */
 
 public abstract class Entity extends MovingObject {
@@ -36,8 +41,9 @@ public abstract class Entity extends MovingObject {
      * @param ySpeed: y speed of the entity
      * @param width: width of the image file
      * @param height: height of the image file
-     * @param imgName: name of the image file
+     * @param timeBetweenShots: the time that this entity must wait between firing shots
      * @param isEvil: boolean whether the entity is an evil
+     * @param imgName: name of the image file
      */
     public Entity(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height,
                   double timeBetweenShots, boolean isEvil, String imgName) {
@@ -48,7 +54,7 @@ public abstract class Entity extends MovingObject {
 
     /**
      * Set the life of the current entity
-     * @param lives
+     * @param lives how many lives this entity should have
      */
     public void setLives(int lives) {
         this.lives = lives;
@@ -65,8 +71,8 @@ public abstract class Entity extends MovingObject {
     public void lowerLives() { this.lives--; }
 
     /**
-     * Lower multiple lives of the current entity
-     * @param livesToRemove
+     * Lower lives of the current entity
+     * @param livesToRemove how many lives to remove from this entity
      */
     public void removeLives(int livesToRemove) {
         lives -= livesToRemove;
@@ -78,8 +84,8 @@ public abstract class Entity extends MovingObject {
     public int getLives() { return this.lives; }
 
     /**
-     * Set the amount of points the user gets when hitting an enemy
-     * @param pointsPerHit
+     * Set how many points are awarded when this entity is hit
+     * @param pointsPerHit how many points are awarded when this entity is hit
      */
     public void setPointsPerHit(int pointsPerHit) {
         this.pointsPerHit = pointsPerHit;
@@ -100,8 +106,8 @@ public abstract class Entity extends MovingObject {
     }
 
     /**
-     * Increment the starting shoot time of the entity to create random fires
-     * @param timeToAdd
+     * Add to the starting shoot time of the entity to create random fires
+     * @param timeToAdd the time added to the starting shoot time of the entity to create random fires
      */
     public void addToStartShootingTime(double timeToAdd) {
         startingShootTime += timeToAdd;

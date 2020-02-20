@@ -15,13 +15,17 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * @author Pierce Forte
- * @author Jeff Kim
- * Abstract class that is used to create all types of levels used in this game.
+ * This is an abstract class that is used to create all types of levels used in this game.
+ *
  * This class is necessary because the levels share a lot of similar methods and properties, but also have unique features for each class.
+ *
  * The basic set up of the game and handling the user spaceship would be the similar, so all of them are defined as public methods.
+ *
  * The level specific methods like cheat codes or handling the missiles are abstract methods because it should be reimplemented in its
  * subclass, EnemyLevel and BossLevel. Level specific methods have a protected access level.
+ *
+ * @author Pierce Forte
+ * @author Jeff Kim
  */
 
 public abstract class Level {

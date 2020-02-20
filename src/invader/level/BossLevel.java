@@ -10,10 +10,12 @@ import javafx.scene.Group;
 import java.util.Scanner;
 
 /**
+ * This class inherits from the abstract class Level, implementing a level with a boss.
+ *
+ * This class handles the nodes, collisions, and game state while user fights a boss.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Specific class that inherits from the abstract class Level
- * Sets up the game settings for a boss level.
  */
 
 

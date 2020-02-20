@@ -18,11 +18,14 @@ import javafx.util.Duration;
 import java.net.URISyntaxException;
 
 /**
+ * This is the main class that runs the entire game.
+ *
+ * It initializes all the basic scene, key, and music setup.
+ *
+ * Runs the animation and calls the step function for each frame
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Main class that runs the entire game.
- * It initializes all the basic scene, key, and music setup.
- * Runs the animation and calls the step function for each frame
  */
 
 public class Game extends Application {
@@ -81,7 +84,7 @@ public class Game extends Application {
      * @param width width of scene
      * @param height height of scene
      * @param background color of background
-     * @return
+     * @return the game's scene that has been created
      */
     public Scene setupScene(int width, int height, Paint background) {
         // create one top level collection to organize the things in the scene
@@ -140,7 +143,7 @@ public class Game extends Application {
 
     /**
      * Set the menu active status
-     * @param isMenuActive
+     * @param isMenuActive whether the menu should be set active or inactive
      */
     public void setMenuActive(boolean isMenuActive) {
         this.isMenuActive = isMenuActive;
@@ -148,7 +151,7 @@ public class Game extends Application {
 
     /**
      * Get whether the menu is active
-     * @return
+     * @return whether the menu is active or inactive
      */
     public boolean isMenuActive() {
         return isMenuActive;
@@ -156,7 +159,7 @@ public class Game extends Application {
 
     /**
      * Get the status of game over menu status
-     * @return
+     * @return whether the game over menu is active or inactive
      */
     public boolean isGameOverMenuActive() {
         return isGameOverMenuActive;
@@ -164,7 +167,7 @@ public class Game extends Application {
 
     /**
      * Set the game over menu to active or inactive
-     * @param isGameOverMenuActive
+     * @param isGameOverMenuActive whether the game over menu should be set active or inactive
      */
     public void setGameOverMenuActive(boolean isGameOverMenuActive) {
         this.isGameOverMenuActive = isGameOverMenuActive;
@@ -172,7 +175,7 @@ public class Game extends Application {
 
     /**
      * Get whether the start menu status is active
-     * @return
+     * @return whether the start menu is active or inactive
      */
     public boolean isStartMenuActive() {
         return isStartMenuActive;
@@ -180,7 +183,7 @@ public class Game extends Application {
 
     /**
      * Set the start menu active status
-     * @param isStartMenuActive
+     * @param isStartMenuActive whether the start menu should be set active or inactive
      */
     public void setStartMenuActive(boolean isStartMenuActive) {
         this.isStartMenuActive = isStartMenuActive;
@@ -188,7 +191,7 @@ public class Game extends Application {
 
     /**
      * Get the active status of the quit game menu
-     * @return
+     * @return whether the quit game menu is active or inactive
      */
     public boolean isQuitGameMenuActive() {
         return isQuitGameMenuActive;
@@ -196,23 +199,23 @@ public class Game extends Application {
 
     /**
      * Set the quit menu active status
-     * @param isQuitGameMenuActive
+     * @param isQuitGameMenuActive whether the quit game menu should be set active or inactive
      */
     public void setQuitGameMenuActive(boolean isQuitGameMenuActive) {
         this.isQuitGameMenuActive = isQuitGameMenuActive;
     }
 
     /**
-     * Get whether the text field is active
-     * @return
+     * Get whether the high score text field (for name entry) is active
+     * @return whether the text field is active or inactive
      */
     public boolean isHighScoreTextFieldActive() {
         return isHighScoreTextFieldActive;
     }
 
     /**
-     * Set the high score text field either active or inactive
-     * @param isHighScoreTextFieldActive
+     * Set the high score text field (for name entry) either active or inactive
+     * @param isHighScoreTextFieldActive whether the high score text field (for name entry) is active or inactive
      */
     public void setHighScoreTextFieldActive(boolean isHighScoreTextFieldActive) {
         this.isHighScoreTextFieldActive = isHighScoreTextFieldActive;
@@ -220,14 +223,14 @@ public class Game extends Application {
 
     /**
      * Get the animation status
-     * @return
+     * @return Whether the animation is playing or paused
      */
     public Animation.Status getAnimationStatus() {
         return myAnimation.getStatus();
     }
 
     /**
-     * Get the animation status
+     * Pause the animation
      */
     public void pauseAnimation() {
         myAnimation.pause();
@@ -272,6 +275,7 @@ public class Game extends Application {
 
     /**
      * Start the program.
+     * @param args the arguments used to launch the application
      */
     public static void main (String[] args) {
         launch(args);

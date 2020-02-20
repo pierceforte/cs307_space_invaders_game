@@ -3,10 +3,10 @@ package invader.powerup;
 import invader.entity.Spaceship;
 
 /**
+ * This class inherits the abstract PowerUp class, implementing the ability for the spaceship to move faster on key press.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Specific Speed power up class that inherits the abstract class Powerup
- * Increases the speed of the spaceship on the screen
  */
 
 public class SpaceshipSpeedPowerUp extends PowerUp {

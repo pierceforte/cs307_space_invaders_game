@@ -3,10 +3,10 @@ package invader.powerup;
 import invader.entity.Spaceship;
 
 /**
+ * This class inherits the abstract PowerUp class, implementing the ability for the spaceship to shoot missiles that do more damage.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Specific Missile power up class that inherits the abstract class Powerup
- * Increases the number of missile on the screen
  */
 
 public class MissilePowerUp extends PowerUp {

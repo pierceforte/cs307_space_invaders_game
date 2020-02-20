@@ -1,9 +1,12 @@
 package invader.projectile;
 
 /**
+ * This class inherits the abstract Projectile class, implementing a basic projectile that does one damage.
+ *
+ * Used by each of the Entities in the game.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Specific Laser class which is used in the missile for both the regular enemy and spaceship
  */
 
 public class Laser extends Projectile {

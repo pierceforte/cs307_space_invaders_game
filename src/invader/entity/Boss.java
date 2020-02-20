@@ -5,10 +5,12 @@ import invader.projectile.Projectile;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
+ * This class inherits the abstract entity class, which is used to create a boss object.
+ *
+ * It has multiple features that only the boss possesses, such as vulnerability and missile type
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Inherits the abstract entity class, which is used to create a boss object.
- * It has multiple features that only the boss possesses, such as vulnerability and missile type
  */
 public class Boss extends Entity {
 

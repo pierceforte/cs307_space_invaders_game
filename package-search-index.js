@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"invader"},{"l":"invader.entity"},{"l":"invader.level"},{"l":"invader.powerup"},{"l":"invader.projectile"}]

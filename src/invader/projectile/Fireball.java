@@ -1,9 +1,12 @@
 package invader.projectile;
 
 /**
+ * This class inherits the abstract Projectile class, implementing more powerful projectiles with a fireball image.
+ *
+ * Used by the boss when it switches from invulnerable to vulnerable.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Specific Fireball class which is used in the missile for the boss
  */
 
 public class Fireball extends Projectile {

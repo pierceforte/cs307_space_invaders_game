@@ -5,10 +5,12 @@ import invader.projectile.Missile;
 import invader.projectile.Projectile;
 
 /**
+ * This class inherits the abstract entity class, which is used to create a spaceship object.
+ *
+ * Has its own methods compared to other entities like receiving power ups and reacting to them.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Inherits the abstract entity class, which is used to create a spaceship object.
- * Has its own method compared to other enities like receiving powerups and reacting to it.
  */
 
 public class Spaceship extends Entity {

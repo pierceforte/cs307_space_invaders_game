@@ -5,11 +5,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
+ * This is an abstract class that is used for all moving objects on the screen, including the entities and projectiles.
+ *
+ * This class has common methods like setting directional speed, position, and checking out of bounds.
+ *
+ * The purpose of this class is to reduce duplicate code in all its subclasses and increase flexibility for creating objects that move.
+ *
+ * It inherits the ImageView class, which is an extension of the Node class and can be used to create objects on screen with images.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Abstract class that is used for all moving objects on the screen, including the enemy, boss, spaceship, lasers, missiles
- * Has common methods like setting x, y speed, position, checking out of bounds, to reduce duplicate code in all the subclasses.
- * It inherits the ImageView class, which is one of the design decision we made.
  */
 
 public abstract class MovingObject extends ImageView {
@@ -42,8 +47,8 @@ public abstract class MovingObject extends ImageView {
 
     /**
      * Reads an image file from the resource folder
-     * @param imgName
-     * @return Image file that corresponds to the string
+     * @param imgName name of the image file for this object
+     * @return Image that corresponds to the image file
      */
     public Image makeImage (String imgName) {
         return new Image(this.getClass().getClassLoader().getResource(imgName).toExternalForm());
@@ -83,7 +88,7 @@ public abstract class MovingObject extends ImageView {
 
     /**
      * Update the position of the moving object for each step
-     * @param elapsedTime
+     * @param elapsedTime the time that is elapsed after a single step
      */
     public void updatePositionOnStep(double elapsedTime) {
         this.setX(this.getX() + this.getXSpeed() * elapsedTime);
@@ -92,7 +97,7 @@ public abstract class MovingObject extends ImageView {
 
     /**
      * Check if the moving object is out of bounds in the x direction
-     * @return Boolean value
+     * @return Boolean value whether the moving object is out of bounds in the x direction
      */
     public boolean isOutOfXBounds() {
         return (this.getX() >= Game.GAME_WIDTH - this.getFitWidth()|| this.getX() <= 0);
@@ -100,7 +105,7 @@ public abstract class MovingObject extends ImageView {
 
     /**
      * Check if the moving object is out of bounds in the y direction
-     * @return Boolean value
+     * @return Boolean value whether the moving object is out of bounds in the y direction
      */
     public boolean isOutOfYBounds() {
         return (this.getY() >= Game.GAME_HEIGHT - OUT_OF_BOUNDS_LOCATION || this.getY() <= OUT_OF_BOUNDS_LOCATION);
@@ -122,8 +127,8 @@ public abstract class MovingObject extends ImageView {
 
     /**
      * Check whether the two nodes on the screen intersects with each other
-     * @param node
-     * @return
+     * @param node The node that is being checked for a collision with this object
+     * @return whether node (the parameter) is colliding with this object
      */
     public boolean intersects(Node node) {
         return this.getBoundsInParent().intersects(node.getBoundsInLocal());

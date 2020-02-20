@@ -17,12 +17,18 @@ import java.util.*;
 
 
 /**
+ * This class is used to display all information and messages on the screen, including level information and menus.
+ *
+ * This class deals with the splash screens before, between, and after each level and the current status for that level, such as lives and points.
+ *
+ * All variables and methods are static because they could be used anytime during the game and do not need multiple instances.
+ * As such, the class is a final class, cannot be instantiated, and can not be extended since the status displays have a single implementation and should not be redefined.
+ * This class, if time had allowed, would have been a focus for refactoring given its length.
+ *
+ * While the number of constants in this class is high, the goal was to focus on flexibility and eliminate duplicate and magic values.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Class that is used to display all messages on the screen, It deals with the splash screens before, between, and after each level and
- * the current status for that level. All variables and methods are static because it could be used anytime during the game and do not need
- * multiple instances. As such, the class is a final class. This class, if time had allowed, would have been a focus for refactoring given its length.
- * While the number of constants is high, we wanted to focus on flexibility and eliminate duplication/magic values.
  */
 
 public final class StatusDisplay {
@@ -91,6 +97,7 @@ public final class StatusDisplay {
             .reversed()
             .thenComparing((entry) -> entry.toLowerCase()));
 
+    // private constructor so that this class is not accidentally instantiated
     private StatusDisplay() {
         //not called
     }
@@ -114,10 +121,10 @@ public final class StatusDisplay {
 
     /**
      * Create the interface of the status display
-     * @param root
-     * @param game_height
-     * @param scene_width
-     * @param scene_height
+     * @param root root of the game
+     * @param game_height height of the game
+     * @param scene_width width of the scene
+     * @param scene_height height of the scene
      */
     public static void createInterfaceAndAddToRoot(Group root, int game_height, int scene_width, int scene_height) {
         createInterfaceBackground(root, game_height, scene_width, scene_height);
@@ -287,6 +294,7 @@ public final class StatusDisplay {
 
     /**
      * Get menu background
+     * @return menu background
      */
     public static Rectangle getMenuBackground() {
         return menuBackground;

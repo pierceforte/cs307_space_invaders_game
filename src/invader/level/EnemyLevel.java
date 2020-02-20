@@ -22,10 +22,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
+ * This class inherits from the abstract class Level, implementing a level with enemies similar to Space Invaders.
+ *
+ * This class handles the nodes, collisions, and game state while user fights the enemies.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Specific class that inherits from the abstract class Level
- * Sets up the game settings for an enemy level.
  */
 
 public class EnemyLevel extends Level {

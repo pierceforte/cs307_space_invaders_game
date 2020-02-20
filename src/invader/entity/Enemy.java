@@ -6,9 +6,12 @@ import invader.projectile.Projectile;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
+ * This class inherits the abstract entity class, which is used to create an enemy object.
+ *
+ * Enemies are part of the normal levels, which implement a variation of Space Invaders.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Inherits the abstract entity class, which is used to create an enemy object.
  */
 
 public class Enemy extends Entity {

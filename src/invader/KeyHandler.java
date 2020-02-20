@@ -15,10 +15,12 @@ import java.util.Map;
 
 
 /**
+ * This class initializes how the game responds to key input.
+ *
+ * This class was created because the Game class had too much responsibility, and it is helpful to have all of the key hadnling in one specific place.
+ *
  * @author Pierce Forte
  * @author Jeff Kim
- * Initializes the key setup for the game.
- * Made it into a separate class because the Game class was becoming too long
  */
 
 public class KeyHandler {
