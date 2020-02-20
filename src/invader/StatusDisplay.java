@@ -70,11 +70,12 @@ public final class StatusDisplay {
     public static final int HIGHSCORE_TEXT_FIELD_WIDTH = 150;
     public static final String DEFAULT_HIGHSCORE_TEXT_FIELD_TEXT = "Name";
     public static final String POINTS_FORMAT = "%06d";
-    public static final String HIGHSCORES_FILE_PATH = "resources/highscores.txt";
+    public static final String HIGHSCORES_FILE_PATH = "/highscores.txt";
     public static final int NUM_HIGHSCORES_STORED = 100;
     public static final int NUM_HIGHSCORES_DISPLAYED = 5;
     public static final String SCORE_DELIMITER = ":";
 
+    private static String highscoresFile;
     private static Rectangle menuBackground;
     private static Rectangle userInterfaceArea;
     private static ImageView heartImageDisplay;
@@ -263,7 +264,7 @@ public final class StatusDisplay {
      * Update the high score on the display
      */
     public static void updateHighScoreDisplay() {
-        File file = new File(HIGHSCORES_FILE_PATH);
+        File file = new File(highscoresFile);
         try {
             Scanner myReader = new Scanner(file);
             if (myReader.hasNextLine()) {
@@ -344,7 +345,7 @@ public final class StatusDisplay {
     private static List<String> readInHighScores() {
         List<String> highscores = new ArrayList<>();
         try {
-            File file = new File(HIGHSCORES_FILE_PATH);
+            File file = new File(highscoresFile);
             Scanner myReader = new Scanner(file);
             while (myReader.hasNextLine()) {
                 highscores.add(myReader.nextLine());
@@ -369,6 +370,7 @@ public final class StatusDisplay {
     }
 
     private static void addHighScoreDisplay(Group root, double game_height, double scene_width) {
+        highscoresFile = StatusDisplay.class.getResource(HIGHSCORES_FILE_PATH).getPath();
         highScoreDisplay = createTextDisplayAndAddToRoot(root, HIGHSCORE_TEXT + formatPoints(0), scene_width -
                 HIGHSCORE_X_DIST_FROM_SCENE_WIDTH, game_height + HIGHSCORE_Y_DIST_FROM_GAME_HEIGHT, TEXT_COLOR);
         updateHighScoreDisplay();
@@ -376,7 +378,7 @@ public final class StatusDisplay {
 
     private static void updateHighScoreList(Set<String> highscores) {
         try {
-            PrintWriter pw = new PrintWriter(HIGHSCORES_FILE_PATH);
+            PrintWriter pw = new PrintWriter(highscoresFile);
             int numEntries = 0;
             for (String entry : highscores) {
                 if (numEntries < NUM_HIGHSCORES_STORED) {

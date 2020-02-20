@@ -3,6 +3,7 @@ Fran:6800
 Philip:6650
 PierceFull:6650
 Pierce:550
+Name:500
 PierceName:500
 Pieee:450
 Pierce:300
@@ -12,6 +13,7 @@ Pie:150
 a:100
 Pierce2:100
 Pierce:100
+Name:75
 Pierce:75
 aName:50
 Pierce:25
