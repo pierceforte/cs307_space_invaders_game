@@ -16,9 +16,9 @@ public class SpaceshipSpeedPowerUp extends PowerUp {
 
     /**
      * Constructor
-     * @param xPos
-     * @param yPos
-     * @param id
+     * @param xPos: x position of the speed powerup
+     * @param yPos: y position of the speed power up
+     * @param id: id later used for testing
      */
     public SpaceshipSpeedPowerUp(double xPos, double yPos, String id) {
         super(xPos, yPos, IMG_NAME, id);

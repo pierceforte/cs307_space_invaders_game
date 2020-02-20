@@ -40,9 +40,9 @@ public abstract class Level {
 
     /**
      * Constructor
-     * @param root
-     * @param levelNumber
-     * @param myGame
+     * @param root: Root of the game
+     * @param levelNumber: The level number the game is currently in
+     * @param myGame: My game
      */
     public Level(Group root, int levelNumber, Game myGame){
         this.root = root;

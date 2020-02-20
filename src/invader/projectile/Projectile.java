@@ -29,16 +29,16 @@ public abstract class Projectile extends MovingObject {
 
     /**
      * Constructor
-     * @param xPos
-     * @param yPos
-     * @param xSpeed
-     * @param ySpeed
-     * @param width
-     * @param height
-     * @param isEvil
-     * @param imgName
-     * @param rotation
-     * @param idNumber
+     * @param xPos: x position of the projectile
+     * @param yPos: y position of the projectile
+     * @param xSpeed: x speed of the projectile
+     * @param ySpeed: y speed of the projectile
+     * @param width: width of the projectile's image
+     * @param height: height of the projectile's image
+     * @param isEvil: boolean whether the projectile is the enemy's or the spaceship's
+     * @param imgName: name of the image file
+     * @param rotation: Rotation of the image
+     * @param idNumber: id number of the projectile for testing
      */
     public Projectile(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height,
                  boolean isEvil, String imgName, double rotation, int idNumber, String projectileType) {
@@ -51,7 +51,7 @@ public abstract class Projectile extends MovingObject {
 
     /**
      * Sets the damage of the projectile
-     * @param damage
+     * @param damage: damage of the projectile 
      */
     public void setDamage(int damage) {
         this.damage = damage;

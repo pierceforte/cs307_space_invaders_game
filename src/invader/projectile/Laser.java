@@ -16,11 +16,11 @@ public class Laser extends Projectile {
 
     /**
      * Constructor
-     * @param xPos
-     * @param yPos
-     * @param isEvil
-     * @param rotation
-     * @param idNumber
+     * @param xPos: x position of the laser
+     * @param yPos: y position of the laser
+     * @param isEvil: boolean whether the laser is enemy's or spaceship's
+     * @param rotation: rotation of the image file
+     * @param idNumber: id used for testing
      */
     public Laser(double xPos, double yPos, boolean isEvil, double rotation, int idNumber) {
         super(xPos,yPos, X_SPEED,Y_SPEED, DEFAULT_WIDTH, DEFAULT_HEIGHT,

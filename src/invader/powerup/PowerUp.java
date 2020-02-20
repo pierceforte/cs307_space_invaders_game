@@ -25,10 +25,10 @@ public abstract class PowerUp extends MovingObject {
 
     /**
      * Constructor
-     * @param xPos
-     * @param yPos
-     * @param imgName
-     * @param id
+     * @param xPos: x position of the power up
+     * @param yPos: y position of the power up
+     * @param imgName: name of the image file
+     * @param id: id of the powerup used for testing
      */
     public PowerUp (double xPos, double yPos, String imgName, String id) {
         super(xPos, yPos, X_SPEED, Y_SPEED, WIDTH, HEIGHT, imgName);

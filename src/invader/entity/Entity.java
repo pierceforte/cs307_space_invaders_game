@@ -30,14 +30,14 @@ public abstract class Entity extends MovingObject {
 
     /**
      * Constructor
-     * @param xPos
-     * @param yPos
-     * @param xSpeed
-     * @param ySpeed
-     * @param width
-     * @param height
-     * @param imgName
-     * @param isEvil
+     * @param xPos: x position of the entity
+     * @param yPos: y position of the entity
+     * @param xSpeed: x speed of the entity
+     * @param ySpeed: y speed of the entity
+     * @param width: width of the image file
+     * @param height: height of the image file
+     * @param imgName: name of the image file
+     * @param isEvil: boolean whether the entity is an evil
      */
     public Entity(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height,
                   double timeBetweenShots, boolean isEvil, String imgName) {
