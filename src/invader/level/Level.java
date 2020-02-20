@@ -26,7 +26,7 @@ import java.util.Scanner;
 
 public abstract class Level {
 
-    public static final String LEVEL_FILE_PATH = "resources/level_files/level_";
+    public static final String LEVEL_FILE_PATH = "/level_files/level_";
     public static final String LEVEL_FILE_EXTENSION = ".txt";
     public static final int SPACESHIP_LASER_ROTATION = 0;
 
@@ -243,7 +243,8 @@ public abstract class Level {
 
     private void readFile(String levelFile) {
         try {
-            File file = new File(levelFile);
+            String filePath = this.getClass().getResource(levelFile).getPath();
+            File file = new File(filePath);
             Scanner myReader = new Scanner(file);
             handleFileLines(myReader);
             myReader.close();
