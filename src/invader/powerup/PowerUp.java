@@ -62,7 +62,7 @@ public abstract class PowerUp extends MovingObject {
 
     /**
      * Get the activated time
-     * @return
+     * @return Return the activated time
      */
     public double getTimeWhenActivated() {
         return timeWhenActivated;
@@ -98,7 +98,24 @@ public abstract class PowerUp extends MovingObject {
         return isActive;
     }
 
+    /**
+     * Initially activates the power up
+     * @param gameTimer
+     * @param spaceship
+     */
     public abstract void activate(double gameTimer, Spaceship spaceship);
+
+    /**
+     * Deactivate the current power up the spaceship has
+     * @param gameTimer
+     * @param spaceship
+     */
     public abstract void deactivate(double gameTimer, Spaceship spaceship);
+
+    /**
+     * Reactivate the power up of the spaceship
+     * @param gameTimer
+     * @param spaceship
+     */
     public abstract void reapplyPowerUp(double gameTimer, Spaceship spaceship);
 }

@@ -97,7 +97,7 @@ public final class StatusDisplay {
 
     /**
      * Logs the error if it ever happens
-     * @param e
+     * @param e: Exception Error
      */
     public static void logError(Exception e) {
         try {

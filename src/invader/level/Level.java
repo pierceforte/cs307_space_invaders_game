@@ -17,7 +17,7 @@ import java.util.Scanner;
 /**
  * @author Pierce Forte
  * @author Jeff Kim
- * Abstract class that is used to create all types of entities used in this game.
+ * Abstract class that is used to create all types of levels used in this game.
  * This class is necessary because the levels share a lot of similar methods and properties, but also have unique features for each class.
  * The basic set up of the game and handling the user spaceship would be the similar, so all of them are defined as public methods.
  * The level specific methods like cheat codes or handling the missiles are abstract methods because it should be reimplemented in its
@@ -194,15 +194,18 @@ public abstract class Level {
         }
     }
 
+    // Clear nodes from scene and level
     protected <T extends Node> void clearNodesFromSceneAndLevel(T node) {
         root.getChildren().remove(node);
     }
 
+    // Clear nodes from scene and level (overloading)
     protected <T extends Node> void clearNodesFromSceneAndLevel(List<T> nodes) {
         root.getChildren().removeAll(nodes);
         nodes.clear();
     }
 
+    // Clear the nodes from the scene and level (overloading)
     protected <T extends Node> void clear2dNodesFromSceneAndLevel(List<List<T>> nodes) {
         for (List<T> row : nodes) {
             root.getChildren().removeAll(row);
@@ -210,6 +213,7 @@ public abstract class Level {
         nodes.clear();
     }
 
+    // Initiate the level victory
     protected void initiateLevelVictory() {
         endLevel();
         if (getLevelNumber() == Game.MAX_LEVEL) {
@@ -239,6 +243,7 @@ public abstract class Level {
     // Create evil entities
     protected abstract void createEvilEntities();
 
+    // Handle file lines
     protected abstract void handleFileLines(Scanner myReader);
 
     private void readFile(String levelFile) {
