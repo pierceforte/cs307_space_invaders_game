@@ -30,13 +30,13 @@ test/invader/GameTest
 
 Data files needed: 
 - Set resources folder as resources directory
-- error_log.txt file to errors to
+- error_log.txt file to write errors to
 - Within resources:
     - node images
     - level_files/
         - files level_1.txt through level_4.txt
     - highscores.txt file to read in/write out top 100 high scores
-    - game_music.mp3
+    - game_music.wav
 
 Key/Mouse inputs:
 - Arrow keys: move spaceship left and right
