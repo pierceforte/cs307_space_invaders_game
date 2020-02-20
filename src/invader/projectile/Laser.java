@@ -15,7 +15,7 @@ public class Laser extends Projectile {
     public static final int DAMAGE = 1;
 
     /**
-     * Constructor
+     * Create a laser
      * @param xPos: x position of the laser
      * @param yPos: y position of the laser
      * @param isEvil: boolean whether the laser is enemy's or spaceship's

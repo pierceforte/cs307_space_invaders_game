@@ -34,7 +34,7 @@ public class KeyHandler {
 
     /**
      * Constructor for KeyHandler, initializes the keymap
-     * @param game
+     * @param game the game being played
      */
     public KeyHandler(Game game) {
         myGame = game;
@@ -43,7 +43,7 @@ public class KeyHandler {
 
     /**
      * Handles the input of the code only when the menu is active
-     * @param code
+     * @param code the code of the key pressed
      */
     public void handleInput(KeyCode code) {
         boolean takeInput = true;

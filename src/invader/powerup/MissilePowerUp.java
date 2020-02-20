@@ -14,10 +14,10 @@ public class MissilePowerUp extends PowerUp {
     public static final int TIME_ACTIVE = 6;
 
     /**
-     * Constructor
-     * @param xPos
-     * @param yPos
-     * @param id
+     * Create a missile power up
+     * @param xPos: x position of the speed powerup
+     * @param yPos: y position of the speed power up
+     * @param id: id later used for testing
      */
     public MissilePowerUp(double xPos, double yPos, String id) {
         super(xPos, yPos, IMG_NAME, id);

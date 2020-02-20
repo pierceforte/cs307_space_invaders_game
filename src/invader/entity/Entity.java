@@ -85,15 +85,15 @@ public abstract class Entity extends MovingObject {
         this.pointsPerHit = pointsPerHit;
     }
 
-    /**
+    /** Get points per hit the user receives
      * @return Return the points per hit the user receives
      */
     public int getPointsPerHit() {
         return pointsPerHit;
     }
 
-    /**
-     * @return The starting shoot time of the entity
+    /** Get the time when the entity can start shooting, based on the game timer
+     * @return the time when the entity can start shooting, based on the game timer
      */
     public double getStartShootingTime() {
         return startingShootTime;
@@ -108,23 +108,62 @@ public abstract class Entity extends MovingObject {
     }
 
     /**
-     * Set the starting shoot time of the entity
-     * @param startingShootTime
+     * Set the time when the entity can start shooting, based on the game timer
+     * @param startingShootTime the time when the entity can start shooting, based on the game timer
      */
     public void setStartShootingTime(double startingShootTime) {
         this.startingShootTime = startingShootTime;
     }
 
+    /**
+     * Set how long the entity must wait between firing projectiles
+     * @param timeBetweenShots how long the entity must wait between firing projectiles
+     */
     public void setTimeBetweenShots(double timeBetweenShots) {
         this.timeBetweenShots = timeBetweenShots;
     }
 
+    /**
+     * Get how long the entity must wait between firing projectiles
+     * @return how long the entity must wait between firing projectiles
+     */
     public double getTimeBetweenShots() {
         return timeBetweenShots;
     }
 
     /**
-     * CHeck if the entity is out of bounds in the y direction
+     * Get this enemy's current projectile id number used for testing
+     * @return enemy's current projectile id number used for testing
+     */
+    public int getCurProjectileIdNumber() {
+        return curProjectileIdNumber;
+    }
+
+    /**
+     * Increment this enemy's current projectile id number used for testing
+     */
+    public void incrementCurProjectileIdNumber() {
+        curProjectileIdNumber++;
+    }
+
+    /**
+     * Set whether this entity has the burst fire ability
+     * @param hasBurstFire whether this entity has the burst fire ability
+     */
+    public void setHasBurstFire(boolean hasBurstFire) {
+        this.hasBurstFire = hasBurstFire;
+    }
+
+    /**
+     * Get whether this entity has the burst fire ability
+     * @return whether this entity has the burst fire ability
+     */
+    public boolean hasBurstFire() {
+        return hasBurstFire;
+    }
+
+    /**
+     * Check if the entity is out of bounds in the y direction
      * @return Boolean whether it is out of bounds or not
      */
     @Override
@@ -132,27 +171,12 @@ public abstract class Entity extends MovingObject {
         return (this.getY() >= Game.GAME_HEIGHT - BOTTOM_OUT_OF_BOUNDS_LOCATION || this.getY() <= TOP_OUT_OF_BOUNDS_LOCATION);
     }
 
-    public int getCurProjectileIdNumber() {
-        return curProjectileIdNumber;
-    }
-
-    public void incrementCurProjectileIdNumber() {
-        curProjectileIdNumber++;
-    }
-
-    public void setHasBurstFire(boolean hasBurstFire) {
-        this.hasBurstFire = hasBurstFire;
-    }
-
-    public boolean hasBurstFire() {
-        return hasBurstFire;
-    }
-
     /**
      * Create a projectile respective to the type of entity, which will be implemented in the subclasses
-     * The projectile is an abstract method because different entities have different missile types.
-     * @param rotation
-     * @param idNumber
+     * The projectile is an abstract method because different entities have different projectile types
+     * @param rotation rotation of the projectile's image
+     * @param idNumber id number of the projectile for testing
+     * @return the projectile that is fired
      */
     public abstract Projectile createProjectile(double rotation, int idNumber);
 

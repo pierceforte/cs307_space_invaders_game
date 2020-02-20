@@ -21,13 +21,13 @@ public abstract class MovingObject extends ImageView {
 
     /**
      * Constructor for all moving objects
-     * @param xPos
-     * @param yPos
-     * @param xSpeed
-     * @param ySpeed
-     * @param width
-     * @param height
-     * @param imgName
+     * @param xPos: x position of the entity
+     * @param yPos: y position of the entity
+     * @param xSpeed: x speed of the entity
+     * @param ySpeed: y speed of the entity
+     * @param width: width of the image file
+     * @param height: height of the image file
+     * @param imgName: name of the image file
      */
     public MovingObject(double xPos, double yPos, double xSpeed, double ySpeed, double width, double height, String imgName) {
         this.setX(xPos);
@@ -49,22 +49,34 @@ public abstract class MovingObject extends ImageView {
         return new Image(this.getClass().getClassLoader().getResource(imgName).toExternalForm());
     }
 
-    // Get x speed of the moving object
+    /**
+     * Get x speed of the moving object
+     * @return x speed of object
+     */
     public double getXSpeed() {
         return xSpeed;
     }
 
-    // Set x speed of the moving object
+    /**
+     * Set x speed of the moving object
+     * @param xSpeed the x speed to set
+     */
     public void setXSpeed(double xSpeed) {
         this.xSpeed = xSpeed;
     }
 
-    // Get y speed of the moving object
+    /**
+     * Get y speed of the moving object
+     * @return y speed of object
+     */
     public double getYSpeed() {
         return ySpeed;
     }
 
-    // Set y speed of the moving object
+    /**
+     * Set y speed of the moving object
+     * @param ySpeed the y speed to set
+     */
     public void setYSpeed(double ySpeed) {
         this.ySpeed = ySpeed;
     }
@@ -94,12 +106,16 @@ public abstract class MovingObject extends ImageView {
         return (this.getY() >= Game.GAME_HEIGHT - OUT_OF_BOUNDS_LOCATION || this.getY() <= OUT_OF_BOUNDS_LOCATION);
     }
 
-    // Reverse the x direction
+    /**
+     * Reverse the x direction
+     */
     public void reverseXDirection() {
         this.xSpeed *= -1;
     }
 
-    // Reverse the y direction
+    /**
+     * Reverse the y direction
+     */
     public void reverseYDirection() {
         this.ySpeed *= -1;
     }

@@ -48,6 +48,12 @@ public class EnemyLevel extends Level {
     private List<PowerUp> powerUps = new ArrayList<>();
     private List<List<Class>> powerUpGrid;
 
+    /**
+     * Create an enemy level
+     * @param root: Root of the game
+     * @param levelNumber: The level number the game is currently in
+     * @param myGame: My game
+     */
     public EnemyLevel(Group root, int levelNumber, Game myGame){
         super(root, levelNumber, myGame);
     }

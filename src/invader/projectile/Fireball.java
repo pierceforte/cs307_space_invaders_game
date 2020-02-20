@@ -15,7 +15,7 @@ public class Fireball extends Projectile {
     public static final int DAMAGE = 2;
 
     /**
-     * Constructor
+     * Create a fireball projectile
      * @param xPos: x position for the fireball
      * @param yPos: y position for the fireball
      * @param isEvil: boolean whether the fireball is the enemy's or the spaceship's

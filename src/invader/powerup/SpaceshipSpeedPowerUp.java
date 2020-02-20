@@ -15,7 +15,7 @@ public class SpaceshipSpeedPowerUp extends PowerUp {
     public static final int TIME_ACTIVE = 8;
 
     /**
-     * Constructor
+     * Create a spaceship speed up power up
      * @param xPos: x position of the speed powerup
      * @param yPos: y position of the speed power up
      * @param id: id later used for testing

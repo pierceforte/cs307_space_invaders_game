@@ -29,14 +29,14 @@ public class Enemy extends Entity {
     private boolean hasPowerUp = false;
 
     /**
-     * Constructor
-     * @param xPos
-     * @param yPos
-     * @param xSpeed
-     * @param ySpeed
-     * @param lives
-     * @param idNumber
-     * @param powerUp
+     * Create an Enemy
+     * @param xPos: x position of the enemy
+     * @param yPos: y position of the enemy
+     * @param xSpeed: x speed of the enemy
+     * @param ySpeed: y speed of the enemy
+     * @param lives: how many lives the enemy has
+     * @param idNumber: id number of the projectile for testing
+     * @param powerUp: the power up that the enemy should release when destroyed
      */
     public Enemy(double xPos, double yPos, double xSpeed, double ySpeed, int lives, int idNumber, PowerUp powerUp) {
         super(xPos, yPos, xSpeed, ySpeed, WIDTH, HEIGHT, DEFAULT_TIME_BETWEEN_SHOTS,
@@ -67,9 +67,9 @@ public class Enemy extends Entity {
 
     /**
      * Create a projectile for the enemy
-     * @param rotation
-     * @param idNumber
-     * @return type of projectile that is made
+     * @param rotation rotation of the projectile's image
+     * @param idNumber id number of the projectile for testing
+     * @return the projectile that is fired
      */
     @Override
     public Projectile createProjectile(double rotation, int idNumber) {

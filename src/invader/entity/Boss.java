@@ -35,11 +35,11 @@ public class Boss extends Entity {
 
     /**
      * Constructor
-     * @param xPos
-     * @param yPos
-     * @param xSpeed
-     * @param ySpeed
-     * @param lives
+     * @param xPos: x position of the boss
+     * @param yPos: y position of the boss
+     * @param xSpeed: x speed of the boss
+     * @param ySpeed: y speed of the boss
+     * @param lives: how many lives the boss has
      */
     public Boss(double xPos, double yPos, double xSpeed, double ySpeed, int lives) {
         super(xPos, yPos, xSpeed, ySpeed, HIDDEN_WIDTH, HIDDEN_HEIGHT, DEFAULT_TIME_BETWEEN_SHOTS, IS_EVIL, BOSS_HIDING_IMG_NAME);
@@ -110,9 +110,9 @@ public class Boss extends Entity {
 
     /**
      * Create a projectile fired from the boss
-     * @param rotation
-     * @param idNumber
-     * @return
+     * @param rotation rotation of the projectile's image
+     * @param idNumber id number of the projectile for testing
+     * @return the projectile that is fired
      */
     @Override
     public Projectile createProjectile(double rotation, int idNumber) {

@@ -24,7 +24,7 @@ public abstract class PowerUp extends MovingObject {
     private double timeActive;
 
     /**
-     * Constructor
+     * Create a PowerUp
      * @param xPos: x position of the power up
      * @param yPos: y position of the power up
      * @param imgName: name of the image file

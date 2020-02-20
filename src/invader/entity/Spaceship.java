@@ -30,9 +30,9 @@ public class Spaceship extends Entity {
     private boolean hasMissilePowerUp = false;
 
     /**
-     * Constructor
-     * @param xPos
-     * @param yPos
+     * Create a spaceship
+     * @param xPos: x position of the spaceship
+     * @param yPos: y position of the spaceship
      */
     public Spaceship(double xPos, double yPos) {
         super(xPos, yPos, DEFAULT_X_SPEED, DEFAULT_Y_SPEED, HEIGHT, WIDTH, DEFAULT_TIME_BETWEEN_SHOTS, IS_EVIL, SPACESHIP_IMG_NAME);
@@ -87,9 +87,9 @@ public class Spaceship extends Entity {
 
     /**
      * Create a projectile fired from the spaceship
-     * @param rotation
-     * @param idNumber
-     * @return
+     * @param rotation rotation of the projectile's image
+     * @param idNumber id number of the projectile for testing
+     * @return the projectile that is fired
      */
     @Override
     public Projectile createProjectile(double rotation, int idNumber) {

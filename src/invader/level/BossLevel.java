@@ -3,12 +3,10 @@ package invader.level;
 import invader.Game;
 import invader.StatusDisplay;
 import invader.entity.Boss;
-import invader.entity.Enemy;
 import invader.entity.Spaceship;
 import invader.projectile.Projectile;
 import javafx.scene.Group;
 
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -26,6 +24,12 @@ public class BossLevel extends Level {
     private int bossLives;
     private double invulnerableTimer = 0;
 
+    /**
+     * Create a boss level
+     * @param root: Root of the game
+     * @param levelNumber: The level number the game is currently in
+     * @param myGame: My game
+     */
     public BossLevel(Group root, int levelNumber, Game myGame){
         super(root, levelNumber, myGame);
         spaceship.setLives(DEFAULT_SPACESHIP_LIVES);
@@ -48,12 +52,6 @@ public class BossLevel extends Level {
     }
 
     @Override
-    protected void createEvilEntities() {
-        boss = new Boss(Game.GAME_WIDTH/2 - Boss.DEFAULT_WIDTH /2, Game.GAME_HEIGHT/2 - Boss.DEFAULT_HEIGHT /2,
-                Boss.DEFAULT_SPEED, Boss.DEFAULT_SPEED, bossLives);
-    }
-
-    @Override
     public void handleEntitiesAndLasers(double gameTimer, double elapsedTime) {
         updateNodePositionsOnStep(elapsedTime);
         handleEvilEntitiesMovement();
@@ -69,6 +67,37 @@ public class BossLevel extends Level {
         if(!levelLost && boss.getLives() == 0) {
             initiateLevelVictory();
         }
+    }
+
+    @Override
+    public void addRandomPowerUp(double gameTimer) {
+        return;
+    }
+
+    @Override
+    public void addSpeedPowerUp(double gameTimer) {
+        return;
+    }
+
+    @Override
+    public void addMissilePowerUp(double gameTimer) {
+        return;
+    }
+
+    @Override
+    public void addBurstFirePowerUp(double gameTimer) {
+        return;
+    }
+
+    @Override
+    public void destroyFirstEnemy() {
+        boss.setLives(0);
+    }
+
+    @Override
+    protected void createEvilEntities() {
+        boss = new Boss(Game.GAME_WIDTH/2 - Boss.DEFAULT_WIDTH /2, Game.GAME_HEIGHT/2 - Boss.DEFAULT_HEIGHT /2,
+                Boss.DEFAULT_SPEED, Boss.DEFAULT_SPEED, bossLives);
     }
 
     @Override
@@ -99,31 +128,6 @@ public class BossLevel extends Level {
     protected void handleFileLines(Scanner myReader) {
         String data = myReader.nextLine();
         bossLives = Integer.parseInt(data);
-    }
-
-    @Override
-    public void addRandomPowerUp(double gameTimer) {
-       return;
-    }
-
-    @Override
-    public void addSpeedPowerUp(double gameTimer) {
-        return;
-    }
-
-    @Override
-    public void addMissilePowerUp(double gameTimer) {
-        return;
-    }
-
-    @Override
-    public void addBurstFirePowerUp(double gameTimer) {
-        return;
-    }
-
-    @Override
-    public void destroyFirstEnemy() {
-        boss.setLives(0);
     }
 
     private void updateBossPosition() {

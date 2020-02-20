@@ -15,7 +15,10 @@ public class BurstFirePowerUp extends PowerUp {
     public static final int TIME_ACTIVE = 8;
 
     /**
-     * Constructor
+     * Create a burst fire power up
+     * @param xPos: x position of the speed powerup
+     * @param yPos: y position of the speed power up
+     * @param id: id later used for testing
      */
     public BurstFirePowerUp(double xPos, double yPos, String id) {
         super(xPos, yPos, IMG_NAME, id);
