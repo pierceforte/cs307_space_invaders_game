@@ -10,7 +10,6 @@ import java.util.concurrent.ThreadLocalRandom;
  * Inherits the abstract entity class, which is used to create a boss object.
  * It has multiple features that only the boss possesses, such as vulnerability and missile type
  */
-
 public class Boss extends Entity {
 
     public static final double DEFAULT_WIDTH = 150;
@@ -50,31 +49,52 @@ public class Boss extends Entity {
         addToStartShootingTime(START_FIRING_TIME);
     }
 
+    /**
+     * Change whether the boss is vulnerable or not; ie. whether it can be damaged by the player
+     */
     public void switchVulnerabilityStatus() {
         if (isVulnerable) setVulnerable(false);
         else setVulnerable(true);
     }
 
-    // Get if the boss is currently vulnerable
+    /**
+     * Get if the boss is currently vulnerable
+     * @return boolean regarding boss's vulnerability state
+     */
     public boolean isVulnerable() {
         return isVulnerable;
     }
 
-    // add time for the boss' vulnerability time
+    /**
+     * Add time for the boss' vulnerability time
+     * @param timeToAdd how much time to add to the value that keeps track of
+     * when the vulnerability of the boss should be switched next
+     */
     public void addToSwitchVulnerabilityTime(int timeToAdd) {
         switchVulnerabilityTime += timeToAdd;
     }
 
-    //Switch vulnerability time
+    /**
+     * Get the switch vulnerability time
+     * @return the time at which the boss's vulnerability status should changed, based on the game timer
+     */
     public int getSwitchVulnerabilityTime() {
         return switchVulnerabilityTime;
     }
 
+    /**
+     * Randomly assign an x speed and y speed for the boss
+     */
     public void setRandomSpeed() {
         setRandomXSpeed();
         setRandomYSpeed();
     }
 
+    /**
+     * Set the vulnerability status of the boss
+     * @param isVulnerable if true (boss is currently vulnerable), make the boss invulnerable;
+     * if false (currently invulnerable), make the boss vulnerable
+     */
     private void setVulnerable(boolean isVulnerable) {
         this.isVulnerable = isVulnerable;
         if (isVulnerable) {
@@ -86,6 +106,28 @@ public class Boss extends Entity {
             addToSwitchVulnerabilityTime(TIME_INVULNERABLE);
             setPointsPerHit(POINTS_PER_HIT_WHEN_INVULNERABLE);
         }
+    }
+
+    /**
+     * Create a projectile fired from the boss
+     * @param rotation 
+     * @param idNumber
+     * @return
+     */
+    @Override
+    public Projectile createProjectile(double rotation, int idNumber) {
+        if (hasBurstFire()) {
+            return new Fireball(this.getX() + this.getFitWidth()/2,
+                    this.getY(), true, rotation, idNumber);
+        }
+        else {
+            return defaultProjectileFire(rotation, idNumber);
+        }
+    }
+
+    @Override
+    public void removeLives(int livesToRemove) {
+        if (this.isVulnerable) this.setLives(this.getLives()-livesToRemove);
     }
 
     private void switchBossImage(String imgName, double width, double height) {
@@ -106,21 +148,5 @@ public class Boss extends Entity {
         int newSpeed = ThreadLocalRandom.current().nextInt(Boss.MIN_SPEED, Boss.MAX_SPEED);
         newSpeed = curSpeed < 0 ? newSpeed * -1 : newSpeed;
         return newSpeed;
-    }
-
-    @Override
-    public Projectile createProjectile(double rotation, int idNumber) {
-        if (hasBurstFire()) {
-            return new Fireball(this.getX() + this.getFitWidth()/2,
-                    this.getY(), true, rotation, idNumber);
-        }
-        else {
-            return defaultProjectileFire(rotation, idNumber);
-        }
-    }
-
-    @Override
-    public void removeLives(int livesToRemove) {
-        if (this.isVulnerable) this.setLives(this.getLives()-livesToRemove);
     }
 }
