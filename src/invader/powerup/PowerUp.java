@@ -62,7 +62,7 @@ public abstract class PowerUp extends MovingObject {
 
     /**
      * Get the activated time
-     * @return
+     * @return Return the activated time
      */
     public double getTimeWhenActivated() {
         return timeWhenActivated;
