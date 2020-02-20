@@ -54,24 +54,24 @@ public class Spaceship extends Entity {
         }
     }
 
-    /**
-     * @return Returns the xSpeed of the spaceship
+    /** Get the x speed of the spaceship when left or right key is pressed
+     * @return Returns the x speed of the spaceship when left or right key is pressed
      */
     public double getXSpeedOnKeyPress() {
         return xSpeedOnKeyPress;
     }
 
     /**
-     * Set the xSpeed of the spaceship
-     * @param xSpeedOnKeyPress
+     * Set the x speed of the spaceship when left or right key is pressed
+     * @param xSpeedOnKeyPress the new x speed of the spaceship when left or right key is pressed
      */
     public void setXSpeedOnKeyPress(double xSpeedOnKeyPress) {
         this.xSpeedOnKeyPress = xSpeedOnKeyPress;
     }
 
     /**
-     * Set the missile power up for the spaceship (Stronger missile)
-     * @param isActive
+     * Set whether the missile power up for the spaceship is active
+     * @param isActive whether the missile power up is active
      */
     public void setMissilePowerUp(boolean isActive) {
         hasMissilePowerUp = isActive;
@@ -79,12 +79,18 @@ public class Spaceship extends Entity {
 
     /**
      * Check if the spaceship has missile power up
-     * @return
+     * @return whether the spaceship has missle power up
      */
     public boolean hasMissilePowerUp() {
         return hasMissilePowerUp;
     }
 
+    /**
+     * Create a projectile fired from the spaceship
+     * @param rotation
+     * @param idNumber
+     * @return
+     */
     @Override
     public Projectile createProjectile(double rotation, int idNumber) {
         Projectile projectile;

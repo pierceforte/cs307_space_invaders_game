@@ -51,22 +51,22 @@ public class Enemy extends Entity {
         setPointsPerHit(POINTS_PER_HIT);
     }
 
-    /**
-     * @return Returns the power up that the enemy holds
+    /** Returns the power up that the enemy holds
+     * @return PowerUp the power up that the enemy holds
      */
     public PowerUp getPowerUp() {
         return powerUp;
     }
 
-    /**
-     * @return Returns if the enemy holds a powerup
+    /** Returns if the enemy holds a power up
+     * @return whether enemy has power up
      */
     public boolean hasPowerUp() {
         return hasPowerUp;
     }
 
     /**
-     * Creates a projectile/missile for the enemy
+     * Create a projectile for the enemy
      * @param rotation
      * @param idNumber
      * @return type of projectile that is made

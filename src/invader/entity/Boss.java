@@ -110,7 +110,7 @@ public class Boss extends Entity {
 
     /**
      * Create a projectile fired from the boss
-     * @param rotation 
+     * @param rotation
      * @param idNumber
      * @return
      */

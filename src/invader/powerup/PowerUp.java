@@ -43,8 +43,8 @@ public abstract class PowerUp extends MovingObject {
     }
 
     /**
-     * Sets the time to active
-     * @param timeActive
+     * Sets the duration that power up is active for
+     * @param timeActive The duration that power up is active for
      */
     public void setTimeActive(double timeActive) {
         isActive = true;
@@ -52,8 +52,8 @@ public abstract class PowerUp extends MovingObject {
     }
 
     /**
-     * Sets the time of the activated time
-     * @param time
+     * Sets the time of when the power up was activated
+     * @param time the time when the power up was activated
      */
     public void setTimeWhenActivated(double time) {
         timeWhenActivated = time;
@@ -61,24 +61,24 @@ public abstract class PowerUp extends MovingObject {
     }
 
     /**
-     * Get the activated time
-     * @return Return the activated time
+     * Get the time when the power up was activated
+     * @return the time when the power up was activated
      */
     public double getTimeWhenActivated() {
         return timeWhenActivated;
     }
 
     /**
-     * Check if the power up is activated
-     * @return Returns whether the powerup is activated
+     * Check if the power up has been activated
+     * @return returns whether the powerup has been activated
      */
     public boolean hasBeenActivated() {
         return hasBeenActivated;
     }
 
     /**
-     * Check if the powerup is active
-     * @return Returns boolean whether the powerup is active
+     * Check if the powerup is currently active
+     * @return returns boolean whether the powerup is active
      */
     public boolean isActive() {
         return isActive;
@@ -86,8 +86,8 @@ public abstract class PowerUp extends MovingObject {
 
     /**
      * If the activated time is past the active time limit, set it to inactive
-     * @param gameTimer
-     * @param spaceship
+     * @param gameTimer the timer of the entire game
+     * @param spaceship the spaceship that the user controls
      * @return Returns boolean whether the powerup is active or not
      */
     public boolean updateAndGetActiveStatus(double gameTimer, Spaceship spaceship) {
@@ -100,22 +100,22 @@ public abstract class PowerUp extends MovingObject {
 
     /**
      * Initially activates the power up
-     * @param gameTimer
-     * @param spaceship
+     * @param gameTimer the timer of the entire game
+     * @param spaceship the spaceship that the user controls
      */
     public abstract void activate(double gameTimer, Spaceship spaceship);
 
     /**
      * Deactivate the current power up the spaceship has
-     * @param gameTimer
-     * @param spaceship
+     * @param gameTimer the timer of the entire game
+     * @param spaceship the spaceship that the user controls
      */
     public abstract void deactivate(double gameTimer, Spaceship spaceship);
 
     /**
      * Reactivate the power up of the spaceship
-     * @param gameTimer
-     * @param spaceship
+     * @param gameTimer the timer of the entire game
+     * @param spaceship the spaceship that the user controls
      */
     public abstract void reapplyPowerUp(double gameTimer, Spaceship spaceship);
 }
